@@ -7,7 +7,6 @@ single_box_plots <- function(results_df, data_title,save_loc){
   lable_df <- lable_df[1:24,]
   
   cnames <- colnames(results_df)
-  colour = 'blue'
     
   for (col in cnames) {
     cat(col)
@@ -15,8 +14,8 @@ single_box_plots <- function(results_df, data_title,save_loc){
     col_index <- which(lable_df$Flow.Metric.Code==col)
     
     Boxplot <- ggplot() +
-      geom_boxplot(aes(x = col, y = as.numeric(results_df[[col]]),colour = 'blue' )) +
-      geom_jitter(aes(x = col, y = as.numeric(results_df[[col]]),colour = 'darkblue',alpha = 0.6), width = 0.2, height = 0) +
+      geom_boxplot(aes(x = col, y = as.numeric(results_df[[col]])),colour = 'blue' ) +
+      geom_jitter(aes(x = col, y = as.numeric(results_df[[col]])),colour = 'darkblue',alpha = 0.6, width = 0.2, height = 0) +
       labs(x = data_title, y = lable_df$Unit[col_index], title = paste(data_title,"-", lable_df$Flow.Metric.Name[col_index]))
     
     print(Boxplot)
