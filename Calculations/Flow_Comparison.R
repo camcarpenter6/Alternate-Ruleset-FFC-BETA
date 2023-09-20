@@ -16,7 +16,9 @@ source(here("Post_Processing_Files","Metrics_percentiles.R"))
 
 compare_gages <- function(){
   
-  evaluation_num <- as.integer(readline("Enter the number of hydrographs to be evaluated,  between 2 and 3: "))
+  cat("Enter the number of hydrographs to be evaluated,  between 2 and 3: ")
+  
+  evaluation_num <- as.integer(readline(""))
   
   if (evaluation_num<2 | evaluation_num >3) {
     #Tell the user why the program is ending
@@ -35,7 +37,8 @@ compare_gages <- function(){
     #Check to see if which term was entered and get the important information
     if (gage_check_1 == "TS"){
       #Get the file location of time series
-      input_time_series_loc_1 <- readline("Please enter the full file location of the csv file with the flow data.\n The file needs to have a column called 'date' with a MM/DD/YYYY, and a column called 'flow' with the flow data.")
+      cat("Please enter the full file location of the csv file with the flow data.\n The file needs to have a column called 'date' with a MM/DD/YYYY, and a column called 'flow' with the flow data.")
+      input_time_series_loc_1 <- readline("File Path Here: ")
       
       #read in the data
       flow_1 <- read.csv(input_time_series_loc_1, header = T) %>% #Enter first flow data
@@ -52,7 +55,8 @@ compare_gages <- function(){
       gage_id_1 <- readline("Please enter USGS site number or a 3-letter CDEC station ID, the site must be in the California: ")
       
       if(nchar(gage_id_1) == 3){
-        sensor_ID_1 <- readline("Please enter the sensor number you want to get the data from, common sensors are 8 for full natural flow data and 41 for daily mean flow: ")
+        cat("Please enter the sensor number you want to get the data from.  \nCommon sensors are 8 for full natural flow data and 41 for daily mean flow: ")
+        sensor_ID_1 <- readline("Sensor ID: ")
         
         cat("\n Data for the calculator must be daily")
         
@@ -92,7 +96,8 @@ compare_gages <- function(){
     #Check to see if which term was entered and get the important information
     if (gage_check_2 == "TS"){
       #Get the file location of time series
-      input_time_series_loc_2 <- readline("Please enter the full file location of the csv file with the flow data.\n The file needs to have a column called 'date' with a MM/DD/YYYY, and a column called 'flow' with the flow data.")
+      cat("Please enter the full file location of the csv file with the flow data.\n The file needs to have a column called 'date' with a MM/DD/YYYY, and a column called 'flow' with the flow data.")
+      input_time_series_loc_2 <- readline("File Path Here: ")
       
       #read in the data
       flow_2 <- read.csv(input_time_series_loc_2, header = T) %>% #Enter first flow data
@@ -110,7 +115,8 @@ compare_gages <- function(){
       gage_id_2 <- readline("Please enter USGS site number or a 3-letter CDEC station ID, the site must be in the California: ")
       
       if(nchar(gage_id_2) == 3){
-        sensor_ID_2 <- readline("Please enter the sensor number you want to get the data from, common sensors are 8 for full natural flow data and 41 for daily mean flow: ")
+        cat("Please enter the sensor number you want to get the data from.  \nCommon sensors are 8 for full natural flow data and 41 for daily mean flow: ")
+        sensor_ID_2 <- readline("Sensor ID: ")
         
         cat("\n Data for the calculator must be daily")
         
@@ -204,7 +210,8 @@ compare_gages <- function(){
     #Check to see if which term was entered and get the important information
     if (gage_check_1 == "TS"){
       #Get the file location of time series
-      input_time_series_loc_1 <- readline("Please enter the full file location of the csv file with the flow data.\n The file needs to have a column called 'date' with a MM/DD/YYYY, and a column called 'flow' with the flow data.")
+      cat("Please enter the full file location of the csv file with the flow data.\n The file needs to have a column called 'date' with a MM/DD/YYYY, and a column called 'flow' with the flow data.")
+      input_time_series_loc_1 <- readline("File Path Here: ")
       
       #read in the data
       flow_1 <- read.csv(input_time_series_loc_1, header = T) %>% #Enter first flow data
@@ -221,7 +228,8 @@ compare_gages <- function(){
       gage_id_1 <- readline("Please enter USGS site number or a 3-letter CDEC station ID, the site must be in the California: ")
       
       if(nchar(gage_id_1) == 3){
-        sensor_ID_1 <- readline("Please enter the sensor number you want to get the data from, common sensors are 8 for full natural flow data and 41 for daily mean flow: ")
+        cat("Please enter the sensor number you want to get the data from.  \nCommon sensors are 8 for full natural flow data and 41 for daily mean flow: ")
+        sensor_ID_1 <- readline("Sensor ID: ")
         
         cat("\n Data for the calculator must be daily")
         
@@ -261,7 +269,8 @@ compare_gages <- function(){
     #Check to see if which term was entered and get the important information
     if (gage_check_2 == "TS"){
       #Get the file location of time series
-      input_time_series_loc_2 <- readline("Please enter the full file location of the csv file with the flow data.\n The file needs to have a column called 'date' with a MM/DD/YYYY, and a column called 'flow' with the flow data.")
+      cat("Please enter the full file location of the csv file with the flow data.\n The file needs to have a column called 'date' with a MM/DD/YYYY, and a column called 'flow' with the flow data.")
+      input_time_series_loc_2 <- readline("File Path Here: ")
       
       #read in the data
       flow_2 <- read.csv(input_time_series_loc_2, header = T) %>% #Enter first flow data
@@ -278,7 +287,8 @@ compare_gages <- function(){
       gage_id_2 <- readline("Please enter USGS site number or a 3-letter CDEC station ID, the site must be in the California: ")
       
       if(nchar(gage_id_2) == 3){
-        sensor_ID_2 <- readline("Please enter the sensor number you want to get the data from, common sensors are 8 for full natural flow data and 41 for daily mean flow: ")
+        cat("Please enter the sensor number you want to get the data from.  \nCommon sensors are 8 for full natural flow data and 41 for daily mean flow: ")
+        sensor_ID_2 <- readline("Sensor ID: ")
         
         cat("\n Data for the calculator must be daily")
         
@@ -318,7 +328,8 @@ compare_gages <- function(){
     #Check to see if which term was entered and get the important information
     if (gage_check_3 == "TS"){
       #Get the file location of time series
-      input_time_series_loc_3 <- readline("Please enter the full file location of the csv file with the flow data.\n The file needs to have a column called 'date' with a MM/DD/YYYY, and a column called 'flow' with the flow data.")
+      cat("Please enter the full file location of the csv file with the flow data.\n The file needs to have a column called 'date' with a MM/DD/YYYY, and a column called 'flow' with the flow data.")
+      input_time_series_loc_3 <- readline("File Path Here: ")
       
       #read in the data
       flow_3 <- read.csv(input_time_series_loc_3, header = T) %>% #Enter first flow data
@@ -335,7 +346,8 @@ compare_gages <- function(){
       gage_id_3 <- readline("Please enter USGS site number or a 3-letter CDEC station ID, the site must be in the California: ")
       
       if(nchar(gage_id_3) == 3){
-        sensor_ID_3 <- readline("Please enter the sensor number you want to get the data from, common sensors are 8 for full natural flow data and 41 for daily mean flow: ")
+        cat("Please enter the sensor number you want to get the data from.  \nCommon sensors are 8 for full natural flow data and 41 for daily mean flow: ")
+        sensor_ID_3 <- readline("Sensor ID: ")
         
         cat("\n Data for the calculator must be daily")
         

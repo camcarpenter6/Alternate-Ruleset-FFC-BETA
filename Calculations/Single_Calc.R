@@ -20,7 +20,8 @@ gage_check <- readline("Are you using your time series data or a USGS gage site 
 #Check to see if which term was entered and get the important information
 if (gage_check == "TS"){
   #Get the file location of time series
-  input_time_series_loc <- readline("Please enter the full file location of the csv file with the flow data.\n The file needs to have a column called 'date' with a MM/DD/YYYY, and a column called 'flow' with the flow data.")
+  cat("Please enter the full file location of the csv file with the flow data.\n The file needs to have a column called 'date' with a MM/DD/YYYY, and a column called 'flow' with the flow data.")
+  input_time_series_loc <- readline("File Path Here: ")
   
   flow <- read.csv(input_time_series_loc, header = T) %>% #Enter first flow data
     mutate(date = as.Date(date, "%m/%d/%Y"))
@@ -35,7 +36,8 @@ if (gage_check == "TS"){
   gage_id <- readline("Please enter USGS site number or a 3-letter CDEC station ID, the site must be in the California: ")
   
   if(nchar(gage_id) == 3){
-    sensor_ID <- readline("Please enter the sensor number you want to get the data from, \n common sensors are 8 for full natural flow data and 41 for daily mean flow:\n ")
+    cat("Please enter the sensor number you want to get the data from.  \nCommon sensors are 8 for full natural flow data and 41 for daily mean flow: ")
+    sensor_ID <- readline("Sensor ID: ")
     
     cat("\n Data for the calculator must be daily")
     
@@ -83,7 +85,11 @@ dir.create(new_dir)
   #Get the metrics percentiles following the same method as the original calculator
   metrics_percentiles <- get_percentiles(Results_df,comid)
   
-   
+  # Construct the file path
+  file_path_2 <- file.path(here(), "Outputs", gage_name_cleaned, paste0(gage_name_cleaned, "_Metric_Percentiles.csv"))
+  
+  # Write the CSV file
+  write_csv(metrics_percentiles, file = file_path_2)
 
   
   #Make the html figure for the

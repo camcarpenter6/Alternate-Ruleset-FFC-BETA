@@ -20,16 +20,19 @@ batch_or_single <- c()
 # User Input --------------------------------------------------------------
 
 #We need to see if the user wants to compare or data for just get results
-analysis_type<- readline("Do you want to compare results (maximum of 3 gauges) or look at individual results no maximum \n Enter (compare) to compare or (indv) for idividual results ")
+cat("Do you want to compare results (maximum of 3 gauges) or look at individual results no maximum\n ")
+analysis_type<- readline("Enter (compare) to compare or (individual) for individual results: ")
+
 
 if(analysis_type == "compare"){
   
   compare_gages()
 
   
-}else if(analysis_type == "indv"){
+}else if(analysis_type == "individual"){
   
-  batch_or_single<- readline("Do you want to batch all the results ('batch') or run a singular gage 'singular'")
+  cat("Do you want to batch produce results or run a singular gage? ")
+  batch_or_single <- readline("Enter batch or singular: ")
    
   if(batch_or_single == "singular"){
    
