@@ -28,7 +28,6 @@ USGS_gage_flow <- function(gage_id) {
   #Rename the data so it matches the user input files
   flow <- flow %>%
     rename("date" = "Date", "flow" = "Flow")
-  cat("YAAAYYYYYYY")
   
   #Return the flow data
   return(flow)

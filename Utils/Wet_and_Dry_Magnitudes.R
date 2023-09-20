@@ -19,7 +19,7 @@ Wet_Dry_Season_Non_Tim_Metrics <- function(FlowYear,SP_Tim,DS_Tim, Wet_Tim){
   
   #cycle through the water years to calculate the metrics
   for (i in 1:length(WYs)) {
-    cat("\n Water Year", WYs[i],"\n")
+    #cat("\n Water Year", WYs[i],"\n")
     
     #filter the flow to the water year in question
     Filteryear1 <- filter(FlowYear, water_year == WYs[i])
@@ -80,7 +80,7 @@ Wet_Dry_Season_Non_Tim_Metrics <- function(FlowYear,SP_Tim,DS_Tim, Wet_Tim){
         Wet_BFL_Dur[i] <- SP_Tim[i]-Wet_Tim[i]
       }
       
-      cat("\n wet season",WS_mag)
+      #cat("\n wet season",WS_mag)
     }
     if((is.nan(Wet_Tim[i+1])|is.na(Wet_Tim[i+1])) & (!is.nan(Wet_Tim[i+2])|!is.na(Wet_Tim[i+2])) & i != length(WYs)){
       #Set the 50th and 90th percentile flows for the dry season and assign it to the magnitude
@@ -115,7 +115,7 @@ Wet_Dry_Season_Non_Tim_Metrics <- function(FlowYear,SP_Tim,DS_Tim, Wet_Tim){
       #Since there is not the next year 
       DS_Dur_WS[i] <- NA
       
-      cat("\n dry season",DS_mag)
+      #cat("\n dry season",DS_mag)
       next
     }
     
@@ -148,7 +148,7 @@ Wet_Dry_Season_Non_Tim_Metrics <- function(FlowYear,SP_Tim,DS_Tim, Wet_Tim){
     if(DS_Tim[i] < 0){
       DS_Dur_WS[i] <- (Wet_Tim[i+1]+365)-mean(DS_Tim[DS_Tim>0],na.rm = TRUE)
     }
-    cat("\n dry season",DS_mag, "\n", DS_Dur_WS[i])
+    #cat("\n dry season",DS_mag, "\n", DS_Dur_WS[i])
     
   }
   #Put all the metrics in a list

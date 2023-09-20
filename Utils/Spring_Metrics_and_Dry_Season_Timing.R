@@ -241,7 +241,7 @@ Altered_Spring_Recession <- function(FlowYear) {
   #Loop through all of the water years
   
   for (i in 1:length(Water_Years)) {
-    cat("\n \n Water Year: ", Water_Years[i])
+    #cat("\n \n Water Year: ", Water_Years[i])
     #Filter the flow data to the individual water year
     flow <- filter(FlowYear, FlowYear$water_year== Water_Years[i])
     WY_median <- median(flow$flow)
@@ -299,7 +299,7 @@ Altered_Spring_Recession <- function(FlowYear) {
       #combine the two data sets of peaks
       peaks_all <- bind_rows(peaks,peaks_2)
       
-      cat("broke after peaks")
+      #cat("broke after peaks")
       #Check to make sure there is data in the peaks 
       if (length(peaks_all)>1 ){
         #If there is data in the data frame then makes sure it is more than just the titles
@@ -322,7 +322,7 @@ Altered_Spring_Recession <- function(FlowYear) {
       }
       
       
-      cat("broke after making peaks_90")
+      #cat("broke after making peaks_90")
       #Check to make sure that there are qualified peaks 
       if (is.null(peaks_90) == FALSE & length(peaks_90[,1]) >0) {
         
@@ -336,7 +336,7 @@ Altered_Spring_Recession <- function(FlowYear) {
           #springindex_PH1 <- NULL
         }
         if(Water_Years[i] == 2013){
-          cat("\n Peaks Timing: ", peaks_90[,1] , "\n ")
+          #cat("\n Peaks Timing: ", peaks_90[,1] , "\n ")
         }
       }
       
@@ -344,13 +344,13 @@ Altered_Spring_Recession <- function(FlowYear) {
       else {
         springindex_PH1 = NULL
       }
-      cat("broke after making PH1 NULL")
+      #cat("broke after making PH1 NULL")
       #Find the index of flows at or above the 90th percentile
       highflows <- which(flow$flow >= quants[2])
       
       #Assign the last index above 90th percentile flow as the second potential spring recession index 
       springindex_PH2 <- max(highflows)
-      cat("broke after making PH2")
+      #cat("broke after making PH2")
       #If the first placeholder is not valid then use the second place holder vlue
       if ( is.null(springindex_PH1) ) { #(springindex_PH1+30)<springindex_PH2 || ###OTHER OPTION
         #Set the index of the spring timing to the second place holder
@@ -360,7 +360,7 @@ Altered_Spring_Recession <- function(FlowYear) {
         #Otherwise set the spring index to the first placement
         springindex <- springindex_PH1
       }
-      cat("\n PH1:" , springindex_PH1, " PH 2: ", springindex_PH2)
+      #cat("\n PH1:" , springindex_PH1, " PH 2: ", springindex_PH2)
       #Set the spring timing to index identified 
       SP_Tim[i] <- springindex
       #SP_Tim_test[i] <- append(as.Date(flow$date[springindex], "%m/%d/%Y"))
@@ -376,7 +376,7 @@ Altered_Spring_Recession <- function(FlowYear) {
     }
     #Calculate the rate of change for the rest of the year after the top of the spring recession
     roc <- rate_of_change(flow_post_SP$flow)
-    cat("\n",SP_Tim[i],"\n" )
+    #cat("\n",SP_Tim[i],"\n" )
     #calculate the dry season start timing by subtracting the length of the water year by the time remaining 
     #after the spring recession peak and then add the timing of the start of the dry season after the spring peak
     #PH_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_breakpoint_method(flow_post_SP,SP_Mag[i])) #Original Code
@@ -392,10 +392,10 @@ Altered_Spring_Recession <- function(FlowYear) {
     #Then new code door Dry season
     #PH_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_Squ_Dif_threshold(flow_post_SP$flow,threshold))
     
-    cat("\n PH Dry",PH_DS_Tim,"\n is the place holder null", is.null(PH_DS_Tim))
+    #cat("\n PH Dry",PH_DS_Tim,"\n is the place holder null", is.null(PH_DS_Tim))
     
     if (is.null(PH_DS_Tim) | length(PH_DS_Tim)<1){
-      cat("Error No Dry Season Start identified")
+      #cat("Error No Dry Season Start identified")
       DS_Tim[i] <- -9999
       SP_Dur[i] <- -9999
       SP_ROC[i] <- -9999
@@ -413,13 +413,13 @@ Altered_Spring_Recession <- function(FlowYear) {
       PH_DS_Tim <- 1
     }
     
-    cat("\n Dry season place holder:", PH_DS_Tim)
+    #cat("\n Dry season place holder:", PH_DS_Tim)
     #DS_Tim[i] <- length(flow$flow)-length(flow_post_SP$flow)+PH_DS_Tim ORIGINAL CODE
     DS_Tim[i] <- PH_DS_Tim+SP_Tim[i]
     #The spring duration is the time between spring timing and dry season start timing
     SP_Dur[i] <- DS_Tim[i]-SP_Tim[i]
     
-    cat("\n spring timing: ", SP_Tim[i],"  Dry season Timing: ", DS_Tim[i])
+    #cat("\n spring timing: ", SP_Tim[i],"  Dry season Timing: ", DS_Tim[i])
     
     #Make an array of the rate of change values after the spring peak until the
     #Start of the dry season. This needs to start at the second value since the

@@ -1,7 +1,7 @@
 #This package batch calculates metrics given USGS and CDEC data
 
 ###load the required packages for the all the calculations
-library(here); library(tidyverse); library(ffcAPIClient)
+library(here); library(tidyverse); library(ffcAPIClient);library(dataRetrieval)
 
 ###source the required code downloading the data, completing the calculation and post-processing
 
