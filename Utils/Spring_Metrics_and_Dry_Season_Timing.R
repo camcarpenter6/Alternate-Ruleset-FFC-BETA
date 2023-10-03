@@ -101,7 +101,9 @@ Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thres
     #cat("\n no summer found \n")
     #If the change threshold was below 5% then try increasing it by 1%
     if(roc_thresh < 0.05){
+
       roc_thresh = roc_thresh+.01
+      #cat(roc_thresh,"\n")
       #rerun this code to look for a new dry season timing
       DS_Tim <- Altered_Summer_Dry_Season_Tim_Varied(flow = flow, day_thresh = day_thresh, roc_thresh = roc_thresh )
     }
@@ -109,24 +111,27 @@ Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thres
     else if(roc_thresh > 0.045 & day_thresh >= 3){
       #if the threshold is more than 3 then try decreasing the day threshold by one
       day_thresh = day_thresh - 1
-      
+      #cat(day_thresh,"\n")
       #Rerun the code with the new thresholds
       DS_Tim <- Altered_Summer_Dry_Season_Tim_Varied(flow = flow, day_thresh = day_thresh, roc_thresh = roc_thresh)
       
     }
     
   }
-  
+  #cat("dry season timing: ", DS_Tim)
   #Since we call the funcion in itself above this if statement is only needed to find 
   if(is.null(DS_Tim)){
+    #cat("Dry season timing set")
     if (n_neg > 3){
-      DS_Tim <- (idx_consec[5]+1)
+      DS_Tim <- (idx_consec[length(idx_consec)]+1)
     }
     else if (n_neg <=3){
       DS_Tim <- (idx_consec[1]+1)
     }
+    cat("dry season timing: ", DS_Tim)
   }
-  #cat("\n DS tim: ",DS_Tim, "\n Should go out of the loop \n")
+  
+  cat("\n DS tim: ",DS_Tim, "\n Should go out of the loop \n")
   return(DS_Tim)
 }
 
@@ -241,7 +246,7 @@ Altered_Spring_Recession <- function(FlowYear) {
   #Loop through all of the water years
   
   for (i in 1:length(Water_Years)) {
-    #cat("\n \n Water Year: ", Water_Years[i])
+    cat("\n \n Water Year: ", Water_Years[i])
     #Filter the flow data to the individual water year
     flow <- filter(FlowYear, FlowYear$water_year== Water_Years[i])
     WY_median <- median(flow$flow)

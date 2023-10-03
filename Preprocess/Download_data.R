@@ -57,13 +57,17 @@ get_cdec <- function(
   # Read in and format the data
   df <- read_csv(linkCDEC) %>%
     clean_names() %>%
-    select(-c(obs_date, data_flag)) %>%
-    rename(datetime = date_time)
+    dplyr::select(-c(obs_date, data_flag)) %>%
+    dplyr::rename(datetime = date_time)
   
   # Coerce to numeric for the value column, create NAs for missing values, sometimes listed as "---"
   df$value <- suppressWarnings(as.numeric(df$value))
   
   cdec <- paste0("cdec_", duration, "_", station) # Make a station name
+  
+  df$datetime <- as.Date(as.character(df$datetime))
+  
+  df <- as.data.frame(df)
   
   if (dim(df)[1] > 0) {
     cat(paste0("Downloaded Station ", cdec, " data successfully, in current workspace!\n\n"))
