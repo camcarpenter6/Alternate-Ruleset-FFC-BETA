@@ -34,7 +34,7 @@ USGS_gage_flow <- function(gage_id) {
 }
 
 
-#Define the function tp get the cdec flow data
+#Define the function to get the cdec flow data
 get_cdec <- function(
     station,
     sensor,

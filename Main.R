@@ -1,7 +1,8 @@
 #This is the main script for running the altered function flow metrics calculator calculator 
 
-#First check to see if all the required packages are installed
+#Please make sure you open up the files from the Rproject
 
+#First check to see if all the required packages are installed
 source("./required_packages.R")
 
 #Now the packages are referenced

@@ -68,7 +68,7 @@ Annual_Metrics <- function(FlowYear) {
 #This Function takes flow data and determines the total annual flow
 Annual_Flow_Volume <- function(FlowYear) {
   #Set up the results 
-  Ann_Vol <- c()
+  Ann_Vol_taf <- c()
   
   #Determine how many water years there are 
   Water_Years <- unique(FlowYear$water_year)
@@ -83,22 +83,14 @@ Annual_Flow_Volume <- function(FlowYear) {
     if (sum(is.na(flow$flow) | is.nan(flow$flow))>= 100 | length(flow$date) < 358) {
       
       #If it does then set all the metrics to NA
-      FA_Tim[i] <- NA
-      Wet_Tim[i] <- NA
-      FA_Mag[i] <- NA
-      FA_Dur[i] <- NA
-      FA_Dif_ratio[i] <- NA
-      FA_Dif_num[i] <- NA
+      Ann_Vol_taf[i] <- NA
       next
     }
-    #Conversion from cfs to kacft/year
-    cfs_to_kafpyear <- (724/1000)
     
     #Calculate the total volume for the water year
-    Ann_vol_cfs <- sum(flow$flow)
+  Ann_Vol_taf[i] <- sum(flow$flow*1.983)/1000
     
-    #conver to 
-    Ann_vol_kacftpyear <- Ann_vol_cfs*cfs_to_kafpyear
+
     
   }
   

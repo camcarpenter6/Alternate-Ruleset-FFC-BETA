@@ -1,176 +1,228 @@
 library(dplyr)
+library(stats)
 
-# Define a function to set user parameters
-set_user_params <- function(user_params, def_params) {
-  for (key in names(def_params)) {
-    if (key %in% names(user_params)) {
-      def_params[[key]] <- user_params[[key]]
-    }
-  }
-  return(def_params)
-}
 
-# Define a function to calculate the average of each column in a matrix
-calculate_average_each_column <- function(matrix) {
-  averages <- numeric()
-  for (index in 1:ncol(matrix)) {
-    averages <- c(averages, mean(matrix[, index], na.rm = TRUE))
-  }
-  return(averages)
-}
-
-# Define a function to create folders
-create_folders <- function() {
-  folders <- c(
-    'post_processedFiles/Boxplots', 
-    'post_processedFiles/Wateryear_Type', 
-    'post_processedFiles/Supplementary_Metrics', 
-    'post_processedFiles/Class-1', 
-    'post_processedFiles/Class-2', 
-    'post_processedFiles/Class-3', 
-    'post_processedFiles/Class-4', 
-    'post_processedFiles/Class-5', 
-    'post_processedFiles/Class-6', 
-    'post_processedFiles/Class-7', 
-    'post_processedFiles/Class-8', 
-    'post_processedFiles/Class-9'
-  )
-  
-  for (folder in folders) {
-    if (!dir.exists(folder)) {
-      dir.create(folder, recursive = TRUE)
-    }
-  }
-}
-
-# Define a function to calculate the median of time
+# Function to calculate the median of time
 median_of_time <- function(lt) {
   n <- length(lt)
   if (n < 1) {
-    return(NULL)
+    return(NA)
   } else if (n %% 2 == 1) {
-    return(lt[[n %/% 2]]$start_date)
+    return(lt[n%%2])
   } else if (n == 2) {
-    first_date <- lt[[1]]$start_date
-    second_date <- lt[[2]]$start_date
+    first_date <- lt[1]
+    second_date <- lt[2]
     return((first_date + second_date) / 2)
   } else {
-    first_date <- lt[[n %/% 2 - 1]]$start_date
-    second_date <- lt[[n %/% 2 + 1]]$start_date
+    first_date <- lt[n %% 2 - 1]
+    second_date <- lt[n %% 2 + 1]
     return((first_date + second_date) / 2)
   }
 }
 
-# Define a function to calculate the median of magnitude
-median_of_magnitude <- function(object_array) {
-  flow_array <- numeric()
-  for (obj in object_array) {
-    flow_array <- c(flow_array, obj$flow)
-  }
-  return(mean(flow_array, na.rm = TRUE))
+
+#This function returns peak flows based on a return interval using the  Log-Pearson Type III analysis
+#given annual flow peaks and a requested return interval
+Peak_Flow_Analysis <- function(peaks,Average_Return_Interval){
+  
+  #First rank the provided peaks
+  ranked_peaks <- sort(peaks,decreasing = TRUE)
+  
+  #assign ranks to each flow
+  ranks <- seq_along(length(ranked_peaks))
+  
+  #Take the log of all the peak flows
+  log_ranked_peaks <- log(ranked_peaks)
+  
+  #get the mean of the peaks
+  average_peak <- mean(ranked_peaks)
+  
+  #This gets the mean of the log peaks
+  log_average_peak <- mean(log_ranked_peaks)
+  
+  #Now calculate the squared mean difference of the log flows
+  log_sqr_mean_dif <- (log_agerage_peak-log_average_peak)^2
+  
+  #And the cubed average difference of the log flows
+  log_cbd_mean_dif <- (log_agerage_peak-log_average_peak)^3
+  
+  #Now calculate the return period for ranked peak
+  Return_Int <- (length(ranks)+1)/ranks
+  
+  #Convert that into exceedance probability
+  E_p <- 1/Return_Int
+  
+  #Calculate the variance
+  Variance <- sum(log_sqr_mean_dif)/(length(ranked_peaks)-1)
+  
+  #Calculate the Standard Deviation
+  SD <- sqrt(Variance)
+  
+  #Calculate the skew
+  Skew <- (length(peaks)*sum(log_cbd_mean_dif))/((length(peaks)-1)*(length(peaks)-2)*SD^3)
+  
+  Z_score <- stats::qnorm(1-1/Average_Return_Interval)
+  
+  ##Due the highly variable nature of regional skew just station skew has 
+  #been used for this analysis. For more information on regional skew and the 
+  # effect it has on return flow estimation please  refer to the following documents
+  
+  #Calculate the K
+  Kp <- (2/Skew)*(1 + Skew*Z_score/6 - Skew**2/36)**3 - 2/Skew
+  
+  #Calculate the return flow in log space
+  log_return_Q <- log_average_peak+Kp*SD
+    
+  #take the calculated return flow back to normal space
+  Return_Flow <- exp(log_return_Q)
+  
+  #Now we need adjust the skew for weighting 
+  #First the regional skewness, this comes from figure
+  #Cr < 0.2
+  
+  #Second the variance of regional skewness, from Parrett et al. 2011
+  #"Regional skew for California,and flood frequency for selected sites...
+  #in the Sacramento–San Joaquin River Basin..." 
+  #The average value in study was used
+  #V_Cm	<- 0.364	
+  
+  return(Return_Flow)
+  
 }
 
-# Define a function to calculate the peak magnitude
-peak_magnitude <- function(object_array) {
-  flow_array <- numeric()
-  for (obj in object_array) {
-    flow_array <- c(flow_array, obj$flow)
-  }
-  return(max(flow_array, na.rm = TRUE))
-}
 
-# Define a class for FlowExceedance
-FlowExceedance <- R6::R6Class("FlowExceedance",
-                              public = list(
-                                start_date = NULL,
-                                end_date = NULL,
-                                duration = NULL,
-                                flow = numeric(),
-                                exceedance = NULL,
-                                max_magnitude = NULL,
-                                initialize = function(start_date, end_date, duration, exceedance) {
-                                  self$start_date <- start_date
-                                  self$end_date <- end_date
-                                  self$duration <- duration
-                                  self$flow <- numeric()
-                                  self$exceedance <- exceedance
-                                  self$max_magnitude <- NULL
-                                },
-                                add_flow = function(flow_data) {
-                                  self$flow <- c(self$flow, flow_data)
-                                },
-                                get_max_magnitude = function() {
-                                  self$max_magnitude <- max(self$flow, na.rm = TRUE)
-                                }
-                              )
-)
+# Function to calculate winter highflow annual metrics
+calc_winter_highflow_annual_combined <- function(FlowYear, Original_method = TRUE) {
+  
+  max_zero_allowed_per_year <- 365
+  max_nan_allowed_per_year <- 100
+  
+  #Set up output arrays
+  Peak_Dur_10 <- c()
+  Peak_Dur_2 <- c()
+  Peak_Dur_5 <- c()
+  Peak_10 <- c()
+  Peak_2 <- c()
+  Peak_5 <- c()
+  Peak_Fre_10 <- c()
+  Peak_Fre_2 <- c()
+  Peak_Fre_5 <- c()
+  Peak_Tim_10 <- c()
+  Peak_Tim_2 <- c()
+  Peak_Tim_5 <- c()
+  
+  # Define average recurrence interval
+  recurance_intervals <- c(2, 5, 10)
+  peak_flows <-c()
+  
+  #Determine how many water years there are 
+  Water_Years <- unique(FlowYear$water_year)
+  #Cycle through the years to determine the peak flows each year that has data
+  for (i in 1:length(Water_Years)) {
+    #Filters flow to the water year of interest and the previous water year
+    flow <- filter(FlowYear, water_year== Water_Years[i])
+    peak_flows[i] <- max(flow$flow,na.rm = TRUE)
+    #if(length(flow$flow) >= 358){
+    #  peak_flows[i] <- max(flow$flow,na.rm = TRUE)
+    #}
+    #else{
+    #  peak_flows[i] <- NA
+    #}
+  }
+  
+  #Array for the return flow thresholds
+  peak_exceedance_values <- c()
 
-# Define a function to calculate winter highflow annual metrics
-calc_winter_highflow_annual <- function(matrix, exceedance_percent, winter_params = def_winter_params) {
-  params <- set_user_params(winter_params, def_winter_params)
-  
-  max_zero_allowed_per_year <- params$max_zero_allowed_per_year
-  max_nan_allowed_per_year <- params$max_nan_allowed_per_year
-  
-  # Get peak percentiles calculated from each year's peak flow values
-  peak_flows <- apply(matrix, 2, max, na.rm = TRUE)
-  peak_percentiles <- c(2, 5, 10, 20, 50) # for peak flow metrics
-  high_percentiles <- c(2, 5, 10, 20) # for high flow metrics
-  
-  peak_exceedance_values <- numeric()
-  highflow_exceedance_values <- numeric()
-  
-  for (percentile in peak_percentiles) {
-    peak_exceedance_values <- c(peak_exceedance_values, quantile(peak_flows, 1 - percentile / 100, na.rm = TRUE))
+  #run through each recurrence interval and determine flow threshold for each
+  for (ARI in recurance_intervals) {
+    #This mode follows the original calculator
+    if(Original_method ==TRUE){
+      
+      peak_exceedance_values <- c(peak_exceedance_values, quantile(peak_flows, 1 - 1 / ARI, na.rm = TRUE))
+    }
+    #This method uses Log Pearson Type III method to calculate the return flows
+    else if(Original_method == FALSE){
+      peak_exceedance_values <- c(peak_exceedance_values, Peak_Flow_Analysis(peak_flows, ARI))
+    }
   }
   
-  # Add high flow percentiles and peak flow exceedance vals together for final list of exceedance values
-  for (i in high_percentiles) {
-    highflow_exceedance_values <- c(highflow_exceedance_values, quantile(matrix, 1 - i / 100, na.rm = TRUE))
-  }
-  
-  exceedance_values <- c(peak_exceedance_values, highflow_exceedance_values)
-  
-  exceedance_value <- list()
-  freq <- list()
-  duration <- list()
-  timing <- list()
-  magnitude <- list()
-  peak_magnitude <- list()
-  
-  for (i in seq_along(exceedance_values)) {
-    exceedance_value[[i]] <- exceedance_values[i]
-    freq[[i]] <- numeric()
-    duration[[i]] <- numeric()
-    timing[[i]] <- numeric()
-    magnitude[[i]] <- numeric()
-    peak_magnitude[[i]] <- numeric()
-  }
-  
-  for (column_number in seq_len(ncol(matrix))) {
-    if (sum(is.na(matrix[, column_number])) > max_nan_allowed_per_year || sum(matrix[, column_number] == 0, na.rm = TRUE) > max_zero_allowed_per_year) {
-      for (i in seq_along(exceedance_values)) {
-        freq[[i]] <- c(freq[[i]], NA)
-        duration[[i]] <- c(duration[[i]], NA)
-        timing[[i]] <- c(timing[[i]], NA)
-        magnitude[[i]] <- c(magnitude[[i]], NA)
-        peak_magnitude[[i]] <- c(peak_magnitude[[i]], NA)
-      }
+  #Now iterate through the water years to to see when these flow occur
+  for (i in seq_along(Water_Years)) {
+    cat(Water_Years[i])
+    flow <- filter(FlowYear, water_year == Water_Years[i])
+    #Check to make sure that flow years qualifies for the analysis
+    if (sum(is.na(flow$flow)) > max_nan_allowed_per_year || #First look at the number of NA values
+        sum(flow$flow == 0, na.rm = TRUE) > max_zero_allowed_per_year ||#and the number of 0 flow days
+        length(flow$flow) <= 358) { #Or finally that there is enough data
+      cat("\n un qualifed year \n")
+      #Set all the values to NA besides the peak flow thresholds
+      Peak_Dur_10[i] <- NA
+      Peak_Dur_2[i] <- NA
+      Peak_Dur_5[i] <- NA
+      Peak_10[i] <- peak_exceedance_values[3]
+      Peak_2[i] <- peak_exceedance_values[1]
+      Peak_5[i] <- peak_exceedance_values[2]
+      Peak_Fre_10[i] <- NA
+      Peak_Fre_2[i] <- NA
+      Peak_Fre_5[i] <- NA
+      Peak_Tim_10[i] <- NA
+      Peak_Tim_2[i] <- NA
+      Peak_Tim_5[i] <- NA
       next
     }
+    #Now that the data has past the checks then we need to replace the NA data
+    flow$flow <- replace_na(flow$flow)
     
-    exceedance_object <- list()
-    exceedance_duration <- list()
-    current_flow_object <- list()
-    peak_flow <- list()
-    
-    for (i in seq_along(exceedance_values)) {
-      exceedance_object[[i]] <- list()
-      exceedance_duration[[i]] <- numeric()
-      current_flow_object[[i]] <- NULL
-      peak_flow[[i]] <- numeric()
+    #If the year does qualify then iterate through exceed values 
+    for (j in seq_along(peak_exceedance_values)) {
+      cat(j)
+      #Determine which flows qualify 
+      qual_flows <- flow$flow >= peak_exceedance_values[j]
+      
+      #The duration is calculated by summing the number of days that qualify
+      PH_Dur <- sum(qual_flows == TRUE)
+      if(PH_Dur <1){
+        PH_Dur <- NA
+      }
+      #Now we determine the median timing
+      #first we determine where it transitions from flast to true
+      transitions <- c(FALSE, diff(qual_flows) == 1)
+      timings <- which(transitions)
+      #Find the median start timing
+      PH_Tim <- median_of_time(timings)
+      
+      # Find number of times that the flow crossed the exceed threshold values 
+      Qualified_flows <- rle(qual_flows)
+      PH_Fre <- sum(Qualified_flows$values & Qualified_flows$lengths >= 1)
+      if(PH_Fre <1){
+        PH_Fre <- NA
+      }
+      cat("Water Year: ",Water_Years[i],"\n required flow: ", peak_exceedance_values[j],"\n Dur: ",PH_Dur," Fre: ", PH_Fre," Tim: ",PH_Tim)
+      if(j == 1){
+        Peak_Dur_2[i] <- PH_Dur
+        Peak_2[i] <- peak_exceedance_values[1]
+        Peak_Fre_2[i] <- PH_Fre
+        Peak_Tim_2[i] <- PH_Tim
+      }
+      if(j == 2){
+        Peak_Dur_5[i] <- PH_Dur
+        Peak_5[i] <- peak_exceedance_values[2]
+        Peak_Fre_5[i] <- PH_Fre
+        Peak_Tim_5[i] <- PH_Tim
+      }
+      if(j == 3){
+        Peak_Dur_10[i] <- PH_Dur
+        Peak_10[i] <- peak_exceedance_values[3]
+        Peak_Fre_10[i] <- PH_Fre
+        Peak_Tim_10[i] <- PH_Tim
+      }
     }
     
-    for (row_number in seq_len(nrow(matrix))) {
-      for (i in seq_along(exceedance_values)) {
-        if ((flow_row <- matrix[row_number, column_number]) < exceedance_value[[i]] && !is.null(current_flow_object[[i]]
+  }
+  High_flow_metrics <- list("Peak_Dur_10"=Peak_Dur_10,"Peak_Dur_2"=Peak_Dur_2,"Peak_Dur_5"=Peak_Dur_5,"Peak_10"=Peak_10,
+                            "Peak_2"=Peak_2,"Peak_5"=Peak_5,"Peak_Fre_10"=Peak_Fre_10,"Peak_Fre_2"=Peak_Fre_2,
+                            "Peak_Fre_5"=Peak_Fre_5,"Peak_Tim_10"=Peak_Tim_10,"Peak_Tim_2"=Peak_Tim_2,"Peak_Tim_5"=Peak_Tim_5)
+  
+
+  return(High_flow_metrics)
+}

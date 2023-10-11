@@ -6,6 +6,8 @@ source(here("Preprocess","Download_data.R"))
 
 source(here("Preprocess","Preprocess_data.R"))
 
+source(here("Calculations","Get_metrics.R"))
+
 source(here("Post_Processing_Files","Metrics_percentiles.R"))
 
 source(here("Post_Processing_Files","HTML_plotting.R"))
@@ -65,7 +67,7 @@ if (gage_check == "TS"){
 
   
 #Since the data frame will take the names of the list we need to rename the columns to match the original Calculator
-Results_df  <- flow_metrics_calculatiosn(flow)
+Results_df  <- flow_metrics_calculations(flow)
   
 #Make a new file path for this output directory
 new_dir <- paste("Outputs",gage_id,sep = "/")

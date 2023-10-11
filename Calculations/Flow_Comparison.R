@@ -149,8 +149,8 @@ compare_gages <- function(){
     }
     
     #Get the results for each of the results
-    Results_df_1  <- flow_metrics_calculatiosn(flow_1)
-    Results_df_2  <- flow_metrics_calculatiosn(flow_2)
+    Results_df_1  <- flow_metrics_calculations(flow_1)
+    Results_df_2  <- flow_metrics_calculations(flow_2)
     
     #Make a name combining the two gages' names 
     output_file_name <- paste0(gage_id_1," and ", gage_id_2," comparison")
@@ -382,9 +382,9 @@ compare_gages <- function(){
     
     
     #Get the results for each of the results
-    Results_df_1  <- flow_metrics_calculatiosn(flow_1)
-    Results_df_2  <- flow_metrics_calculatiosn(flow_2)
-    Results_df_3  <- flow_metrics_calculatiosn(flow_3)
+    Results_df_1  <- flow_metrics_calculations(flow_1)
+    Results_df_2  <- flow_metrics_calculations(flow_2)
+    Results_df_3  <- flow_metrics_calculations(flow_3)
     
     #Make a name combining the two gages' names 
     output_file_name <- paste0(gage_id_1,",", gage_id_2," and ",gage_id_3," comparison")
