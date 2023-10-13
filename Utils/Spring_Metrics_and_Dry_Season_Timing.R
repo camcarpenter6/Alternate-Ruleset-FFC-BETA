@@ -128,10 +128,10 @@ Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thres
     else if (n_neg <=3){
       DS_Tim <- (idx_consec[1]+1)
     }
-    cat("dry season timing: ", DS_Tim)
+    #cat("dry season timing: ", DS_Tim)
   }
   
-  cat("\n DS tim: ",DS_Tim, "\n Should go out of the loop \n")
+  #cat("\n DS tim: ",DS_Tim, "\n Should go out of the loop \n")
   return(DS_Tim)
 }
 
@@ -246,7 +246,7 @@ Altered_Spring_Recession <- function(FlowYear) {
   #Loop through all of the water years
   
   for (i in 1:length(Water_Years)) {
-    cat("\n \n Water Year: ", Water_Years[i])
+    #cat("\n \n Water Year: ", Water_Years[i])
     #Filter the flow data to the individual water year
     flow <- filter(FlowYear, FlowYear$water_year== Water_Years[i])
     WY_median <- median(flow$flow)
