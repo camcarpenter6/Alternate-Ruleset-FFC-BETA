@@ -14,8 +14,7 @@ source(here("Post_Processing_Files","HTML_plotting.R"))
 
 source(here("Post_Processing_Files","Box_plot_creation.R"))
 
-#Get comid for the gauge site
-comid <- readline("Enter the comid of the site that is going to be evaluated: ")
+
 
 gage_check <- readline("Are you using your time series data or a USGS gage site (TS for time series or G for USGS gage data): ")
 
@@ -34,6 +33,13 @@ if (gage_check == "TS"){
   site_name <- readline("Please enter the name that you want to use to describe this flow data: ")
   
   gage_id <- site_name
+  
+  cat("Please enter the stream class: ")
+  
+  class <- as.numeric(readline())
+  
+  #Get comid for the gauge site
+  comid <- readline("Enter the comid of the site that is going to be evaluated: ")
 }else if(gage_check == "G"){
   gage_id <- readline("Please enter USGS site number or a 3-letter CDEC station ID, the site must be in the California: ")
   
@@ -52,16 +58,19 @@ if (gage_check == "TS"){
     flow <- raw_flow %>%
       rename("date" = "datetime", "flow" = "value")
     
-    site_name <- paste("CDEC Gage:",gage_id)
+    gage_info <- get_gage_data(gage_id = gage_id)
+    
+    site_name <- gage_info$site_name
+    comid <- gage_info$comid
+    class <- gage_info$class
   }else {
     flow <- USGS_gage_flow(gage_id)
     
-    gage_data <- readNWISuv(siteNumbers = gage_id,
-                            parameterCd = "00060")
+    gage_info <- get_gage_data(gage_id = gage_id)
     
-    siteInfo <- attr(gage_data, "siteInfo")
-    
-    site_name <- siteInfo$station_nm
+    site_name <- gage_info$site_name
+    comid <- gage_info$comid
+    class <- gage_info$class
   }
 }
 

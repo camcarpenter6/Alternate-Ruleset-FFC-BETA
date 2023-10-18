@@ -230,6 +230,7 @@ Altered_Summer_Dry_Season_Tim <- function(flow) {
 
 #Define the function that calculates the spring metrics and Dry season start timing
 Altered_Spring_Recession <- function(FlowYear) {
+  cat("\n Calculating the Spring and Summer metrics \n")
   
   #Setup the output vectors
   SP_Mag<- c()

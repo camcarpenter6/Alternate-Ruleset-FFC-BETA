@@ -22,8 +22,8 @@ flow_metrics_calculations <- function(flow) {
   
   
   #Format the data for the calculator 
-  FlowYear <- attach_water_year_data(flow, date_field = "date") %>% 
-    mutate(date = format(date, "%m/%d/%Y")) #reformat date 
+  FlowYear <- attach_water_year_data(flow, date_field = "date")  
+    #mutate(date = format(date, "%m/%d/%Y")) #reformat date 
   
   #First run the spring and timing function
   SP_met_and_DS_Tim <- Altered_Spring_Recession(FlowYear)

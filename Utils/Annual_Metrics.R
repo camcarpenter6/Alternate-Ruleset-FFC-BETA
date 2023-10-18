@@ -5,6 +5,7 @@ library(lubridate)
 #The input for this function is the post processed flow data with the dates, flow
 #and water year at a minimum
 Annual_Metrics <- function(FlowYear) {
+  cat("\n Calculating the annual metrics \n")
   #get the number of water years and which years they are
   WYs <- unique(FlowYear$water_year)
   

@@ -5,7 +5,8 @@ library(lubridate) # datetime wrangling
 library(readr) # read/write csv
 library(fs) # platform independent handling of file systems
 library(janitor) # data cleaning
-library(wateRshedTools)  # for get_cdec function
+
+Gage_information <- read.csv("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Preprocess/Site Data.csv", header = T)
 
 #This function downloads from the USGS gages and manipulates the data to match user input
 USGS_gage_flow <- function(gage_id) {
@@ -75,4 +76,34 @@ get_cdec <- function(
   } else {
     cat(paste0("No data available for Station ", cdec, " for this date range or interval!\n\n"))
   }
+}
+
+
+
+# Gets the site name and  a USGS or CDEC ID and assign title and class
+get_gage_data <- function(gage_id) {
+  result <- Gage_information %>%
+    filter(siteid == gage_id)
+  
+  if (nrow(result) == 0) {
+    cat("Gage ID not found. Please enter a site name: ")
+    site_name <- readline()
+    cat("Please enter a stream class (Defult 3): ")
+    class <- as.numeric(readline())
+    cat("Please enter the stream comid: ")
+    comid <- readline()
+  } else if(is.nan(result$Class) | is.na(result$Class)) {
+    site_name <- result$sitename
+    cat("Stream class not found. Please enter a stream class (Defult 3): ")
+    class <- as.numeric(readline())
+    site_name <- result$sitename
+    comid <- result$COMID
+  }
+  else{
+    site_name <- result$sitename
+    class <- result$Class
+    comid <- result$COMID
+  }
+  
+  return(list(site_name = site_name, class = class, comid = comid))
 }

@@ -5,6 +5,8 @@ library(ggplot2);library(dplyr); library(pracma); library(lubridate)
 
 #Define a function that finds the Fall Metrics and Wet Season timing
 Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
+  cat("\n Calculating the Fall and Wet Season Metrics \n")
+  
   #Set up Output Vectors
   FA_Tim <- c()
   Wet_Tim <- c()
@@ -25,8 +27,7 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
   for (i in 1:length(Water_Years)) {
     
     #cat("\n New Water Year: ",Water_Years[i], "\n")
-    
-    
+
     #If this is the first year then skip since there is not a previous dry season to use
     if (i == 1){
       #If it is the first year then skip since there no former dry season baseflow to compare to so it skips
@@ -293,7 +294,7 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
         for(j in 1:length(WS_peaks[,1])) {
           #Check to see if the peaks meet 1.5 times the baseline threshold 
           #First make a vector of the flow values from the previous dry season until the potential peak
-          
+
           #To do this we need to make sure that there was a previous dry season timing
           #To get the dry season median we need to make sure there was a dry season timing next year
           if(is.na(DS_Tim[i-1]) != TRUE & DS_Tim[i-1] > 0) {
@@ -326,7 +327,6 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
             
             #Find subset of data above the 90th percentile or above 1 cfs if the 90th percentile is less than 
             flow_90th <- subset(Wet_Peaks_flow, flow >= max(threshold_90,1))
-            
             
             
             #If all of the flows are less than 1 cfs then just use the 90th percentile flow
@@ -364,16 +364,18 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
             break
             
           }
-          
+
         }
+        
         #IF all peaks are below the 90th flow percentile then we will just choose the day before the 1st day of 90th flow
         #If none of the post fall pulse peaks meet the criteria it is likely a peak prior to a hat scenario
         #and we want to find the last day before the 90th percentile flow of that flow year
         Temp_dry_flow <- filter(FlowYear, water_year == Water_Years[i])
+        Temp_dry_flow$flow <- replace_na(Temp_dry_flow$flow)
         threshold_90 <- quantile(Temp_dry_flow$flow,0.9)
-        if(all(WS_peaks[,1]<threshold_90) | length(WS_peaks)<=0){
+        if(all(WS_peaks[,1]<1.5*Temp_DS_Mag) | length(WS_peaks)<=0){
           
-          
+          #cat("\n no qaulifed peaks \n")
           #Find subset of data above the 90th percentile
           flow_90th <- subset(Temp_dry_flow, flow >= threshold_90)
           
@@ -394,8 +396,9 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
         #If there aren't any peaks then it is likely hat scenario
         #and we want to find the last day before the 90th percentile flow of that flow year
         Temp_dry_flow <- filter(FlowYear, water_year == Water_Years[i])
+        Temp_dry_flow$flow <- replace_na(Temp_dry_flow$flow)
         threshold_90 <- quantile(Temp_dry_flow$flow,0.9)
-        if(all(WS_peaks[,1]<threshold_90) | length(WS_peaks)<=0){
+        if(all(WS_peaks[,1]<1.5*Temp_DS_Mag) | length(WS_peaks)<=0){
           
           #cat("\n hat \n")
           
@@ -413,6 +416,7 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
           #Set the wet season timing to that date
           Wet_Tim[i] <- Wet_start_index
         }
+        
         
       }
       

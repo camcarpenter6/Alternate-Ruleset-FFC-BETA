@@ -21,7 +21,7 @@ source(here("Post_Processing_Files","Box_plot_creation.R"))
 #get all the gage
 cat("Make sure a csv with all of the gages that need to be run are located in the 'Input_data' folder \n 
         all the files in the folder will be anlalyzed and they need to have matching headers. \n
-        The headers must be labled in the flowing order: column 1: 'Gage_ID', column 2: sensor_ID,  column 3: Duration_code,column 4: COMID \n
+        The headers must be labled in the flowing order: column 1: 'Gage_ID', column 2: sensor_ID,  column 3: Duration_code \n
         column 2 and 3 are only nessisary for data from CDEC")
 
 readline("press any 'enter' to continue")
@@ -47,19 +47,28 @@ for(i in 1:nrow(condesed_table)){
     flow <- raw_flow %>%
       rename("date" = "datetime", "flow" = "value")
     
-    site_name <- paste("CDEC Gage:",condesed_table$Gage_ID[i])
+    gage_info <- get_gage_data(gage_id = condesed_table$Gage_ID[i])
+    
+    site_name <- gage_info$site_name
+    comid <- gage_info$comid
+    class <- gage_info$class
   }
   else {
     flow <- USGS_gage_flow(condesed_table$Gage_ID[i])
     
-    gage_data <- readNWISuv(siteNumbers = condesed_table$Gage_ID[i],
-                                     parameterCd = "00060")
+    gage_info <- get_gage_data(gage_id = condesed_table$Gage_ID[i])
     
-    siteInfo <- attr(gage_data, "siteInfo")
-    
-    site_name <- siteInfo$station_nm
+    site_name <- gage_info$site_name
+    comid <- gage_info$comid
+    class <- gage_info$class
   }
 
+  year_count <- attach_water_year_data(flow, date_field = "date")
+  year_count <- unique(year_count$water_year)
+  if (length(year_count) < 8) {
+    next
+  }
+  
   #Since the data frame will take the names of the list we need to rename the columns to match the original Calculator
   Results_df  <- flow_metrics_calculations(flow)
     
@@ -79,7 +88,7 @@ for(i in 1:nrow(condesed_table)){
   write_csv(Results_df, file = file_path)
   
   #Get the metrics percentiles following the same method as the original calculator
-  metrics_percentiles <- get_percentiles(Results_df,condesed_table$COMID[i])
+  metrics_percentiles <- get_percentiles(Results_df,comid = comid)
   
   # Construct the file path for the percentiles
   file_path_percentiles <- file.path(here(), "Outputs", gage_name_cleaned, paste0(gage_name_cleaned, "_Metric_Percentiles.csv"))
@@ -99,6 +108,13 @@ for(i in 1:nrow(condesed_table)){
   #Now call the box plot function
   single_box_plots(Results_df,site_name,new_dir_box_plots)
   
+  #Convert the flow to a format where the original calculator can take
+  flow_print <- flow %>% mutate(date = format(date, "%m/%d/%Y"))
   
+  # Construct the file path
+  file_path_flow <- file.path(here(), "Outputs", gage_name_cleaned, paste0(gage_name_cleaned, "_flow.csv"))
   
+  # Write the CSV file
+  write_csv(flow_print, file = file_path_flow)
 }
+

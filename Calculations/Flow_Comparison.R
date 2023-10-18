@@ -29,8 +29,7 @@ compare_gages <- function(){
   
 
   if (evaluation_num == 2){
-    #Get comid for the gauge site
-    comid_1 <- readline("Enter the comid of the first gage that is going to be evaluated: ")
+ 
     
     gage_check_1 <- readline("Are you using your time series data or a USGS gage site (TS for time series or G for USGS gage data): ")
     
@@ -50,6 +49,13 @@ compare_gages <- function(){
       site_name_1 <- readline("Please enter the name that you want to use to describe this flow data: ")
       
       gage_id_1 <- site_name
+      
+      #Get comid for the gauge site
+      comid_1 <- readline("Enter the comid of the first gage that is going to be evaluated: ")
+      
+      cat("Please enter the stream class: ")
+      
+      class_1 <- as.numeric(readline())
     }
     else if(gage_check_1 == "G"){
       gage_id_1 <- readline("Please enter USGS site number or a 3-letter CDEC station ID, the site must be in the California: ")
@@ -69,16 +75,20 @@ compare_gages <- function(){
         flow_1 <- raw_flow %>%
           rename("date" = "datetime", "flow" = "value")
         
-        site_name_1 <- paste("CDEC Gage:",gage_id_1)
+        gage_info <- get_gage_data(gage_id = gage_id_1)
+        
+        site_name_1 <- gage_info$site_name
+        comid_1 <- gage_info$comid
+        class_1 <- gage_info$class
       }else {
         flow_1 <- USGS_gage_flow(gage_id_1)
+
+        gage_info <- get_gage_data(gage_id = gage_id_1)
         
-        gage_data_1 <- readNWISuv(siteNumbers = gage_id_1,
-                                  parameterCd = "00060")
+        site_name_1 <- gage_info$site_name
+        comid_1 <- gage_info$comid
+        class_1 <- gage_info$class
         
-        siteInfo_1 <- attr(gage_data_1, "siteInfo")
-        
-        site_name_1 <- siteInfo_1$station_nm
       }
     }
     else if (gage_check_1 != "TS" | gage_check_1 != "G"){
@@ -89,7 +99,7 @@ compare_gages <- function(){
     }
     
     #Get comid for the gauge site
-    comid_2 <- readline("Enter the comid of the second gage that is going to be evaluated: ")
+    
     
     gage_check_2 <- readline("Are you using your time series data or a USGS gage site (TS for time series or G for USGS gage data): ")
     
@@ -108,8 +118,13 @@ compare_gages <- function(){
       
       site_name_2 <- readline("Please enter the name that you want to use to describe this flow data: ")
       
+      comid_2 <- readline("Enter the comid of the second gage that is going to be evaluated: ")
     
       gage_id_2 <- site_name_2
+      
+      cat("Please enter the stream class: ")
+      
+      class_2 <- as.numeric(readline())
     }
     else if(gage_check_2 == "G"){
       gage_id_2 <- readline("Please enter USGS site number or a 3-letter CDEC station ID, the site must be in the California: ")
@@ -129,16 +144,19 @@ compare_gages <- function(){
         flow_2 <- raw_flow %>%
           rename("date" = "datetime", "flow" = "value")
         
-        site_name_2 <- paste("CDEC Gage:",gage_id_2)
+        gage_info <- get_gage_data(gage_id = gage_id_2)
+        
+        site_name_2 <- gage_info$site_name
+        comid_2 <- gage_info$comid
+        class_2 <- gage_info$class
       }else {
         flow_2 <- USGS_gage_flow(gage_id_2)
         
-        gage_data_2 <- readNWISuv(siteNumbers = gage_id_2,
-                                  parameterCd = "00060")
+        gage_info <- get_gage_data(gage_id = gage_id_2)
         
-        siteInfo_2 <- attr(gage_data_2, "siteInfo")
-        
-        site_name_2 <- siteInfo_2$station_nm
+        site_name_2 <- gage_info$site_name
+        comid_2 <- gage_info$comid
+        class_2 <- gage_info$class
       }
     }
     else if (gage_check_2 != "TS" | gage_check_2 != "G"){
@@ -202,8 +220,6 @@ compare_gages <- function(){
   }
   
   if (evaluation_num == 3){
-    #Get comid for the gauge site
-    comid_1 <- readline("Enter the comid of the first gage that is going to be evaluated: ")
     
     gage_check_1 <- readline("Are you using your time series data or a USGS gage site (TS for time series or G for USGS gage data): ")
     
@@ -223,6 +239,13 @@ compare_gages <- function(){
       site_name_1 <- readline("Please enter the name that you want to use to describe this flow data: ")
       
       gage_id_1 <- site_name_1
+      
+      #Get comid for the gauge site
+      comid_1 <- readline("Enter the comid of the first gage that is going to be evaluated: ")
+      
+      cat("Please enter the stream class: ")
+      
+      class_1 <- as.numeric(readline())
     }
     else if(gage_check_1 == "G"){
       gage_id_1 <- readline("Please enter USGS site number or a 3-letter CDEC station ID, the site must be in the California: ")
@@ -242,16 +265,19 @@ compare_gages <- function(){
         flow_1 <- raw_flow %>%
           rename("date" = "datetime", "flow" = "value")
         
-        site_name_1 <- paste("CDEC Gage:",gage_id_1)
+        gage_info <- get_gage_data(gage_id = gage_id_1)
+        
+        site_name_1 <- gage_info$site_name
+        comid_1 <- gage_info$comid
+        class_1 <- gage_info$class
       }else {
         flow_1 <- USGS_gage_flow(gage_id_1)
         
-        gage_data_1 <- readNWISuv(siteNumbers = gage_id_1,
-                                  parameterCd = "00060")
+        gage_info <- get_gage_data(gage_id = gage_id_1)
         
-        siteInfo_1 <- attr(gage_data_1, "siteInfo")
-        
-        site_name_1 <- siteInfo_1$station_nm
+        site_name_1 <- gage_info$site_name
+        comid_1 <- gage_info$comid
+        class_1 <- gage_info$class
       }
     }
     else if (gage_check_1 != "TS" | gage_check_1 != "G"){
@@ -261,8 +287,6 @@ compare_gages <- function(){
       q("no")
     }
     
-    #Get comid for the gauge site
-    comid_2 <- readline("Enter the comid of the second gage that is going to be evaluated: ")
     
     gage_check_2 <- readline("Are you using your time series data or a USGS gage site (TS for time series or G for USGS gage data): ")
     
@@ -282,6 +306,13 @@ compare_gages <- function(){
       site_name_2 <- readline("Please enter the name that you want to use to describe this flow data: ")
       
       gage_id_2 <- site_name_2
+      
+      #Get comid for the gauge site
+      comid_2 <- readline("Enter the comid of the second gage that is going to be evaluated: ")
+      
+      cat("Please enter the stream class ")
+      
+      class_2 <- as.numeric(readline())
     }
     else if(gage_check_2 == "G"){
       gage_id_2 <- readline("Please enter USGS site number or a 3-letter CDEC station ID, the site must be in the California: ")
@@ -301,16 +332,19 @@ compare_gages <- function(){
         flow_2 <- raw_flow %>%
           rename("date" = "datetime", "flow" = "value")
         
-        site_name_2 <- paste("CDEC Gage:",gage_id_2)
+        gage_info <- get_gage_data(gage_id = gage_id_2)
+        
+        site_name_2 <- gage_info$site_name
+        comid_2 <- gage_info$comid
+        class_2 <- gage_info$class
       }else {
         flow_2 <- USGS_gage_flow(gage_id_2)
         
-        gage_data_2 <- readNWISuv(siteNumbers = gage_id_2,
-                                  parameterCd = "00060")
+        gage_info <- get_gage_data(gage_id = gage_id_2)
         
-        siteInfo_2 <- attr(gage_data_2, "siteInfo")
-        
-        site_name_2 <- siteInfo_2$station_nm
+        site_name_2 <- gage_info$site_name
+        comid_2 <- gage_info$comid
+        class_2 <- gage_info$class
       }
     }
     else if (gage_check_2 != "TS" | gage_check_2 != "G"){
@@ -320,8 +354,7 @@ compare_gages <- function(){
       q("no")
     }
     
-    #Get comid for the gauge site
-    comid_3 <- readline("Enter the comid of the second gage that is going to be evaluated: ")
+
     
     gage_check_3 <- readline("Are you using your time series data or a USGS gage site (TS for time series or G for USGS gage data): ")
     
@@ -341,6 +374,13 @@ compare_gages <- function(){
       site_name_3 <- readline("Please enter the name that you want to use to describe this flow data: ")
       
       gage_id_3 <- site_name_3
+      
+      #Get comid for the gauge site
+      comid_3 <- readline("Enter the comid of the second gage that is going to be evaluated: ")
+
+      cat("Please enter the stream class: ")
+      
+      class_3 <- as.numeric(readline())
     }
     else if(gage_check_3 == "G"){
       gage_id_3 <- readline("Please enter USGS site number or a 3-letter CDEC station ID, the site must be in the California: ")
@@ -360,16 +400,19 @@ compare_gages <- function(){
         flow_3 <- raw_flow %>%
           rename("date" = "datetime", "flow" = "value")
         
-        site_name_3 <- paste("CDEC Gage:",gage_id_3)
+        gage_info <- get_gage_data(gage_id = gage_id_3)
+        
+        site_name_3 <- gage_info$site_name
+        comid_3 <- gage_info$comid
+        class_3 <- gage_info$class
       }else {
         flow_3 <- USGS_gage_flow(gage_id_3)
         
-        gage_data_3 <- readNWISuv(siteNumbers = gage_id_3,
-                                  parameterCd = "00060")
+        gage_info <- get_gage_data(gage_id = gage_id_3)
         
-        siteInfo_3 <- attr(gage_data_3, "siteInfo")
-        
-        site_name_3 <- siteInfo_3$station_nm
+        site_name_3 <- gage_info$site_name
+        comid_3 <- gage_info$comid
+        class_3 <- gage_info$class
       }
     }
     else if (gage_check_3 != "TS" | gage_check_3 != "G"){

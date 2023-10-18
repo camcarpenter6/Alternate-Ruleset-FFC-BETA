@@ -93,6 +93,7 @@ Peak_Flow_Analysis <- function(peaks,Average_Return_Interval){
 
 # Function to calculate winter highflow annual metrics
 calc_winter_highflow_annual_combined <- function(FlowYear, Original_method = TRUE) {
+  cat("\n Calculating the peak flow percentiles \n")
   
   max_zero_allowed_per_year <- 365
   max_nan_allowed_per_year <- 100
@@ -148,13 +149,13 @@ calc_winter_highflow_annual_combined <- function(FlowYear, Original_method = TRU
   
   #Now iterate through the water years to to see when these flow occur
   for (i in seq_along(Water_Years)) {
-    cat(Water_Years[i])
+    #cat(Water_Years[i])
     flow <- filter(FlowYear, water_year == Water_Years[i])
     #Check to make sure that flow years qualifies for the analysis
     if (sum(is.na(flow$flow)) > max_nan_allowed_per_year || #First look at the number of NA values
         sum(flow$flow == 0, na.rm = TRUE) > max_zero_allowed_per_year ||#and the number of 0 flow days
         length(flow$flow) <= 358) { #Or finally that there is enough data
-      cat("\n un qualifed year \n")
+      #cat("\n un qualifed year \n")
       #Set all the values to NA besides the peak flow thresholds
       Peak_Dur_10[i] <- NA
       Peak_Dur_2[i] <- NA
@@ -175,7 +176,7 @@ calc_winter_highflow_annual_combined <- function(FlowYear, Original_method = TRU
     
     #If the year does qualify then iterate through exceed values 
     for (j in seq_along(peak_exceedance_values)) {
-      cat(j)
+      #cat(j)
       #Determine which flows qualify 
       qual_flows <- flow$flow >= peak_exceedance_values[j]
       
@@ -197,7 +198,7 @@ calc_winter_highflow_annual_combined <- function(FlowYear, Original_method = TRU
       if(PH_Fre <1){
         PH_Fre <- NA
       }
-      cat("Water Year: ",Water_Years[i],"\n required flow: ", peak_exceedance_values[j],"\n Dur: ",PH_Dur," Fre: ", PH_Fre," Tim: ",PH_Tim)
+      #cat("Water Year: ",Water_Years[i],"\n required flow: ", peak_exceedance_values[j],"\n Dur: ",PH_Dur," Fre: ", PH_Fre," Tim: ",PH_Tim)
       if(j == 1){
         Peak_Dur_2[i] <- PH_Dur
         Peak_2[i] <- peak_exceedance_values[1]
