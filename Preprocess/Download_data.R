@@ -6,7 +6,8 @@ library(readr) # read/write csv
 library(fs) # platform independent handling of file systems
 library(janitor) # data cleaning
 
-Gage_information <- read.csv("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Preprocess/Site Data.csv", header = T)
+
+Gage_information <- read.csv(here("Preprocess","Site Data.csv"), header = T)
 
 #This function downloads from the USGS gages and manipulates the data to match user input
 USGS_gage_flow <- function(gage_id) {

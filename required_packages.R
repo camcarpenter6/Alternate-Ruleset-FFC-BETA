@@ -18,7 +18,4 @@ if(!require("ffcAPIClient")){
   devtools::install_github('ceff-tech/ffc_api_client/ffcAPIClient') 
   install.packages("ffcAPIClient")
 }
-if(!require("wateRshedTools")){
-  devtools::install_github("ryanpeek/wateRshedTools") 
-  install.packages("wateRshedTools")
-}
+
