@@ -55,6 +55,7 @@ Altered_Summer_Dry_Season_Tim_breakpoint_method <- function(flow_matrix,SP_Mag) 
 Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thresh = 0.02) {
   median <- median(flow)
   roc <- rate_of_change(flow)
+  dif <- c(NA,diff(flow))
   # Initialize variables
   n_consec <- 0
   n_neg <-0
@@ -76,7 +77,7 @@ Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thres
       
     }
     # Check if the current value is within 2% of the previous value
-    if (abs(roc[i]) <= roc_thresh| flow[i] < 2 & !is.null(idx_start)) {
+    if ((abs(roc[i]) <= roc_thresh| flow[i] < 2 | (flow[i]<20 & (!is.na(dif[i]&dif[i]<=1)))) & !is.null(idx_start)) {
       n_consec <- n_consec + 1
       if (roc[i]<0){
         n_neg <- n_neg+1
