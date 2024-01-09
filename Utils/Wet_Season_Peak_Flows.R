@@ -121,7 +121,7 @@ calc_winter_highflow_annual_combined <- function(FlowYear, Original_method = TRU
   #Cycle through the years to determine the peak flows each year that has data
   for (i in 1:length(Water_Years)) {
     #Filters flow to the water year of interest and the previous water year
-    flow <- filter(FlowYear, water_year== Water_Years[i])
+    flow <- dplyr::filter(FlowYear, water_year== Water_Years[i])
     peak_flows[i] <- max(flow$flow,na.rm = TRUE)
     #if(length(flow$flow) >= 358){
     #  peak_flows[i] <- max(flow$flow,na.rm = TRUE)
@@ -150,7 +150,7 @@ calc_winter_highflow_annual_combined <- function(FlowYear, Original_method = TRU
   #Now iterate through the water years to to see when these flow occur
   for (i in seq_along(Water_Years)) {
     #cat(Water_Years[i])
-    flow <- filter(FlowYear, water_year == Water_Years[i])
+    flow <- dplyr::filter(FlowYear, water_year == Water_Years[i])
     #Check to make sure that flow years qualifies for the analysis
     if (sum(is.na(flow$flow)) > max_nan_allowed_per_year || #First look at the number of NA values
         sum(flow$flow == 0, na.rm = TRUE) > max_zero_allowed_per_year ||#and the number of 0 flow days
