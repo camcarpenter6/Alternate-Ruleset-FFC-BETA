@@ -84,18 +84,18 @@ get_cdec <- function(
 # Gets the site name and  a USGS or CDEC ID and assign title and class
 get_gage_data <- function(gage_id) {
   result <- Gage_information %>%
-    filter(siteid == gage_id)
+    dplyr::filter(siteid == gage_id)
   
   if (nrow(result) == 0) {
-    cat("Gage ID not found. Please enter a site name: ")
+    cat(paste0("Gage ID not found. Please enter a site name for gage ", gage_id,": "))
     site_name <- readline()
-    cat("Please enter a stream class (Defult 3): ")
+    cat(paste0("Please enter a stream class (Defult 3) for gage ", gage_id,": "))
     class <- as.numeric(readline())
-    cat("Please enter the stream comid: ")
+    cat(paste0("Please enter the stream comid for gage ", gage_id,": "))
     comid <- readline()
   } else if(is.nan(result$Class) | is.na(result$Class)) {
     site_name <- result$sitename
-    cat("Stream class not found. Please enter a stream class (Defult 3): ")
+    cat(paste0("Stream class not found for gage ",gage_id,". Please enter a stream class (Defult 3): "))
     class <- as.numeric(readline())
     site_name <- result$sitename
     comid <- result$COMID

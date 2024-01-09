@@ -39,7 +39,8 @@ if (gage_check == "TS"){
   class <- as.numeric(readline())
   
   #Get comid for the gauge site
-  comid <- readline("Enter the comid of the site that is going to be evaluated: ")
+  cat("Please enter the comid of the site that is going to be evaluated: ")
+  comid <- readline()
 }else if(gage_check == "G"){
   gage_id <- readline("Please enter USGS site number or a 3-letter CDEC station ID, the site must be in the California: ")
   
@@ -92,6 +93,11 @@ dir.create(new_dir)
   
   # Write the CSV file
   write_csv(Results_df, file = file_path)
+  
+  flow_file_path <- file.path(here(), "Outputs", gage_name_cleaned, paste0(gage_name_cleaned, "_flow.csv"))
+  
+  # Write the CSV file
+  write_csv(flow, file = flow_file_path)
   
   #Get the metrics percentiles following the same method as the original calculator
   metrics_percentiles <- get_percentiles(Results_df,comid)

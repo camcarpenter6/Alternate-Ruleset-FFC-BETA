@@ -1,0 +1,380 @@
+INFO [2023-12-19 14:56:12] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-19 14:56:12] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-19 14:56:51] Using date format string %m/%d/%Y
+WARN [2023-12-19 14:56:52] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-19 14:56:52] Couldn't find stream class for COMID or no COMID provided (Provided value: 10744456). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-19 15:08:07] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-19 15:08:08] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-19 15:08:08] Using date format string %m/%d/%Y
+WARN [2023-12-19 15:08:08] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-19 15:08:08] Couldn't find stream class for COMID or no COMID provided (Provided value: 10744456). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-19 16:05:35] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-19 16:05:35] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-19 16:05:35] Using date format string %m/%d/%Y
+WARN [2023-12-19 16:05:35] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-19 16:05:35] Couldn't find stream class for COMID or no COMID provided (Provided value: 10744456). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 10:34:33] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 10:34:33] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-20 10:34:33] Using date format string %m/%d/%Y
+WARN [2023-12-20 10:34:33] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 10:34:33] Couldn't find stream class for COMID or no COMID provided (Provided value: 10744456). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 10:40:27] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 10:40:28] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-20 10:40:28] Using date format string %m/%d/%Y
+WARN [2023-12-20 10:40:28] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 10:40:28] Couldn't find stream class for COMID or no COMID provided (Provided value: 10744456). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 10:57:07] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 10:57:07] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-20 10:57:07] Using date format string %m/%d/%Y
+WARN [2023-12-20 10:57:07] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 10:57:07] Couldn't find stream class for COMID or no COMID provided (Provided value: 10744456). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 12:23:14] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 12:23:15] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-20 12:23:15] Using date format string %m/%d/%Y
+WARN [2023-12-20 12:23:15] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 12:23:15] Couldn't find stream class for COMID or no COMID provided (Provided value: 10744456). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 12:47:28] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 12:47:28] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-20 12:47:28] Using date format string %m/%d/%Y
+WARN [2023-12-20 12:47:28] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 12:47:28] Couldn't find stream class for COMID or no COMID provided (Provided value: 10744456). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 13:31:41] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 13:31:41] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-20 13:31:41] Using date format string %m/%d/%Y
+WARN [2023-12-20 13:31:42] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 13:31:42] Couldn't find stream class for COMID or no COMID provided (Provided value: 10744456). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 13:36:47] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 13:36:47] Excluding water years 1999 for having more than 7 missing days of data
+INFO [2023-12-20 13:36:47] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-20 13:36:47] Excluding water year 2023 for having a data gap larger than 1
+INFO [2023-12-20 13:36:47] Using date format string %m/%d/%Y
+WARN [2023-12-20 13:36:47] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 13:36:47] Couldn't find stream class for COMID or no COMID provided (Provided value: 8922761). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 14:16:38] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 14:16:38] Excluding water years 1999 for having more than 7 missing days of data
+INFO [2023-12-20 14:16:38] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-20 14:16:38] Excluding water year 2023 for having a data gap larger than 1
+INFO [2023-12-20 14:16:38] Using date format string %m/%d/%Y
+WARN [2023-12-20 14:16:38] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 14:16:38] Couldn't find stream class for COMID or no COMID provided (Provided value: 8922761). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 14:25:58] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 14:25:58] Excluding water years 1999 for having more than 7 missing days of data
+INFO [2023-12-20 14:25:58] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-20 14:25:58] Excluding water year 2023 for having a data gap larger than 1
+INFO [2023-12-20 14:25:58] Using date format string %m/%d/%Y
+WARN [2023-12-20 14:25:58] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 14:25:58] Couldn't find stream class for COMID or no COMID provided (Provided value: 8915857). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 14:31:00] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 14:31:00] Excluding water years 1923 for having more than 7 missing days of data
+INFO [2023-12-20 14:31:00] Using date format string %m/%d/%Y
+WARN [2023-12-20 14:31:00] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 14:31:00] COMID 20267023 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-20 14:37:35] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 14:37:35] Excluding water years 1911 for having more than 7 missing days of data
+INFO [2023-12-20 14:37:35] Excluding water years 2009 for having more than 7 missing days of data
+INFO [2023-12-20 14:37:35] Excluding water years 2016 for having more than 7 missing days of data
+INFO [2023-12-20 14:37:35] Excluding water years 2022 for having more than 7 missing days of data
+INFO [2023-12-20 14:37:35] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-20 14:37:35] Using date format string %m/%d/%Y
+WARN [2023-12-20 14:37:35] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 14:37:35] Couldn't find stream class for COMID or no COMID provided (Provided value: 8915907). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 14:43:05] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 14:43:05] Excluding water years 1960 for having more than 7 missing days of data
+INFO [2023-12-20 14:43:05] Excluding water years 2023 for having more than 7 missing days of data
+INFO [2023-12-20 14:43:05] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-20 14:43:05] Using date format string %m/%d/%Y
+WARN [2023-12-20 14:43:06] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 14:43:06] Couldn't find stream class for COMID or no COMID provided (Provided value: 8922715). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 14:49:27] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 14:49:27] Excluding water years 2023 for having more than 7 missing days of data
+INFO [2023-12-20 14:49:27] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-20 14:49:28] Using date format string %m/%d/%Y
+WARN [2023-12-20 14:49:28] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 14:49:28] Couldn't find stream class for COMID or no COMID provided (Provided value: 8924041). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 14:57:59] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 14:57:59] Excluding water years 1990 for having more than 7 missing days of data
+INFO [2023-12-20 14:57:59] Excluding water years 2012 for having more than 7 missing days of data
+INFO [2023-12-20 14:57:59] Using date format string %m/%d/%Y
+WARN [2023-12-20 14:57:59] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 14:57:59] Couldn't find stream class for COMID or no COMID provided (Provided value: 8943705). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 15:02:57] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 15:02:57] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-20 15:02:57] Using date format string %m/%d/%Y
+WARN [2023-12-20 15:02:57] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 15:02:58] Couldn't find stream class for COMID or no COMID provided (Provided value: 8943685). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 15:09:56] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 15:09:56] Excluding water years 1990 for having more than 7 missing days of data
+INFO [2023-12-20 15:09:56] Excluding water years 2011 for having more than 7 missing days of data
+INFO [2023-12-20 15:09:56] Using date format string %m/%d/%Y
+WARN [2023-12-20 15:09:56] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 15:09:56] Couldn't find stream class for COMID or no COMID provided (Provided value: 8944527). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 15:15:19] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 15:15:19] Excluding water years 2023 for having more than 7 missing days of data
+INFO [2023-12-20 15:15:19] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-20 15:15:19] Using date format string %m/%d/%Y
+WARN [2023-12-20 15:15:19] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 15:15:19] Couldn't find stream class for COMID or no COMID provided (Provided value: 8944453). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-20 15:20:57] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 15:20:57] Excluding water years 1950 for having more than 7 missing days of data
+INFO [2023-12-20 15:20:57] Excluding water years 2003 for having more than 7 missing days of data
+INFO [2023-12-20 15:20:57] Using date format string %m/%d/%Y
+WARN [2023-12-20 15:20:58] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 15:20:58] COMID 14918005 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-20 15:29:31] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 15:29:31] Excluding water years 1929 for having more than 7 missing days of data
+INFO [2023-12-20 15:29:31] Using date format string %m/%d/%Y
+WARN [2023-12-20 15:29:31] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 15:29:31] COMID 22050535 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-20 15:54:19] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 15:54:19] Excluding water years 1931 for having more than 7 missing days of data
+INFO [2023-12-20 15:54:19] Excluding water years 1932 for having more than 7 missing days of data
+INFO [2023-12-20 15:54:19] Excluding water years 1933 for having more than 7 missing days of data
+INFO [2023-12-20 15:54:19] Using date format string %m/%d/%Y
+WARN [2023-12-20 15:54:19] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 15:54:19] COMID 22048943 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-20 16:03:47] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 16:03:47] Excluding water years 1962 for having more than 7 missing days of data
+INFO [2023-12-20 16:03:47] Excluding water years 1994 for having more than 7 missing days of data
+INFO [2023-12-20 16:03:47] Using date format string %m/%d/%Y
+WARN [2023-12-20 16:03:47] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 16:03:48] COMID 22050527 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-20 16:08:33] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 16:08:33] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-20 16:08:34] Using date format string %m/%d/%Y
+WARN [2023-12-20 16:08:34] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 16:08:34] COMID 17113015 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-20 16:14:14] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 16:14:15] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-20 16:14:15] Using date format string %m/%d/%Y
+WARN [2023-12-20 16:14:15] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 16:14:15] COMID 17118323 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-20 16:19:57] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 16:19:57] Excluding water years 1928 for having more than 7 missing days of data
+INFO [2023-12-20 16:19:58] Using date format string %m/%d/%Y
+WARN [2023-12-20 16:19:58] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 16:19:58] COMID 17116209 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-20 16:27:52] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 16:27:53] Excluding water years 1915 for having more than 7 missing days of data
+INFO [2023-12-20 16:27:53] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-20 16:27:53] Using date format string %m/%d/%Y
+WARN [2023-12-20 16:27:53] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 16:27:54] COMID 21609533 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-20 16:34:10] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 16:34:10] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-20 16:34:10] Using date format string %m/%d/%Y
+WARN [2023-12-20 16:34:10] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 16:34:10] COMID 21609641 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-20 16:45:08] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 16:45:09] Excluding water years 1963 for having more than 7 missing days of data
+INFO [2023-12-20 16:45:09] Using date format string %m/%d/%Y
+WARN [2023-12-20 16:45:09] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 16:45:09] COMID 17082117 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-20 16:51:02] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 16:51:02] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-20 16:51:02] Using date format string %m/%d/%Y
+WARN [2023-12-20 16:51:02] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 16:51:02] COMID 347487 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-20 16:56:03] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-20 16:56:03] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-20 16:56:03] Using date format string %m/%d/%Y
+WARN [2023-12-20 16:56:03] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-20 16:56:03] COMID 347483 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-21 11:35:31] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 11:35:31] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-21 11:35:31] Using date format string %m/%d/%Y
+WARN [2023-12-21 11:35:32] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 11:35:32] Couldn't find stream class for COMID or no COMID provided (Provided value: 10744456). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-21 11:40:41] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 11:40:41] Excluding water years 1923 for having more than 7 missing days of data
+INFO [2023-12-21 11:40:41] Using date format string %m/%d/%Y
+WARN [2023-12-21 11:40:41] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 11:40:42] COMID 20267023 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-21 11:49:19] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 11:49:19] Excluding water years 1911 for having more than 7 missing days of data
+INFO [2023-12-21 11:49:19] Excluding water years 2009 for having more than 7 missing days of data
+INFO [2023-12-21 11:49:19] Excluding water years 2016 for having more than 7 missing days of data
+INFO [2023-12-21 11:49:19] Excluding water years 2022 for having more than 7 missing days of data
+INFO [2023-12-21 11:49:19] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-21 11:49:20] Using date format string %m/%d/%Y
+WARN [2023-12-21 11:49:20] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 11:49:20] Couldn't find stream class for COMID or no COMID provided (Provided value: 8915907). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-21 12:04:13] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 12:04:13] Excluding water years 1960 for having more than 7 missing days of data
+INFO [2023-12-21 12:04:13] Excluding water years 2023 for having more than 7 missing days of data
+INFO [2023-12-21 12:04:13] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-21 12:04:13] Using date format string %m/%d/%Y
+WARN [2023-12-21 12:04:13] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 12:04:14] Couldn't find stream class for COMID or no COMID provided (Provided value: 8922715). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-21 12:15:29] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 12:15:30] Excluding water years 2023 for having more than 7 missing days of data
+INFO [2023-12-21 12:15:30] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-21 12:15:30] Using date format string %m/%d/%Y
+WARN [2023-12-21 12:15:30] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 12:15:30] Couldn't find stream class for COMID or no COMID provided (Provided value: 8924041). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-21 12:23:53] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 12:23:53] Excluding water years 1990 for having more than 7 missing days of data
+INFO [2023-12-21 12:23:53] Excluding water years 2012 for having more than 7 missing days of data
+INFO [2023-12-21 12:23:53] Using date format string %m/%d/%Y
+WARN [2023-12-21 12:23:54] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 12:23:54] Couldn't find stream class for COMID or no COMID provided (Provided value: 8943705). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-21 12:31:15] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 12:31:15] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-21 12:31:15] Using date format string %m/%d/%Y
+WARN [2023-12-21 12:31:16] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 12:31:16] Couldn't find stream class for COMID or no COMID provided (Provided value: 8943685). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-21 12:37:01] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 12:37:01] Excluding water years 1990 for having more than 7 missing days of data
+INFO [2023-12-21 12:37:01] Excluding water years 2011 for having more than 7 missing days of data
+INFO [2023-12-21 12:37:01] Using date format string %m/%d/%Y
+WARN [2023-12-21 12:37:01] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 12:37:01] Couldn't find stream class for COMID or no COMID provided (Provided value: 8944527). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-21 12:46:21] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 12:46:22] Excluding water years 2023 for having more than 7 missing days of data
+INFO [2023-12-21 12:46:22] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-21 12:46:22] Using date format string %m/%d/%Y
+WARN [2023-12-21 12:46:22] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 12:46:22] Couldn't find stream class for COMID or no COMID provided (Provided value: 8944453). Sending the general parameters to the FFC online, which may result in different results than if a COMID was provided or could be found
+INFO [2023-12-21 12:52:22] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 12:52:22] Excluding water years 1950 for having more than 7 missing days of data
+INFO [2023-12-21 12:52:22] Excluding water years 2003 for having more than 7 missing days of data
+INFO [2023-12-21 12:52:22] Using date format string %m/%d/%Y
+WARN [2023-12-21 12:52:22] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 12:52:23] COMID 14918005 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-21 13:50:15] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 13:50:15] Excluding water years 1929 for having more than 7 missing days of data
+INFO [2023-12-21 13:50:16] Using date format string %m/%d/%Y
+WARN [2023-12-21 13:50:16] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 13:50:16] COMID 22050535 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-21 14:17:22] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 14:17:22] Excluding water years 1931 for having more than 7 missing days of data
+INFO [2023-12-21 14:17:22] Excluding water years 1932 for having more than 7 missing days of data
+INFO [2023-12-21 14:17:22] Excluding water years 1933 for having more than 7 missing days of data
+INFO [2023-12-21 14:17:22] Using date format string %m/%d/%Y
+WARN [2023-12-21 14:17:22] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 14:17:22] COMID 22048943 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-21 14:32:32] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 14:32:32] Excluding water years 1962 for having more than 7 missing days of data
+INFO [2023-12-21 14:32:32] Excluding water years 1994 for having more than 7 missing days of data
+INFO [2023-12-21 14:32:32] Using date format string %m/%d/%Y
+WARN [2023-12-21 14:32:33] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 14:32:33] COMID 22050527 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-21 14:38:55] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 14:38:55] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-21 14:38:56] Using date format string %m/%d/%Y
+WARN [2023-12-21 14:38:56] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 14:38:56] COMID 17113015 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-21 14:47:04] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 14:47:05] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-21 14:47:05] Using date format string %m/%d/%Y
+WARN [2023-12-21 14:47:05] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 14:47:06] COMID 17118323 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-21 15:01:34] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 15:01:35] Excluding water years 1928 for having more than 7 missing days of data
+INFO [2023-12-21 15:01:35] Using date format string %m/%d/%Y
+WARN [2023-12-21 15:01:35] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 15:01:35] COMID 17116209 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-21 15:07:21] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 15:07:21] Excluding water years 1915 for having more than 7 missing days of data
+INFO [2023-12-21 15:07:21] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-21 15:07:21] Using date format string %m/%d/%Y
+WARN [2023-12-21 15:07:21] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 15:07:22] COMID 21609533 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-21 15:19:59] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 15:19:59] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2023-12-21 15:20:00] Using date format string %m/%d/%Y
+WARN [2023-12-21 15:20:00] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 15:20:00] COMID 21609641 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-21 15:36:53] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 15:36:53] Excluding water years 1963 for having more than 7 missing days of data
+INFO [2023-12-21 15:36:53] Using date format string %m/%d/%Y
+WARN [2023-12-21 15:36:54] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 15:36:54] COMID 17082117 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-21 15:42:07] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 15:42:07] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-21 15:42:07] Using date format string %m/%d/%Y
+WARN [2023-12-21 15:42:07] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 15:42:08] COMID 347487 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2023-12-21 15:47:02] ffcAPIClient Version 0.9.8.3
+INFO [2023-12-21 15:47:02] Excluding water years  for having more than 7 missing days of data
+INFO [2023-12-21 15:47:02] Using date format string %m/%d/%Y
+WARN [2023-12-21 15:47:02] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2023-12-21 15:47:02] COMID 347483 is of stream class SM - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2024-01-02 10:04:02] ffcAPIClient Version 0.9.8.3
+INFO [2024-01-02 10:04:03] Excluding water years  for having more than 7 missing days of data
+INFO [2024-01-02 10:04:03] Using date format string %m/%d/%Y
+WARN [2024-01-02 10:04:03] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2024-01-02 10:04:03] COMID 8062589 is of stream class HSR - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2024-01-02 10:10:29] ffcAPIClient Version 0.9.8.3
+INFO [2024-01-02 10:10:30] Excluding water years 1939 for having more than 7 missing days of data
+INFO [2024-01-02 10:10:30] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2024-01-02 10:10:31] Excluding water year 2023 for having a data gap larger than 1
+INFO [2024-01-02 10:10:31] Using date format string %m/%d/%Y
+WARN [2024-01-02 10:10:31] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2024-01-02 10:10:31] COMID 19791955 is of stream class HSR - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2024-01-02 10:40:17] ffcAPIClient Version 0.9.8.3
+INFO [2024-01-02 10:40:17] Excluding water years 1901 for having more than 7 missing days of data
+INFO [2024-01-02 10:40:17] Excluding water years 1914 for having more than 7 missing days of data
+INFO [2024-01-02 10:40:17] Excluding water years 1916 for having more than 7 missing days of data
+INFO [2024-01-02 10:40:18] Using date format string %m/%d/%Y
+WARN [2024-01-02 10:40:18] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2024-01-02 10:40:19] COMID 2824504 is of stream class HSR - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2024-01-02 11:26:17] ffcAPIClient Version 0.9.8.3
+INFO [2024-01-02 11:26:17] Excluding water years  for having more than 7 missing days of data
+INFO [2024-01-02 11:26:18] Using date format string %m/%d/%Y
+WARN [2024-01-02 11:26:18] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2024-01-02 11:26:18] COMID 8062593 is of stream class HSR - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2024-01-02 13:44:01] ffcAPIClient Version 0.9.8.3
+INFO [2024-01-02 13:44:01] Excluding water years 1957 for having more than 7 missing days of data
+INFO [2024-01-02 13:44:01] Using date format string %m/%d/%Y
+WARN [2024-01-02 13:44:01] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2024-01-02 13:44:01] COMID 22673706 is of stream class LSR - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2024-01-02 13:51:02] ffcAPIClient Version 0.9.8.3
+INFO [2024-01-02 13:51:03] Excluding water years 1983 for having more than 7 missing days of data
+INFO [2024-01-02 13:51:03] Using date format string %m/%d/%Y
+WARN [2024-01-02 13:51:03] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2024-01-02 13:51:03] COMID 14945000 is of stream class LSR - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2024-01-02 13:59:44] ffcAPIClient Version 0.9.8.3
+INFO [2024-01-02 13:59:44] Excluding water years 2000 for having more than 7 missing days of data
+INFO [2024-01-02 13:59:44] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2024-01-02 13:59:44] Using date format string %m/%d/%Y
+WARN [2024-01-02 13:59:44] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2024-01-02 13:59:44] COMID 14930789 is of stream class LSR - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2024-01-02 14:07:24] ffcAPIClient Version 0.9.8.3
+INFO [2024-01-02 14:07:24] Excluding water years 2004 for having more than 7 missing days of data
+INFO [2024-01-02 14:07:24] Excluding water years 2015 for having more than 7 missing days of data
+INFO [2024-01-02 14:07:24] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2024-01-02 14:07:24] Using date format string %m/%d/%Y
+WARN [2024-01-02 14:07:24] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2024-01-02 14:07:25] COMID 22595619 is of stream class LSR - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2024-01-02 14:13:02] ffcAPIClient Version 0.9.8.3
+INFO [2024-01-02 14:13:03] Excluding water years 1922 for having more than 7 missing days of data
+INFO [2024-01-02 14:13:03] Excluding water years 1927 for having more than 7 missing days of data
+INFO [2024-01-02 14:13:03] Excluding water years 1928 for having more than 7 missing days of data
+INFO [2024-01-02 14:13:03] Excluding water years 1931 for having more than 7 missing days of data
+INFO [2024-01-02 14:13:03] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2024-01-02 14:13:03] Using date format string %m/%d/%Y
+WARN [2024-01-02 14:13:03] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2024-01-02 14:13:03] COMID 22591931 is of stream class LSR - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2024-01-02 15:22:57] ffcAPIClient Version 0.9.8.3
+INFO [2024-01-02 15:22:57] Excluding water years 2005 for having more than 7 missing days of data
+INFO [2024-01-02 15:22:57] Excluding water years 2020 for having more than 7 missing days of data
+INFO [2024-01-02 15:22:57] Using date format string %m/%d/%Y
+WARN [2024-01-02 15:22:57] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2024-01-02 15:22:57] COMID 22590267 is of stream class LSR - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2024-01-02 15:28:41] ffcAPIClient Version 0.9.8.3
+INFO [2024-01-02 15:28:42] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2024-01-02 15:28:42] Using date format string %m/%d/%Y
+WARN [2024-01-02 15:28:42] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2024-01-02 15:28:42] COMID 22593497 is of stream class LSR - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2024-01-02 15:41:02] ffcAPIClient Version 0.9.8.3
+INFO [2024-01-02 15:41:02] Excluding water years 1930 for having more than 7 missing days of data
+INFO [2024-01-02 15:41:02] Excluding water years 1942 for having more than 7 missing days of data
+INFO [2024-01-02 15:41:02] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2024-01-02 15:41:02] Using date format string %m/%d/%Y
+WARN [2024-01-02 15:41:03] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2024-01-02 15:41:03] COMID 22593537 is of stream class LSR - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.
+INFO [2024-01-02 15:47:01] ffcAPIClient Version 0.9.8.3
+INFO [2024-01-02 15:47:01] Excluding water years 2024 for having more than 7 missing days of data
+INFO [2024-01-02 15:47:01] Using date format string %m/%d/%Y
+WARN [2024-01-02 15:47:01] Received an insufficient number of predicted metric rows, which may cause failures at a later step. Check that the found COMID printed by the package is correct, and if it's not, specify the COMID manually, which may resolve this issue. You may want to report this error at https://github.com/ceff-tech/ffcapiclient/issues so we can make sure to have complete predicted metric data
+INFO [2024-01-02 15:47:02] COMID 22592131 is of stream class LSR - sending parameters to FFC online for that stream class. This may produce different results than if you run data through the FFC yourself using their default parameters.

@@ -101,7 +101,9 @@ compare_gages <- function(){
     #Get comid for the gauge site
     
     
-    gage_check_2 <- readline("Are you using your time series data or a USGS gage site (TS for time series or G for USGS gage data): ")
+    cat("Are you using your time series data, a USGS gage site, or compare the first data to the Originall FFC \n (TS for time series, G for USGS gage data, or Org for running the original calculator on the first gage): ")
+    
+    gage_check_2 <- readline()
     
     #Check to see if which term was entered and get the important information
     if (gage_check_2 == "TS"){
@@ -159,6 +161,25 @@ compare_gages <- function(){
         class_2 <- gage_info$class
       }
     }
+    else if(gage_check_2 == "Org"){
+      ffctoken<- "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJDYW1lcm9uIiwibGFzdE5hbWUiOiJDYXJwZW50ZXIiLCJlbWFpbCI6ImNhbWNhcnBlbnRlckB1Y2RhdmlzLmVkdSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNjY5NzQxMjg2fQ.WoTh0hQX7oluRxjoTg3A0N5PJD6HnMCQs10CsgZqOTo"
+      ffc <- FFCProcessor$new()  # make a new object we can use to run the commands; this will pull all years from the gage. 
+      flow_2 <- flow_1
+      gage_id_2 <- gage_id_1
+      comid_2 <- comid_1
+      class_2 <- class_1
+      site_name_2 <- paste0(site_name_2," Original Calculator")
+      #ffc$gage_start_date = "1979-10-01" # use this to pull only recent years
+      
+      ffc$set_up(gage_id=gage_id_2, token = ffctoken) 
+      
+      # then run
+      ffc$run()
+      
+
+      
+
+    }
     else if (gage_check_2 != "TS" | gage_check_2 != "G"){
       #Tell the user why the program is ending
       cat("Invalid input entered")
@@ -168,11 +189,20 @@ compare_gages <- function(){
     
     #Get the results for each of the results
     Results_df_1  <- flow_metrics_calculations(flow_1)
-    Results_df_2  <- flow_metrics_calculations(flow_2)
-    
+    if (gage_check_2 == "Org"){
+      Results_df_2<-ffc$ffc_results
+    }
+    else{
+      Results_df_2  <- flow_metrics_calculations(flow_2)
+    }
     #Make a name combining the two gages' names 
-    output_file_name <- paste0(gage_id_1," and ", gage_id_2," comparison")
     
+    if (gage_check_2 == "Org"){
+      output_file_name <- paste0(gage_id_1," Original and Alternate Calculator comparison")
+    }
+    else{
+      output_file_name <- paste0(gage_id_1," and ", gage_id_2," comparison")
+    }
     #make a new file path for this output directory
     new_dir <- paste("Outputs",output_file_name,sep = "/")
     
@@ -185,7 +215,12 @@ compare_gages <- function(){
     
     # Construct the file path
     file_path_1 <- file.path(here(), "Outputs", output_file_name, paste0(gage_name_cleaned_1, "_Metrics.csv"))
-    file_path_2 <- file.path(here(), "Outputs", output_file_name, paste0(gage_name_cleaned_2, "_Metrics.csv"))
+    if (gage_check_2 == "Org"){
+      file_path_2 <- file.path(here(), "Outputs", output_file_name, paste0(gage_name_cleaned_2, "_Original_FFC_Metrics.csv"))
+    }
+    else{
+      file_path_2 <- file.path(here(), "Outputs", output_file_name, paste0(gage_name_cleaned_2, "_Metrics.csv"))
+    }
     
     # Write the CSV file
     write_csv(Results_df_1, file = file_path_1)
@@ -194,14 +229,18 @@ compare_gages <- function(){
     #Get the metrics percentiles following the same method as the original calculator
     metrics_percentiles_1 <- get_percentiles(Results_df_1,comid_1)
     metrics_percentiles_2 <- get_percentiles(Results_df_2,comid_2)
+    # then pull metrics and percentiles out as dataframes (which you can then store)
+    metrics_percentiles_2_check<-ffc$ffc_percentiles
     
     # Construct the file path for the percentiles
     file_path_percentiles_1 <- file.path(here(), "Outputs", output_file_name, paste0(gage_name_cleaned_1, "_Metric_Percentiles.csv"))
     file_path_percentiles_2 <- file.path(here(), "Outputs", output_file_name, paste0(gage_name_cleaned_2, "_Metric_Percentiles.csv"))
+    file_path_percentiles_2_check <- file.path(here(), "Outputs", output_file_name, paste0(gage_name_cleaned_2, "_Metric_Percentiles_check.csv"))
     
     # Write the CSV file
     write_csv(metrics_percentiles_1, file = file_path_percentiles_1)
     write_csv(metrics_percentiles_2, file = file_path_percentiles_2)
+    write_csv(metrics_percentiles_2_check, file = file_path_percentiles_2_check)
     
     #Make the html figure for the
     HTML_comparison(flow_1 =  flow_1,flow_2 = flow_2,metrics_1 = Results_df_1,metrics_2  =Results_df_2, output_file_name = output_file_name)
@@ -469,7 +508,7 @@ compare_gages <- function(){
     write_csv(metrics_percentiles_3, file = file_path_percentiles_3)
     
     #Make the html figure for the
-    HTML_comparison(flow_1,flow_2,flow_3,Results_df_1,Results_df_2,Results_df_3,output_file_name)
+    HTML_comparison(flow_1,flow_2,Results_df_1,Results_df_2,flow_3,Results_df_3,output_file_name)
     
     #Make a new directory for the the boxplots
     new_dir_box_plots <- paste("Outputs",output_file_name,"boxplots",sep = "/")

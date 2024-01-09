@@ -37,10 +37,10 @@ Altered_Summer_Dry_Season_Tim_breakpoint_method <- function(flow_matrix,SP_Mag) 
   filtered_flows <- subset(flow_matrix_sorted, abs(change)>6.5 | abs(change)>median(flow_matrix_sorted$flow)/10 )
   
   #Look at the day with the largest change
-  Max_change_day <- filter(filtered_flows,abs(change) == max(abs(change)))
+  Max_change_day <- dplyr::filter(filtered_flows,abs(change) == max(abs(change)))
   
   #Now we will only look at the days with at least this size difference
-  dry_season_days <- filter(flow_matrix_sorted, id < Max_change_day$id)
+  dry_season_days <- dplyr::filter(flow_matrix_sorted, id < Max_change_day$id)
   
   DS_date <- min(dry_season_days$date)
   
@@ -52,9 +52,11 @@ Altered_Summer_Dry_Season_Tim_breakpoint_method <- function(flow_matrix,SP_Mag) 
 }
 
 #Define a function that finds the dry season timing given the flow after the top of the spring recession until the end of the water year
-Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thresh = 0.02) {
+Altered_Summer_Dry_Season_Tim_Varied <- function(flow,flow_thresh, day_thresh = 5, roc_thresh = 0.02) {
   median <- median(flow)
+  #cat(flow)
   roc <- rate_of_change(flow)
+  dif <- c(NA,diff(flow))
   # Initialize variables
   n_consec <- 0
   n_neg <-0
@@ -76,7 +78,7 @@ Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thres
       
     }
     # Check if the current value is within 2% of the previous value
-    if (abs(roc[i]) <= roc_thresh| flow[i] < 2 & !is.null(idx_start)) {
+    if (abs(roc[i]) <= roc_thresh | (flow[i] < 50 & dif[i]<=2) & flow[i] <= flow_thresh & !is.null(idx_start)) {
       n_consec <- n_consec + 1
       if (roc[i]<0){
         n_neg <- n_neg+1
@@ -85,7 +87,7 @@ Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thres
       if (n_consec == day_thresh) {
         #cat("\n \n Summer should be done")
         idx_consec <- seq(idx_start, i)
-        #cat("\n number in iteration: ", i,"\n consectutive: ", n_consec, "number of days required: ", day_thresh, "\n idx_consec: ", idx_consec, "\n num neg: ", n_neg)
+        cat("\n number in iteration: ", i,"\n consectutive: ", n_consec, "number of days required: ", day_thresh, "\n idx_consec: ", idx_consec, "\n num neg: ", n_neg, "\n flow 5 days before window", "flow[idx_consec-n_consec]","\n that window: ", idx_consec-5)
         break
       }
     }
@@ -105,7 +107,7 @@ Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thres
       roc_thresh = roc_thresh+.01
       #cat(roc_thresh,"\n")
       #rerun this code to look for a new dry season timing
-      DS_Tim <- Altered_Summer_Dry_Season_Tim_Varied(flow = flow, day_thresh = day_thresh, roc_thresh = roc_thresh )
+      DS_Tim <- Altered_Summer_Dry_Season_Tim_Varied(flow = flow, flow_thresh = flow_thresh, day_thresh = day_thresh, roc_thresh = roc_thresh )
     }
     #else if the change threshold is at 5% then try decreasing the number of days
     else if(roc_thresh > 0.045 & day_thresh >= 3){
@@ -113,7 +115,7 @@ Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thres
       day_thresh = day_thresh - 1
       #cat(day_thresh,"\n")
       #Rerun the code with the new thresholds
-      DS_Tim <- Altered_Summer_Dry_Season_Tim_Varied(flow = flow, day_thresh = day_thresh, roc_thresh = roc_thresh)
+      DS_Tim <- Altered_Summer_Dry_Season_Tim_Varied(flow = flow, flow_thresh = flow_thresh, day_thresh = day_thresh, roc_thresh = roc_thresh)
       
     }
     
@@ -123,14 +125,19 @@ Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thres
   if(is.null(DS_Tim)){
     #cat("Dry season timing set")
     if (n_neg > 3){
-      DS_Tim <- (idx_consec[length(idx_consec)]+1)
+      DS_Tim <- (idx_consec[length(idx_consec)])
     }
     else if (n_neg <=3){
-      DS_Tim <- (idx_consec[1]+1)
+      DS_Tim <- (idx_consec[1])
     }
     #cat("dry season timing: ", DS_Tim)
   }
   
+  if(is.null(DS_Tim) != TRUE ) {
+    if(DS_Tim<=0 & is.na(DS_Tim) != TRUE ){
+      DS_Tim <- 1
+    }
+  }
   #cat("\n DS tim: ",DS_Tim, "\n Should go out of the loop \n")
   return(DS_Tim)
 }
@@ -247,9 +254,9 @@ Altered_Spring_Recession <- function(FlowYear) {
   #Loop through all of the water years
   
   for (i in 1:length(Water_Years)) {
-    #cat("\n \n Water Year: ", Water_Years[i])
+    cat("\n \n Water Year: ", Water_Years[i])
     #Filter the flow data to the individual water year
-    flow <- filter(FlowYear, FlowYear$water_year== Water_Years[i])
+    flow <- dplyr::filter(FlowYear, FlowYear$water_year== Water_Years[i])
     WY_median <- median(flow$flow)
     #Skip the year if there are more than 100 NA flow data points
     if ((sum(is.na(flow$flow)) +  sum(is.nan(flow$flow))) > 100 | length(flow$date) < 358) {
@@ -296,11 +303,17 @@ Altered_Spring_Recession <- function(FlowYear) {
       
       #calculate the 50th and 9th percentile for the flows
       quants <- quantile(flow$flow, probs = c(0.5, 0.9),na.rm = FALSE, names = FALSE)
+      
+      #Filter the flow to remove the noise on the rising limb
+      window <- 4
+      alpha <- 1.3
+      filter_flow <- smth.gaussian(flow$flow,window = window, alpha = alpha, tails = TRUE)
+      #filter_flow <- rollmean(flow$flow,window,fill = NA, align = "right")
       #Calculate the peaks that occur throughout the year
-      peaks <- as.data.frame(findpeaks(flow$flow),threshold = min((0.15*WY_median),15))
+      peaks <- as.data.frame(findpeaks(filter_flow),threshold = min((0.15*WY_median),15))
       
       #We also want to consider peaks that are flat the limit was set as 3 "flat" points for these
-      peaks_2 <- as.data.frame(findpeaks(flow$flow, peakpat = "[+]{1,}[0]{1,3}[-]{1,}"),threshold = min((0.15*WY_median),15))
+      peaks_2 <- as.data.frame(findpeaks(filter_flow, peakpat = "[+]{1,}[0]{1,3}[-]{1,}"),threshold = min((0.15*WY_median),15))
       
       #combine the two data sets of peaks
       peaks_all <- bind_rows(peaks,peaks_2)
@@ -314,8 +327,8 @@ Altered_Spring_Recession <- function(FlowYear) {
           peaks_all <- peaks_all[order(peaks_all$V2,decreasing = FALSE),]
           
           #Filter out peaks that are not above the 90th percentile and peaks that are in september
-          peaks_90 <- filter(peaks_all, peaks_all$V1 > quants[2])
-          peaks_90 <- filter(peaks_90, peaks_90$V2 <330)
+          peaks_90 <- dplyr::filter(peaks_all, peaks_all$V1 > quants[2])
+          peaks_90 <- dplyr::filter(peaks_90, peaks_90$V2 <345)
           
         }
         else {
@@ -334,15 +347,15 @@ Altered_Spring_Recession <- function(FlowYear) {
         
         
         #Assign the last peak of the year as the first potential spring timing
-        springindex_PH1 <- tail(peaks_90[,2],1)
+        PH1_start <- tail(peaks_90[,2],1)
+        PH1_poten <- seq(PH1_start - 2, PH1_start + 2, by = 1)
+        max_flow_check <- which(flow$flow[PH1_poten]==max(flow$flow[PH1_poten]))[length(which(flow$flow[PH1_poten]==max(flow$flow[PH1_poten])))]
+        springindex_PH1 <- tail(peaks_90[,2],1)-5+max_flow_check
         
         #Check to see if this peak is also the fall pulse
         if (springindex_PH1 <= 75 & length(peaks_90[,2]) <2){
           #If it is then it doesn't not count as the spring as well
           #springindex_PH1 <- NULL
-        }
-        if(Water_Years[i] == 2013){
-          #cat("\n Peaks Timing: ", peaks_90[,1] , "\n ")
         }
       }
       
@@ -364,7 +377,7 @@ Altered_Spring_Recession <- function(FlowYear) {
       }
       else {
         #Otherwise set the spring index to the first placement
-        springindex <- springindex_PH1
+        springindex <- springindex_PH1+2
       }
       #cat("\n PH1:" , springindex_PH1, " PH 2: ", springindex_PH2)
       #Set the spring timing to index identified 
@@ -376,17 +389,23 @@ Altered_Spring_Recession <- function(FlowYear) {
     }
     
     #make a new data frame with just the flows after the top of the spring recession
-    flow_post_SP <- flow %>% slice(springindex:length(flow))
-    if(Water_Years[i] == 2013){
-      test_post_flow <- flow_post_SP
-    }
+    flow_post_SP <- flow %>% slice(SP_Tim[i]:length(flow))
+
     #Calculate the rate of change for the rest of the year after the top of the spring recession
     roc <- rate_of_change(flow_post_SP$flow)
+    
+    #Set a min flow threshold for the dry season to start based on the spring and min dry season baseflow
+    #This is based on the threshold in the original calculator
+    min_summer_flow_percent <- 0.125
+    WY_max_flow <- max(flow$flow,na.rm = TRUE)
+    post_SP_min_flow <- min(flow_post_SP$flow, na.rm = TRUE) 
+    Min_DS_Threshold <- post_SP_min_flow + (WY_max_flow-post_SP_min_flow)*min_summer_flow_percent
+    cat("\n thresh DS: ", Min_DS_Threshold, "\n")  
     #cat("\n",SP_Tim[i],"\n" )
     #calculate the dry season start timing by subtracting the length of the water year by the time remaining 
     #after the spring recession peak and then add the timing of the start of the dry season after the spring peak
     #PH_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_breakpoint_method(flow_post_SP,SP_Mag[i])) #Original Code
-    PH_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_Varied(flow_post_SP$flow)) #varying qualification Code
+    PH_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_Varied(flow_post_SP$flow,flow_thresh = Min_DS_Threshold)) #varying qualification Code
     #PH_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_Squ_Dif(flow_post_SP$flow)) #Square Dif Method
     #PH_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_Merged(flow_post_SP$flow)) #combined 
     #H_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_smoothed(flow_post_SP$flow)) #Smoothed Code
@@ -421,11 +440,11 @@ Altered_Spring_Recession <- function(FlowYear) {
     
     #cat("\n Dry season place holder:", PH_DS_Tim)
     #DS_Tim[i] <- length(flow$flow)-length(flow_post_SP$flow)+PH_DS_Tim ORIGINAL CODE
-    DS_Tim[i] <- PH_DS_Tim+SP_Tim[i]
+    DS_Tim[i] <- PH_DS_Tim+SP_Tim[i]-1
     #The spring duration is the time between spring timing and dry season start timing
     SP_Dur[i] <- DS_Tim[i]-SP_Tim[i]
     
-    #cat("\n spring timing: ", SP_Tim[i],"  Dry season Timing: ", DS_Tim[i])
+    cat("\n spring timing: ", SP_Tim[i],"  Dry season Timing: ", DS_Tim[i], "SP Dur", SP_Dur[i])
     
     #Make an array of the rate of change values after the spring peak until the
     #Start of the dry season. This needs to start at the second value since the

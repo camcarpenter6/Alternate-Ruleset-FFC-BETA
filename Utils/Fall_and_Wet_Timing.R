@@ -40,10 +40,10 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
       next
     } 
     #Make a data frame of the flow year to check to see if it qualifies to run
-    check_flow <- filter(FlowYear, water_year== Water_Years[i])
+    check_flow <- dplyr::filter(FlowYear, water_year== Water_Years[i])
     
     #check to see if there are too many "0" values or NA/NaN values in the water year
-    if (sum(is.na(check_flow$flow) | is.nan(check_flow$flow))>= 100 || sum(check_flow$flow[check_flow$flow==0 & !is.na(check_flow$flow)])>= 365 | length(check_flow$date) < 358 | all(check_flow$flow<1)) {
+    if (sum(is.na(check_flow$flow) | is.nan(check_flow$flow))>= 100 | sum(check_flow$flow[check_flow$flow==0 & !is.na(check_flow$flow)])>= 364 | length(check_flow$date) < 358 | all(check_flow$flow<1)) {
       
       #If it does then set all the metrics to NA
       FA_Tim[i] <- NA
@@ -70,7 +70,7 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
     
     
     #Filters flow to the water year of interest and the previous water year
-    flow <- filter(FlowYear, water_year== Water_Years[i] | water_year== Water_Years[i-1])
+    flow <- dplyr::filter(FlowYear, water_year== Water_Years[i] | water_year== Water_Years[i-1])
     
     #first we need to find the point where our water year of interest starts
     #To do this we will convert the date field of the filtered data into an actual date
@@ -79,7 +79,7 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
     #Then we need to find the October 1st start date of the water year of interest
     WY_start <- which(month(date_data ) == 10 & day(date_data) == 1 & year(date_data) == (Water_Years[i]-1))
     
-    cat("\n Length of all flow: ", length(flow$flow), "\n Date of 365 timestep:", as.Date(flow$date[WY_start]) )
+    #cat("\n Length of all flow: ", length(flow$flow), "\n Date of 365 timestep:", as.Date(flow$date[WY_start]) )
     #sets up an initial dry season baseflow estimates
     #Temp_DS_Mag[i] <- median(flow$flow[DS_Tim[i]:length(flow$flow)])
     #Calculates the current water years median 
@@ -93,16 +93,16 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
     median_flow <- median(flow$flow)
     
     #Start by finding peaks that occur from October 1st to December 15th, anything that is less than 7 days counts
-    FA_peaks <- findpeaks(flow$flow[WY_start:(WY_start+75)],peakpat = "[+]{1,}[0]{,6}[-]{1,}", threshold = 10) 
+    FA_peaks <- findpeaks(flow$flow[WY_start:(WY_start+75)],peakpat = "[+]{1,}[0]{,40}[-]{1,}", threshold = 10) 
     
-    cat("\n WY start +75 = ", as.character( flow$date[(WY_start+75)]),"\n")
+    #cat("\n WY start +75 = ", as.character( flow$date[(WY_start+75)]),"\n")
     cat(FA_peaks)
     #Check to make sure the is data in the output from the peaks analysis
     if (length(FA_peaks)>0){
-      cat("found a pulse")
+      #cat("found a pulse")
       #Loop through the peaks to see if there is a qualifying peak
       for(j in 1:length(FA_peaks[,1])) {
-        cat("in fall loop")
+        #cat("in fall loop")
         #See if the last peak met the criteria if so break the loop
         if (FA_Check == TRUE) {
           break
@@ -125,10 +125,10 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
           
         }
         
-        cat("\n Temp_DS: ", Temp_DS_Mag,"\n")
+        #cat("\n Temp_DS: ", Temp_DS_Mag,"\n")
         #Check to see if the peak is larger than the estimated dry season baseflow
         if (FA_peaks[j,1] > 1.5*Temp_DS_Mag & FA_peaks[j,1] >= 1) {
-          cat("\n qual peak found \n")
+          #cat("\n qual peak found \n")
           #Store the identified timing for the fall pulse
           FA_Tim_Temp <- FA_peaks[j,2]
           FA_Dur_Temp<- FA_peaks[j,4] - FA_peaks[j,3]
@@ -147,18 +147,20 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
           Temp_Wet_Tim <- which(post_fall_flow > 1.5 * median_array)[1]
           
           #To get the dry season median we need to make sure there was a dry season timing next year
-          if(is.na(DS_Tim[i-1]) != TRUE & DS_Tim[i-1] > 0) {
+          if(is.na(DS_Tim[i-1]) != TRUE & DS_Tim[i-1] > 0 & is.na(Temp_Wet_Tim) != TRUE) {
+            
+            cat("DS?" , is.na(DS_Tim[i-1]), "\n", "FA_Tim_Temp?" , is.na(FA_Tim_Temp),"\n","FA_Dur_Temp?" , is.na(FA_Dur_Temp),"\n","Temp_Wet_Tim?" , is.na(Temp_Wet_Tim),"\n","WY_start?" , is.na(WY_start),"\n")
             
             #Calculate the potential dry season 50th percentile flow
             Temp_DS_Mag <- median(flow$flow[DS_Tim[i-1]:(FA_Tim_Temp+FA_Dur_Temp+Temp_Wet_Tim+WY_start)])
           }
           #If there wasn't a dry season timing then we will look at the entire flow array
-          else if (is.na(DS_Tim[i-1]) == TRUE | DS_Tim[i-1] < 0){
+          else if (is.na(DS_Tim[i-1]) == TRUE | DS_Tim[i-1] < 0 & is.na(Temp_Wet_Tim) != TRUE){
             #Calculate the potential dry season 50th percentile flow
             Temp_DS_Mag <- median(flow$flow[1:(FA_Tim_Temp+FA_Dur_Temp+Temp_Wet_Tim+WY_start)])
           }
           
-          cat("\n Wet start date mag: " , post_fall_flow[Temp_Wet_Tim], " Potential Fall Pulse: ", FA_Mag_Temp," thershold : ", (1.5*Temp_DS_Mag),"\n")
+          #cat("\n Wet start date mag: " , post_fall_flow[Temp_Wet_Tim], " Potential Fall Pulse: ", FA_Mag_Temp," thershold : ", (1.5*Temp_DS_Mag),"\n")
           #Check to see if the fall pulse is still 1.5 time the dry season 50th percentile flow 
           if (FA_Mag_Temp > 1.5*Temp_DS_Mag) {
             
@@ -171,7 +173,7 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
             #FA_Dif_ratio[i] <- FA_peaks[j,1]/Temp_DS_Mag
             FA_Dif_num[i] <- FA_peaks[j,1]-Temp_DS_Mag
             #Set the wet season start timing 
-            Wet_Tim[i] <- FA_Tim[i]+FA_Dur_Temp+Temp_Wet_Tim #Need to subtract one from the temporary time since the fall timing counted in both the fall timing and the Wet season timing
+            Wet_Tim[i] <- FA_Tim[i]+FA_Dur_Temp+Temp_Wet_Tim-2 #Need to subtract two from the temporary time since fall timing and duration double count a day as does the duration and temp timing
             
             #cat("\n Fall pluse timing: " ,FA_Tim[i],"\n Wet timing with fall pulse: ",Wet_Tim[i],"\n" )
             
@@ -268,7 +270,7 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
     #Now the code will look at if no fall pulses occurred
     if (FA_Check == FALSE) { 
       
-      cat("\n just wet ")
+      #cat("\n just wet ")
       
       #If there was no fall pulse then find the first pulse after that is 1.5 Dry season baseflow after the fall pulse period
       #first get the flow data from after the fall pulse window
@@ -276,15 +278,16 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
       
       #Now find the peaks after in the post fall window 
       WS_peaks <- findpeaks(Wet_Peaks_flow$flow, peakpat = "[+]{1,}[0]{,5}[-]{1,}",threshold = min((0.1*WY_median),10))
-      #cat(WS_peaks)
+      #cat("Wet Season Peaks",WS_peaks)
+      #cat("The length of WS peak",length(WS_peaks))
       #Check to make sure the is data in the output from the peaks analysis
       if (length(WS_peaks)>0){
-        
+        #cat("In the WS loop")
         #Loop through the peaks to see if there is a qualifying peak
         for(j in 1:length(WS_peaks[,1])) {
           #Check to see if the peaks meet 1.5 times the baseline threshold 
           #First make a vector of the flow values from the previous dry season until the potential peak
-
+          
           #To do this we need to make sure that there was a previous dry season timing
           #To get the dry season median we need to make sure there was a dry season timing next year
           if(is.na(DS_Tim[i-1]) != TRUE & DS_Tim[i-1] > 0) {
@@ -307,7 +310,7 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
             # so we need to check the timing of the peak
             
             #To do that we are first going to 90th percentile flow for the current flow year
-            current_flowyear <- filter(flow, water_year == Water_Years[i])
+            current_flowyear <- dplyr::filter(flow, water_year == Water_Years[i])
             
             
             threshold_90 <- quantile(current_flowyear$flow,0.9)
@@ -360,7 +363,7 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
         #IF all peaks are below the 90th flow percentile then we will just choose the day before the 1st day of 90th flow
         #If none of the post fall pulse peaks meet the criteria it is likely a peak prior to a hat scenario
         #and we want to find the last day before the 90th percentile flow of that flow year
-        Temp_dry_flow <- filter(FlowYear, water_year == Water_Years[i])
+        Temp_dry_flow <- dplyr::filter(FlowYear, water_year == Water_Years[i])
         Temp_dry_flow$flow <- replace_na(Temp_dry_flow$flow)
         threshold_90 <- quantile(Temp_dry_flow$flow,0.9)
         if(all(WS_peaks[,1]<1.5*Temp_DS_Mag) | length(WS_peaks)<=0){
@@ -385,8 +388,23 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
       else{  
         #If there aren't any peaks then it is likely hat scenario
         #and we want to find the last day before the 90th percentile flow of that flow year
-        Temp_dry_flow <- filter(FlowYear, water_year == Water_Years[i])
+        #cat("Went to hat check")
+        Temp_dry_flow <- dplyr::filter(FlowYear, water_year == Water_Years[i])
         Temp_dry_flow$flow <- replace_na(Temp_dry_flow$flow)
+        #cat(is.na(DS_Tim[i-1]) != TRUE & DS_Tim[i-1] > 0)
+        #cat("or",(is.na(DS_Tim[i-1]) == TRUE | DS_Tim[i-1] < 0) )
+        if(is.na(DS_Tim[i-1]) != TRUE & DS_Tim[i-1] > 0 ) {
+
+          #Calculate the potential dry season 50th percentile flow
+          Temp_DS_flow <- flow$flow[DS_Tim[i-1]:length(flow$flow)]
+          Temp_DS_Mag <- median(Temp_DS_flow)
+        }
+        else if (is.na(DS_Tim[i-1]) == TRUE | DS_Tim[i-1] < 0){
+          #cat("\n second loop")
+          #Calculate the potential dry season 50th percentile flow
+          Temp_DS_flow <- flow$flow[1:(WS_peaks[length(WS_peaks[,1]),2]+WY_start)]
+          Temp_DS_Mag <- median(Temp_DS_flow)
+        }
         threshold_90 <- quantile(Temp_dry_flow$flow,0.9)
         if(all(WS_peaks[,1]<1.5*Temp_DS_Mag) | length(WS_peaks)<=0){
           

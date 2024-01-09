@@ -19,7 +19,7 @@ Annual_Metrics <- function(FlowYear) {
   #Cycle through all the water years
   for (i in 1:length(WYs)) {
     #Filter the flow to the water year in quation
-    flow <- filter(FlowYear, water_year == WYs[i])
+    flow <- dplyr::filter(FlowYear, water_year == WYs[i])
     
     #Then we need to find the October 1st start date of the water year of interest
     #WY_start <- which(month(date_data ) == 10 & day(date_data) == 1 & year(date_data) == (Water_Years[i]-1))
@@ -78,7 +78,7 @@ Annual_Flow_Volume <- function(FlowYear) {
   
   for (i in 1:length(Water_Years)) {
     #Make a data frame of the flow year to check to see if it qualifies to run
-    flow <- filter(FlowYear, water_year == Water_Years[i])
+    flow <- dplyr::filter(FlowYear, water_year == Water_Years[i])
     
     #check to see if there are too many "0" values or NA/NaN values in the water year
     if (sum(is.na(flow$flow) | is.nan(flow$flow))>= 100 | length(flow$date) < 358) {

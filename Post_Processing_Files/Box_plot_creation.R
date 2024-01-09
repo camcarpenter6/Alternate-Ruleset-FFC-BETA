@@ -10,7 +10,9 @@ single_box_plots <- function(results_df, data_title,save_loc){
     
   for (col in cnames) {
     cat(col)
-    
+    if(all(is.na(results_df[[col]]))){
+      next
+    }
     col_index <- which(lable_df$Flow.Metric.Code==col)
     
     Boxplot <- ggplot() +
@@ -113,35 +115,87 @@ comparison_boxplots <- function(Metric_dataframe_1,name_1,Metric_dataframe_2,nam
     }
     if(typ == "wet year"){
       cat(typ)
-      Metric_set_1 <- filter(Metric_dataframe_1, WY_Cat == typ)
-      Metric_set_2 <- filter(Metric_dataframe_2, WY_Cat == typ)
+      Metric_set_1 <- filter(Metric_dataframe_1, WY_Cat == typ | 1)
+      Metric_set_2 <- filter(Metric_dataframe_2, WY_Cat == typ |1)
       if(!is.null(Metric_dataframe_3)){
-      Metric_set_3 <- filter(Metric_dataframe_3, WY_Cat == typ)
+      Metric_set_3 <- filter(Metric_dataframe_3, WY_Cat == typ | 1)
       comparison_box_plot_print(metrics_1 =  Metric_set_1,name_1 = name_1,metrics_2 =  Metric_set_2,name_2 = name_2,metrics_3 =  Metric_set_3,name_3 =  name_3,Year_type =  typ,save_loc =  save_loc,data_title = data_title)
       }else{
         comparison_box_plot_print(metrics_1 =  Metric_set_1,name_1 = name_1,metrics_2 =  Metric_set_2,name_2 = name_2,Year_type =  typ,save_loc =  save_loc,data_title = data_title)
       }
     }
     if(typ == "mod year"){
-      Metric_set_1 <- filter(Metric_dataframe_1, WY_Cat == typ)
-      Metric_set_2 <- filter(Metric_dataframe_2, WY_Cat == typ)
+      Metric_set_1 <- filter(Metric_dataframe_1, WY_Cat == typ | 2)
+      Metric_set_2 <- filter(Metric_dataframe_2, WY_Cat == typ | 2)
       if(!is.null(Metric_dataframe_3)){
-        Metric_set_3 <- filter(Metric_dataframe_3, WY_Cat == typ)
+        Metric_set_3 <- filter(Metric_dataframe_3, WY_Cat == typ | 2)
         comparison_box_plot_print(metrics_1 =  Metric_set_1,name_1 = name_1,metrics_2 =  Metric_set_2,name_2 = name_2,metrics_3 =  Metric_set_3,name_3 =  name_3,Year_type =  typ,save_loc =  save_loc,data_title = data_title)
       }else{
         comparison_box_plot_print(metrics_1 =  Metric_set_1,name_1 = name_1,metrics_2 =  Metric_set_2,name_2 = name_2,Year_type =  typ,save_loc =  save_loc,data_title = data_title)
       }
     }
-    if(typ == "dry year"){
-      Metric_set_1 <- filter(Metric_dataframe_1, WY_Cat == typ)
-      Metric_set_2 <- filter(Metric_dataframe_2, WY_Cat == typ)
+    if(typ == "dry year" |3){
+      Metric_set_1 <- filter(Metric_dataframe_1, WY_Cat == typ | 3)
+      Metric_set_2 <- filter(Metric_dataframe_2, WY_Cat == typ |3 )
       if(!is.null(Metric_dataframe_3)){
-        Metric_set_3 <- filter(Metric_dataframe_3, WY_Cat == typ)
+        Metric_set_3 <- filter(Metric_dataframe_3, WY_Cat == typ | 3)
         comparison_box_plot_print(metrics_1 =  Metric_set_1,name_1 = name_1,metrics_2 =  Metric_set_2,name_2 = name_2,metrics_3 =  Metric_set_3,name_3 =  name_3,Year_type =  typ,save_loc =  save_loc,data_title = data_title)
       }else{
         comparison_box_plot_print(metrics_1 =  Metric_set_1,name_1 = name_1,metrics_2 =  Metric_set_2,name_2 = name_2,Year_type =  typ,save_loc =  save_loc,data_title = data_title)
       }
     }
 
+  }
+}
+
+
+comparison_boxplots_Batch<- function(Metric_dataframe_1,name_1,Metric_dataframe_2,name_2 ,Metric_dataframe_3=NULL,name_3=NULL,gage_id,save_loc){
+  ##Now make comparison Bar charts Need to run through step 4 to produce
+  ##Loop through all the column names besides years to make the box plots
+  
+  Year_Typ <- c("All Years", "wet year" , "mod year" , "dry year" )
+  
+  data_title <- paste0("Gage ", gage_id," FFC Comparison ")
+  
+  for (typ in Year_Typ){
+    if(typ == "All Years"){
+      if(!is.null(Metric_dataframe_3)){
+        comparison_box_plot_print(metrics_1 =  Metric_dataframe_1,name_1 = name_1,metrics_2 =  Metric_dataframe_2,name_2 = name_2 ,metrics_3 =   Metric_dataframe_3 ,name_3 = name_3, Year_type =  typ,save_loc =save_loc, data_title = data_title)#
+      }else{
+        comparison_box_plot_print(metrics_1 =  Metric_dataframe_1,name_1 = name_1,metrics_2 =  Metric_dataframe_2,name_2 = name_2,Year_type  =  typ,save_loc =  save_loc,data_title = data_title)#
+      }
+    }
+    if(typ == "wet year"){
+      cat(typ)
+      Metric_set_1 <- filter(Metric_dataframe_1, WY_Cat == typ | 1)
+      Metric_set_2 <- filter(Metric_dataframe_2, WY_Cat == typ |1)
+      if(!is.null(Metric_dataframe_3)){
+        Metric_set_3 <- filter(Metric_dataframe_3, WY_Cat == typ | 1)
+        comparison_box_plot_print(metrics_1 =  Metric_set_1,name_1 = name_1,metrics_2 =  Metric_set_2,name_2 = name_2,metrics_3 =  Metric_set_3,name_3 =  name_3,Year_type =  typ,save_loc =  save_loc,data_title = data_title)
+      }else{
+        comparison_box_plot_print(metrics_1 =  Metric_set_1,name_1 = name_1,metrics_2 =  Metric_set_2,name_2 = name_2,Year_type =  typ,save_loc =  save_loc,data_title = data_title)
+      }
+    }
+    if(typ == "mod year"){
+      Metric_set_1 <- filter(Metric_dataframe_1, WY_Cat == typ | 2)
+      Metric_set_2 <- filter(Metric_dataframe_2, WY_Cat == typ | 2)
+      if(!is.null(Metric_dataframe_3)){
+        Metric_set_3 <- filter(Metric_dataframe_3, WY_Cat == typ | 2)
+        comparison_box_plot_print(metrics_1 =  Metric_set_1,name_1 = name_1,metrics_2 =  Metric_set_2,name_2 = name_2,metrics_3 =  Metric_set_3,name_3 =  name_3,Year_type =  typ,save_loc =  save_loc,data_title = data_title)
+      }else{
+        comparison_box_plot_print(metrics_1 =  Metric_set_1,name_1 = name_1,metrics_2 =  Metric_set_2,name_2 = name_2,Year_type =  typ,save_loc =  save_loc,data_title = data_title)
+      }
+    }
+    if(typ == "dry year" |3){
+      Metric_set_1 <- filter(Metric_dataframe_1, WY_Cat == typ | 3)
+      Metric_set_2 <- filter(Metric_dataframe_2, WY_Cat == typ |3 )
+      if(!is.null(Metric_dataframe_3)){
+        Metric_set_3 <- filter(Metric_dataframe_3, WY_Cat == typ | 3)
+        comparison_box_plot_print(metrics_1 =  Metric_set_1,name_1 = name_1,metrics_2 =  Metric_set_2,name_2 = name_2,metrics_3 =  Metric_set_3,name_3 =  name_3,Year_type =  typ,save_loc =  save_loc,data_title = data_title)
+      }else{
+        comparison_box_plot_print(metrics_1 =  Metric_set_1,name_1 = name_1,metrics_2 =  Metric_set_2,name_2 = name_2,Year_type =  typ,save_loc =  save_loc,data_title = data_title)
+      }
+    }
+    
   }
 }

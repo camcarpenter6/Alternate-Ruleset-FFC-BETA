@@ -22,7 +22,7 @@ Wet_Dry_Season_Non_Tim_Metrics <- function(FlowYear,SP_Tim,DS_Tim, Wet_Tim){
     #cat("\n Water Year", WYs[i],"\n")
     
     #filter the flow to the water year in question
-    Filteryear1 <- filter(FlowYear, water_year == WYs[i])
+    Filteryear1 <- dplyr::filter(FlowYear, water_year == WYs[i])
     
     #Check to see if there were too many 0's or NA values in this water year
     
@@ -130,7 +130,7 @@ Wet_Dry_Season_Non_Tim_Metrics <- function(FlowYear,SP_Tim,DS_Tim, Wet_Tim){
       next
     }
     
-    Filteryear2 <- filter(FlowYear, water_year == WYs[i] | water_year == WYs[i]+1)
+    Filteryear2 <- dplyr::filter(FlowYear, water_year == WYs[i] | water_year == WYs[i]+1)
     
     if(!is.na(DS_Tim[i]) & DS_Tim[i] > 0 ){
       DS <- Filteryear2$flow[DS_Tim[i]:(Wet_Tim[i+1]+365)]
