@@ -15,42 +15,6 @@ rate_of_change <- function(flow) {
   
 }
 
-#Summer Breakpoint method
-Altered_Summer_Dry_Season_Tim_breakpoint_method <- function(flow_matrix,SP_Mag) {
-  #Calculate difference of from the spring recession 
-  flow_matrix$diff <- abs(flow_matrix$flow - SP_Mag)
-  
-  #Sort the flows based on difference 
-  flow_matrix_sorted <- flow_matrix %>% arrange(desc(diff))
-  
-  #Add the index column to the data frame
-  for (i in 1:nrow(flow_matrix_sorted)) {
-    
-    flow_matrix_sorted[i,"id"] <- i
-    
-  }
-  
-  #calculate the day to day changes of the comparison of the flow to the spring recession
-  flow_matrix_sorted$change <- c(0,diff(flow_matrix_sorted$diff))
-  
-  #only look at times of significant change
-  filtered_flows <- subset(flow_matrix_sorted, abs(change)>6.5 | abs(change)>median(flow_matrix_sorted$flow)/10 )
-  
-  #Look at the day with the largest change
-  Max_change_day <- filter(filtered_flows,abs(change) == max(abs(change)))
-  
-  #Now we will only look at the days with at least this size difference
-  dry_season_days <- filter(flow_matrix_sorted, id < Max_change_day$id)
-  
-  DS_date <- min(dry_season_days$date)
-  
-  #Now lets find the earliest day that meets the difference requrement
-  DS_Tim <- which(flow_matrix == DS_date)
-  
-  return(DS_Tim)
-  
-}
-
 #Define a function that finds the dry season timing given the flow after the top of the spring recession until the end of the water year
 Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thresh = 0.02) {
   median <- median(flow)
@@ -86,7 +50,7 @@ Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thres
       if (n_consec == day_thresh) {
         #cat("\n \n Summer should be done")
         idx_consec <- seq(idx_start, i)
-        #cat("\n number in iteration: ", i,"\n consectutive: ", n_consec, "number of days required: ", day_thresh, "\n idx_consec: ", idx_consec, "\n num neg: ", n_neg)
+
         break
       }
     }
@@ -133,99 +97,6 @@ Altered_Summer_Dry_Season_Tim_Varied <- function(flow, day_thresh = 5, roc_thres
   }
   
   #cat("\n DS tim: ",DS_Tim, "\n Should go out of the loop \n")
-  return(DS_Tim)
-}
-
-#Define a function that finds the dry season timing given the flow after the top of the spring recession until the end of the water year
-Altered_Summer_Dry_Season_Tim <- function(flow) {
-  median <- median(flow)
-  roc <- rate_of_change(flow)
-  # Initialize variables
-  n_consec <- 0
-  n_neg <-0
-  idx_consec <- NULL
-  idx_start <- NULL
-  
-  # Loop through the time series
-  for (i in seq_along(flow)) {
-    #If the program has not found a qualifying timing in entire vector then assign a NA to the dry season timing
-    #Since there isn't a rate of change value for index 1 set is at the first possible start and continue the loop
-    if(i==1){
-      idx_start <- i
-      next
-    }
-    if (i == length(flow)){
-      DS_Tim <- NA
-    }
-    # Check if this is the first value in a potential consecutive sequence
-    if (is.null(idx_start)) {
-      idx_start <- i
-      
-    }
-    # Check if the current value is within 2% of the previous value
-    if (abs(roc[i]) <= .02 | flow[i] < 2 & !is.null(idx_start)) {
-      n_consec <- n_consec + 1
-      if (roc[i]<0){
-        n_neg <- n_neg+1
-      }
-      # Check if this is the fourth consecutive value that meets the criteria
-      if (n_consec == 5) {
-        #cat("should be done")
-        idx_consec <- seq(idx_start, i)
-        break
-      }
-    }
-    # Reset the consecutive counter if the current value is not within 2% of the previous value
-    else {
-      n_consec <- 0
-      n_neg <-0
-      idx_start <- NULL
-    }
-    #cat("\n number in iteration: ", i,"\n consectutive: ", n_consec)
-  }
-  #This is just for testing on FNF date but is there is a year where there aren't 5 days of 2% change or less than try less than 5%
-  if (is.null(idx_consec) == TRUE){
-    idx_consec <- NULL
-    idx_start <- NULL
-    # Loop through the time series
-    for (i in seq_along(flow)) {
-      if(i==1){
-        idx_start <- i
-        next
-      }
-      # Check if this is the first value in a potential consecutive sequence
-      if (is.null(idx_start)) {
-        idx_start <- i
-      }
-      # Check if the current value is within 5% of the previous value
-      if (abs(roc[i]) <= .05 | flow[i] < 2 & !is.null(idx_start)) {
-        n_consec <- n_consec + 1
-        if (roc[i]<0){
-          n_neg <- n_neg+1
-        }
-        # Check if this is the fourth consecutive value that meets the criteria
-        if (n_consec == 5) {
-          idx_consec <- seq(idx_start, i)
-          break
-        }
-      }
-      # Reset the consecutive counter if the current value is not within 2% of the previous value
-      else {
-        n_consec <- 0
-        n_neg <-0
-        idx_start <- NULL
-      }
-      #cat("\n number in iteration: ", i,"\n consectutive: ", n_consec)
-    }
-  }
-  
-  if (n_neg > 3){
-    DS_Tim <- (idx_consec[5]+1)
-  }
-  else if (n_neg <=3){
-    DS_Tim <- (idx_consec[1]+1)
-  }
-  #cat(DS_Tim)
   return(DS_Tim)
 }
 
@@ -314,9 +185,11 @@ Altered_Spring_Recession <- function(FlowYear) {
           #Sort all the peaks by the date of the peak
           peaks_all <- peaks_all[order(peaks_all$V2,decreasing = FALSE),]
           
-          #Filter out peaks that are not above the 90th percentile and peaks that are in september
-          peaks_90 <- filter(peaks_all, peaks_all$V1 > quants[2])
-          peaks_90 <- filter(peaks_90, peaks_90$V2 <330)
+
+          #Filter out peaks that are not above the 90th percentile and peaks that are in September
+          peaks_90 <- dplyr::filter(peaks_all, peaks_all$V1 > quants[2])
+          peaks_90 <- dplyr::filter(peaks_90, peaks_90$V2 <345)
+
           
         }
         else {
@@ -383,21 +256,20 @@ Altered_Spring_Recession <- function(FlowYear) {
     }
     #Calculate the rate of change for the rest of the year after the top of the spring recession
     roc <- rate_of_change(flow_post_SP$flow)
+    
+    #Set a min flow threshold for the dry season to start based on the spring and min dry season baseflow
+    #This is based on the threshold in the original calculator
+    min_summer_flow_percent <- 0.125
+    WY_max_flow <- max(flow$flow,na.rm = TRUE)
+    post_SP_min_flow <- min(flow_post_SP$flow, na.rm = TRUE) 
+    Min_DS_Threshold <- post_SP_min_flow + (WY_max_flow-post_SP_min_flow)*min_summer_flow_percent
+    #cat("\n thresh DS: ", Min_DS_Threshold, "\n")  
     #cat("\n",SP_Tim[i],"\n" )
     #calculate the dry season start timing by subtracting the length of the water year by the time remaining 
     #after the spring recession peak and then add the timing of the start of the dry season after the spring peak
-    #PH_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_breakpoint_method(flow_post_SP,SP_Mag[i])) #Original Code
-    PH_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_Varied(flow_post_SP$flow)) #varying qualification Code
-    #PH_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_Squ_Dif(flow_post_SP$flow)) #Square Dif Method
-    #PH_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_Merged(flow_post_SP$flow)) #combined 
-    #H_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_smoothed(flow_post_SP$flow)) #Smoothed Code
+
+    PH_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_Varied(flow_post_SP$flow,flow_thresh = Min_DS_Threshold)) #varying qualification Code
     
-    #set threshold 
-    #threshold <- min(flow$flow)
-    #threshold <- quantile(flow$flow, .10)
-    
-    #Then new code door Dry season
-    #PH_DS_Tim <- as.numeric(Altered_Summer_Dry_Season_Tim_Squ_Dif_threshold(flow_post_SP$flow,threshold))
     
     #cat("\n PH Dry",PH_DS_Tim,"\n is the place holder null", is.null(PH_DS_Tim))
     
@@ -412,7 +284,7 @@ Altered_Spring_Recession <- function(FlowYear) {
       next
     }
     
-    if (i == length(Water_Years) & length(as.numeric(Altered_Summer_Dry_Season_Tim(flow_post_SP$flow)))<1){
+    if (i == length(Water_Years) & length(as.numeric(Altered_Summer_Dry_Season_Tim_Varied(flow_post_SP$flow,flow_thresh = Min_DS_Threshold)))<1){
       PH_DS_Tim <- length(flow_post_SP$flow)
     }
     #It is possible that if all the flows are below 2 cfs then the dry season will be set to 0
@@ -426,7 +298,6 @@ Altered_Spring_Recession <- function(FlowYear) {
     #The spring duration is the time between spring timing and dry season start timing
     SP_Dur[i] <- DS_Tim[i]-SP_Tim[i]
     
-    #cat("\n spring timing: ", SP_Tim[i],"  Dry season Timing: ", DS_Tim[i])
     
     #Make an array of the rate of change values after the spring peak until the
     #Start of the dry season. This needs to start at the second value since the

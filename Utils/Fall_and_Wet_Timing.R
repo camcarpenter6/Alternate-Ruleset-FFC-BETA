@@ -293,7 +293,7 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
       #cat(WS_peaks)
       #Check to make sure the is data in the output from the peaks analysis
       if (length(WS_peaks)>0){
-        
+
         #Loop through the peaks to see if there is a qualifying peak
         for(j in 1:length(WS_peaks[,1])) {
           #Check to see if the peaks meet 1.5 times the baseline threshold 
@@ -401,10 +401,30 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
         #and we want to find the last day before the 90th percentile flow of that flow year
         Temp_dry_flow <- filter(FlowYear, water_year == Water_Years[i])
         Temp_dry_flow$flow <- replace_na(Temp_dry_flow$flow)
+
+        #cat(is.na(DS_Tim[i-1]) != TRUE & DS_Tim[i-1] > 0)
+        #cat("or",(is.na(DS_Tim[i-1]) == TRUE | DS_Tim[i-1] < 0) )
+        if(is.na(DS_Tim[i-1]) != TRUE & DS_Tim[i-1] > 0 ) {
+
+          #Calculate the potential dry season 50th percentile flow
+          Temp_DS_flow <- flow$flow[DS_Tim[i-1]:length(flow$flow)]
+          Temp_DS_Mag <- median(Temp_DS_flow)
+        }
+        else if ((is.na(DS_Tim[i-1]) == TRUE | DS_Tim[i-1]) < 0 & length(WS_peaks)>0){
+          cat("\n second loop")
+          #Calculate the potential dry season 50th percentile flow
+          Temp_DS_flow <- flow$flow[1:(WS_peaks[length(WS_peaks[,1]),2]+WY_start)]
+          Temp_DS_Mag <- median(Temp_DS_flow)
+        }
+        else {
+          Temp_DS_flow <- flow$flow
+          Temp_DS_Mag <- median(Temp_DS_flow)
+        }
+
         threshold_90 <- quantile(Temp_dry_flow$flow,0.9)
         if(all(WS_peaks[,1]<1.5*Temp_DS_Mag) | length(WS_peaks)<=0){
           
-          #cat("\n hat \n")
+          cat("\n hat \n")
           
           #Find subset of data above the 90th percentile
           flow_90th <- subset(Temp_dry_flow, flow >= max(threshold_90 )& flow >0)
