@@ -82,6 +82,34 @@ get_cdec <- function(
 
 
 # Gets the site name and  a USGS or CDEC ID and assign title and class
+get_gage_data_Batch_Compare <- function(gage_id) {
+  result <- Gage_information %>%
+    dplyr::filter(siteid == gage_id)
+  
+  if (nrow(result) == 0) {
+    cat(paste0("Gage ID not found. Please enter a site name for gage ", gage_id,": "))
+    site_name <- readline()
+    cat(paste0("Please enter a stream class (Defult 3) for gage ", gage_id,": "))
+    class <- as.numeric(readline())
+    cat(paste0("Please enter the stream comid for gage ", gage_id,": "))
+    comid <- readline()
+  } else if(is.nan(result$Class) | is.na(result$Class)) {
+    site_name <- result$sitename
+    cat(paste0("Stream class not found for gage ",gage_id,". Please enter a stream class (Defult 3): "))
+    class <- as.numeric(readline())
+    site_name <- result$sitename
+    comid <- result$COMID
+  }
+  else{
+    site_name <- result$sitename
+    class <- result$Class
+    comid <- result$COMID
+  }
+  
+  return(list(site_name = site_name, class = class, comid = comid))
+}
+
+# Gets the site name and  a USGS or CDEC ID and assign title and class
 get_gage_data <- function(gage_id) {
   result <- Gage_information %>%
     dplyr::filter(siteid == gage_id)

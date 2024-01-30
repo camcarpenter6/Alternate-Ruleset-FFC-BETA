@@ -242,7 +242,8 @@ HTML_comparison_OrginalvsAlternate <- function(flow_1, flow_2, metrics_1, metric
     ggtitle(fig_title)
 
   print_fig <- ggplotly(test_fig, dynamicTicks = "y")
-  cat("\n broke after print fig  \n")
+
+
   print(print_fig)  
   
   # Save interactive hydrograph as .html webpage

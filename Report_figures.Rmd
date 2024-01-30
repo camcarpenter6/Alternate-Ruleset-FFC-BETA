@@ -1,0 +1,660 @@
+install.packages("rmarkdown")
+install.packages('smoother')
+devtools::install_github("thomasp85/patchwork")
+library(patchwork)
+
+
+```{r}
+#defining the function that will plot the metrics 
+comparison_violin_plot_print<- function(metrics_1, metrics_2,stream_class,data_title){
+  
+  lable_df <- read.csv("./Post_Processing_Files/Box_plot_lables.csv",header = T)
+  
+  lable_df <- lable_df[1:24,]
+  
+  cnames <- colnames(metrics_1)
+  
+  for (col in cnames[2:length(cnames)-1]) {
+    #Check to see if the entire column are NA or NAN values
+    if (all(is.na(metrics_1[[col]]) | is.nan(metrics_1[[col]]))) {
+      # Set all values in the column to 0
+      metrics_1[[col]] <- 0
+    }
+    
+    # Replace negative numbers with NA in metrics_1
+    metrics_1[[col]][metrics_1[[col]] < 0] <- NA
+    
+    #Move data from the dataframe to the placeholder list
+    placeholder1 <- metrics_1[col]
+    
+    
+    #Check to see if the entire column are NA or NAN values
+    if (all(is.na(metrics_2[[col]]) | is.nan(metrics_2[[col]]))) {
+      # Set all values in the column to 0
+      metrics_2[[col]] <- 0
+    }
+    
+    # Replace negative numbers with NA
+    metrics_2[[col]][metrics_2[[col]] < 0] <- NA
+    
+    placeholder2 <- metrics_2[col]
+  
+    
+    col_index <- which(lable_df$Flow.Metric.Code==col)
+    
+    #cat(col)
+    
+    Violinplot <- ggplot() +
+      geom_violin(aes(x = "FFC metrics", y = as.numeric(unlist(placeholder1))), fill = "green") +
+      geom_boxplot(aes(x = "FFC metrics", y = as.numeric(unlist(placeholder1))), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "BFFC metrics", y = as.numeric(unlist(placeholder2))), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC metrics", y = as.numeric(unlist(placeholder2))), color = "darkblue", alpha = 0.6)
+      
+      Violinplot <- Violinplot +
+      labs(x = "Flow Regimes", y = lable_df$Unit[col_index], title = paste(data_title, "-", lable_df$Flow.Metric.Name[col_index]))
+    
+    plot(Violinplot)
+
+    ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/",stream_class,"/",lable_df$Flow.Metric.Name[col_index],".png"), plot = Violinplot, device = "png")
+  }
+}
+```
+
+Spring recession start finding figure
+```{r}
+# Figure for showing spring recession start
+
+#load in the flow 
+flow_g_11172945 <- read.csv("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 7  Reference Gages/11172945/11172945_flow.csv", header = T) %>%
+  mutate(date = as.Date(date, "%m/%d/%Y"))
+
+ #Format the data for the calculator 
+  FlowYear <- attach_water_year_data(flow_g_11172945, date_field = "date")
+  
+
+  fig_flow <- filter(FlowYear, water_year == 2016)
+  
+  if (!require(gridExtra)) {
+  install.packages("gridExtra")
+  library(gridExtra)
+  }
+  x <- seq(1,366,1)
+ #Filter the flow to remove the noise on the rising limb
+  window <- 4
+  alpha <- 1.3
+  filter_flow <- smth.gaussian(fig_flow$flow,window = window, alpha = alpha, tails = TRUE)
+      
+#Calculate the peaks that occur throughout the year
+  peaks <- as.data.frame(findpeaks(filter_flow),threshold = min((0.15*WY_median),15))
+      
+  #We also want to consider peaks that are flat the limit was set as 3 "flat" points for these
+  peaks_2 <- as.data.frame(findpeaks(filter_flow, peakpat = "[+]{1,}[0]{1,3}[-]{1,}"),threshold = min((0.15*WY_median),15))
+      
+  #combine the two data sets of peaks
+  peaks_all <- bind_rows(peaks,peaks_2)
+      
+  peak_dates <- peaks_all %>%  #Update the name of the data from
+    mutate(peak_date = as.Date(paste(V2, 2016), '%j %Y')-92) #Date in Julian days
+      
+  fig_quants <- quantile(fig_flow$flow, probs = c(0.5, 0.9),na.rm = TRUE, names = FALSE)
+      
+  thresh <- rep(fig_quants[2],length(fig_flow$date))
+      
+  
+  fig_peaks_90 <- dplyr::filter(peaks_all, peaks_all$V1 > fig_quants[2])
+  fig_peaks_90 <- dplyr::filter(fig_peaks_90, fig_peaks_90$V2 <345)
+  
+  PH1_start <- tail(fig_peaks_90[,2],1)
+  PH1_poten <- seq(PH1_start - 2, PH1_start + 2, by = 1)
+  max_flow_check <- which(fig_flow$flow[PH1_poten]==max(fig_flow$flow[PH1_poten]))[length(which(fig_flow$flow[PH1_poten]==max(fig_flow$flow[PH1_poten])))]
+  springindex_PH1 <- tail(fig_peaks_90[,2],1)-5+max_flow_check
+  
+  flow_df <- data_frame(x,fig_flow, thresh)
+      
+  flow_df  <- flow_df %>% 
+    left_join(dplyr::select(peaks_all, V2, V1), by = c("x" = "V2"))
+      
+    
+    #Assign the last peak of the year as the first potential spring timing
+  PH1_start <- tail(fig_peaks_90[,2],1)
+  PH1_poten <- seq(PH1_start - 2, PH1_start + 2, by = 1)
+  max_flow_check <- which(flow$flow[PH1_poten]==max(flow$flow[PH1_poten]))[length(which(flow$flow[PH1_poten]==max(flow$flow[PH1_poten])))]
+  springindex_PH1 <- tail(fig_peaks_90[,2],1)-5+max_flow_check
+  
+  SP_met <- data.frame(SP_tim = springindex_PH1,SP_Mag = fig_flow$flow[springindex_PH1])
+    
+  flow_df  <- flow_df %>% 
+    left_join(dplyr::select(SP_met, SP_Mag, SP_tim), by = c("x" = "SP_tim"))
+  
+# Create ggplot objects for each sub-figure
+plot1 <- ggplot(data.frame(x, fig_flow$flow), aes(x, fig_flow$flow)) + geom_line(color = "black") + ggtitle("Flow Year")+
+  #scale_color_manual(values = c("black"))+
+  labs(x = "Day of Water Year", y = "Flow (cfs)")+
+  ggtitle("Step 1: Filter Flow Data to Single Water Year")+
+  #theme_minimal() +
+  theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))  # Adjust height as needed
+
+plot2 <- ggplot(data.frame(x, fig_flow$flow,filter_flow), aes(x)) + geom_line(aes(y = fig_flow$flow, color = "Raw Flow Data"))+geom_line(aes(y = filter_flow, color = "Smoothed FLow Data")) +
+  ggtitle("Flow smoothed using narrow Gaussian filter")+
+  scale_color_manual(values = c("black", "blue"))+
+  annotate("text", x = 50, y = max(fig_flow$flow)+30,hjust=.2, label = "Gaussian filter with window of 4 days and alpha of 1.3")+
+  labs(x = "Day of Water Year", y = "Flow (cfs)")+
+  ggtitle("Step 2: Smooth Flow Data ")+
+  #theme_minimal() +
+  theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))  # Adjust height as needed
+
+plot3 <- ggplot(data.frame(flow_df), aes(x)) + geom_line(aes(y = fig_flow$flow, color = "Raw Flow Data"))+
+  geom_line(aes(y = filter_flow, color = "Smoothed FLow Data")) +
+  geom_point(aes( y = V1, color = "Identified Peaks"), shape = 1,size = 1.5) +
+  geom_line(aes(y = thresh, color = "Minimum Threshold for Spring \n Recession Start (90th percentile of flow)"))+ 
+  ggtitle("Step 3: Finding Peaks and Setting Minimum Thershold")+
+  scale_color_manual(values = c("red", "green","black", "blue"))+
+  labs(x = "Day of Water Year", y = "Flow (cfs)")+
+  annotate("text", x = 50, y = max(fig_flow$flow)+30,hjust=.2, label = "Peaks found across the water year")+
+  #theme_minimal() +
+  theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))  # Adjust height as needed
+  
+plot4 <- ggplot(data.frame(flow_df), aes(x)) + geom_line(aes(y = fig_flow$flow, color = "Raw Flow Data"))+
+  geom_point(aes( y = SP_Mag, color = "Spring Recession Start"), shape = 1,size = 1.5) +
+  ggtitle("Step 4: Final Spring Recession Start Timing Found")+
+  scale_color_manual(values = c("black", "green"))+
+  labs(x = "Day of Water Year", y = "Flow (cfs)")+
+  annotate("text", x = 4, y = 0.8, label = "Last qulified peak found and then translated back to original flow data.")+
+  #theme_minimal() +
+  theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))  # Adjust height as needed
+
+# Arrange ggplot objects in a 2x2 grid
+#test_fig <- grid.arrange(plot1, plot2, plot3, plot4, ncol = 2)
+
+#print(test_fig)
+
+# Arrange ggplot objects using patchwork
+arranged_plots <- plot1 / plot2 / plot3 / plot4 / plot_layout(ncol = 1, widths = 20, heights = 40)
+
+# Print the arranged plots
+arranged_plots
+
+
+ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/Spring Recession Start Timing.png"), plot = arranged_plots, dpi = 300, device = "png")
+ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/Spring Recession Start Timing_ step 1.png"), plot = plot1, device = "png")
+ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/Spring Recession Start Timing_ step 2.png"), plot = plot2, device = "png")
+ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/Spring Recession Start Timing_ step 3.png"), plot = plot3, device = "png")
+ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/Spring Recession Start Timing_ step 4.png"), plot = plot4, device = "png")
+```
+flow_g_11172945 <- read_csv("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 7  Reference Gages/11172945/11172945_flow.csv", header = T)
+
+plot1 + plot2
+
+
+Make the figures for Class 1
+
+```{r}
+#make the figures for class 1
+
+# Function to read CSV files into a list of data frames
+read_csv_files <- function(files) {
+  lapply(files, function(file) {
+    read.csv(file)
+  })
+}
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 1 Reference Gage", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 1 Reference Gage", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
+
+#Now we can read in all of the csv's files
+#first with the BFFC
+BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+
+BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+
+#Second with ffc metrics
+FFC_metrics_dfs <- read_csv_files(files_original_ffc)
+
+FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+
+#Now cycle through the names in the dataframes and make comaring viollin plots
+cnames <- colnames(FFC_metrics)
+
+comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Class 1", data_title = "Class 1 metric comparison")
+```
+
+
+Make the figures for Class 2
+
+```{r}
+#make the figures for class 2
+
+# Function to read CSV files into a list of data frames
+read_csv_files <- function(files) {
+  lapply(files, function(file) {
+    read.csv(file)
+  })
+}
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 2 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 2 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
+
+#Now we can read in all of the csv's files
+#first with the BFFC
+BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+
+BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+
+#Second with ffc metrics
+FFC_metrics_dfs <- read_csv_files(files_original_ffc)
+
+FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+
+#Now cycle through the names in the dataframes and make comaring viollin plots
+cnames <- colnames(FFC_metrics)
+
+comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Class 2", data_title = "Class 2 metric comparison")
+```
+
+
+
+Make the figures for Class 3
+
+```{r}
+#make the figures for class 3
+
+# Function to read CSV files into a list of data frames
+read_csv_files <- function(files) {
+  lapply(files, function(file) {
+    read.csv(file)
+  })
+}
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 3 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 3 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
+
+#Now we can read in all of the csv's files
+#first with the BFFC
+BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+
+BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+
+#Second with ffc metrics
+FFC_metrics_dfs <- read_csv_files(files_original_ffc)
+
+FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+
+#Now cycle through the names in the dataframes and make comaring viollin plots
+cnames <- colnames(FFC_metrics)
+
+comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Class 3", data_title = "Class 3 metric comparison")
+```
+
+Make the figures for Class 4
+
+```{r}
+#make the figures for class 4
+
+# Function to read CSV files into a list of data frames
+read_csv_files <- function(files) {
+  lapply(files, function(file) {
+    read.csv(file)
+  })
+}
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 4 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 4 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
+
+#Now we can read in all of the csv's files
+#first with the BFFC
+BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+
+BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+
+#Second with ffc metrics
+FFC_metrics_dfs <- read_csv_files(files_original_ffc)
+
+FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+
+#Now cycle through the names in the dataframes and make comaring viollin plots
+cnames <- colnames(FFC_metrics)
+
+comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Class 4", data_title = "Class 4 metric comparison")
+```
+
+
+
+Make the figures for Class 5
+
+```{r}
+#make the figures for class 5
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 5 Reference gage 11377100", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 5 Reference gage 11377100", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
+
+#Now we can read in all of the csv's files
+#first with the BFFC
+BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+
+BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+
+#Second with ffc metrics
+FFC_metrics_dfs <- read_csv_files(files_original_ffc)
+
+FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+
+#Now cycle through the names in the dataframes and make comaring viollin plots
+cnames <- colnames(FFC_metrics)
+
+comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Class 5", data_title = "Class 5 metric comparison")
+```
+
+
+
+Make the figures for Class 6
+
+```{r}
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 6 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 6 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
+
+#Now we can read in all of the csv's files
+#first with the BFFC
+BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+
+BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+
+#Second with ffc metrics
+FFC_metrics_dfs <- read_csv_files(files_original_ffc)
+
+FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+
+#Now cycle through the names in the dataframes and make comaring viollin plots
+cnames <- colnames(FFC_metrics)
+
+comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Class 6", data_title = "Class 6 metric comparison")
+```
+
+
+Make the figures for Class 7 
+
+```{r}
+#I
+
+# Function to read CSV files into a list of data frames
+read_csv_files <- function(files) {
+  lapply(files, function(file) {
+    read.csv(file)
+  })
+}
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 7  Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 7  Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
+
+#Now we can read in all of the csv's files
+#first with the BFFC
+BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+
+BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+
+#Second with ffc metrics
+FFC_metrics_dfs <- read_csv_files(files_original_ffc)
+
+FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+
+#Now cycle through the names in the dataframes and make comaring viollin plots
+cnames <- colnames(FFC_metrics)
+
+comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Class 7", data_title = "Class 7 metric comparison")
+```
+
+
+
+Make the figures for Class 8
+
+```{r}
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 8 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 8 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
+
+#Now we can read in all of the csv's files
+#first with the BFFC
+BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+
+BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+
+#Second with ffc metrics
+FFC_metrics_dfs <- read_csv_files(files_original_ffc)
+
+FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+
+#Now cycle through the names in the dataframes and make comaring viollin plots
+cnames <- colnames(FFC_metrics)
+
+comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Class 8", data_title = "Class 8 metric comparison")
+```
+
+
+
+Make the figures for Class 9
+
+```{r}
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 9 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 9 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
+
+#Now we can read in all of the csv's files
+#first with the BFFC
+BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+
+BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+
+#Second with ffc metrics
+FFC_metrics_dfs <- read_csv_files(files_original_ffc)
+
+FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+
+#Now cycle through the names in the dataframes and make comaring viollin plots
+cnames <- colnames(FFC_metrics)
+
+comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Class 9", data_title = "Class 9 metric comparison")
+```
+
+
+
+Make the figures for all reference snow driven 
+
+```{r}
+
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc_class1 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 1 Reference Gage", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc_class1 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 1 Reference Gage", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc_class9 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 9 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc_class9 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 9 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+ffc_files <- c(files_original_ffc_class1,  files_original_ffc_class9)
+
+bffc_files <- c(files_metrics_bffc_class1 ,files_metrics_bffc_class9)
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_list <- bffc_files[!bffc_files %in% ffc_files]
+
+#Now we can read in all of the csv's files
+#first with the BFFC
+BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+
+BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+
+#Second with ffc metrics
+FFC_metrics_dfs <- read_csv_files(ffc_files)
+
+FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+
+#Now cycle through the names in the dataframes and make comaring viollin plots
+cnames <- colnames(FFC_metrics)
+
+comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Snow Driven Classes", data_title = "Snow Driven Classes metric comparison")
+```
+
+
+Make the figures for all reference rain driven 
+
+```{r}
+
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc_class4 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 4 Reference", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc_class4 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 4 Reference", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc_class6 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 6 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc_class6 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 6 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc_class7 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 7  Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc_class7 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 7  Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc_class8 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 8 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc_class8 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 8 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+ffc_files <- c(files_original_ffc_class4,  files_original_ffc_class6, files_original_ffc_class7,files_original_ffc_class8)
+
+bffc_files <- c(files_metrics_bffc_class4,  files_metrics_bffc_class6, files_metrics_bffc_class7,files_metrics_bffc_class8)
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_list <- bffc_files[!bffc_files %in% ffc_files]
+
+#Now we can read in all of the csv's files
+#first with the BFFC
+BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+
+BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+
+#Second with ffc metrics
+FFC_metrics_dfs <- read_csv_files(ffc_files)
+
+FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+
+#Now cycle through the names in the dataframes and make comaring viollin plots
+cnames <- colnames(FFC_metrics)
+
+comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Rain Driven Classes", data_title = "Rain Driven Classes metric comparison")
+```
+
+
+Make the figures for all reference mixed systems 
+
+```{r}
+
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc_class5 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 5 Reference gage 11377100", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc_class5 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 5 Reference gage 11377100", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc_class2 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 2 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc_class2 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 2 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc_class3 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 3  Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc_class3 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 3  Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+ffc_files <- c(files_original_ffc_class5,  files_original_ffc_class2, files_original_ffc_class3)
+
+bffc_files <- c(files_metrics_bffc_class5,  files_metrics_bffc_class2, files_metrics_bffc_class3)
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_list <- bffc_files[!bffc_files %in% ffc_files]
+
+#Now we can read in all of the csv's files
+#first with the BFFC
+BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+
+BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+
+#Second with ffc metrics
+FFC_metrics_dfs <- read_csv_files(ffc_files)
+
+FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+
+#Now cycle through the names in the dataframes and make comaring viollin plots
+cnames <- colnames(FFC_metrics)
+
+comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Mixed Classes", data_title = "Mixed Classes metric comparison")
+```
+

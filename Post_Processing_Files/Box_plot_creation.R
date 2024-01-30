@@ -2,6 +2,8 @@
 
 single_box_plots <- function(results_df, data_title,save_loc){
   
+  cat("\n Making box plots \n")
+  
   lable_df <- read.csv("./Post_Processing_Files/Box_plot_lables.csv",header = T)
   
   lable_df <- lable_df[1:24,]
@@ -9,8 +11,10 @@ single_box_plots <- function(results_df, data_title,save_loc){
   cnames <- colnames(results_df)
     
   for (col in cnames) {
-    cat(col)
+
     if(all(is.na(results_df[[col]]))){
+      cat("\n All of metrics for the following were NA and not plotted ",col, "\n")
+
       next
     }
     col_index <- which(lable_df$Flow.Metric.Code==col)
@@ -21,8 +25,6 @@ single_box_plots <- function(results_df, data_title,save_loc){
       labs(x = data_title, y = lable_df$Unit[col_index], title = paste(data_title,": \n", lable_df$Flow.Metric.Name[col_index]))
     
     print(Boxplot)
-    
-    
     
     ggsave(paste0(save_loc,"/",lable_df$Flow.Metric.Name[col_index],".png"), plot = Boxplot, device = "png")
   }
