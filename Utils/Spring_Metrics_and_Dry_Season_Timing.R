@@ -43,7 +43,7 @@ Altered_Summer_Dry_Season_Tim_Varied <- function(flow,flow_thresh, day_thresh = 
     }
     # Check if the current value is within 2% of the previous value
 
-    if (abs(roc[i]) <= roc_thresh | (flow[i] < 50 & dif[i]<=2) & flow[i] <= flow_thresh & !is.null(idx_start)) {
+    if ((abs(roc[i]) <= roc_thresh | (flow[i] < 50 & dif[i]<=2)) & flow[i] <= flow_thresh & !is.null(idx_start)) {
 
       n_consec <- n_consec + 1
       if (roc[i]<0){
@@ -129,7 +129,7 @@ Altered_Spring_Recession <- function(FlowYear) {
   #Loop through all of the water years
   
   for (i in 1:length(Water_Years)) {
-    cat("\n \n Water Year: ", Water_Years[i])
+    #cat("\n \n Water Year: ", Water_Years[i])
     #Filter the flow data to the individual water year
     flow <- dplyr::filter(FlowYear, FlowYear$water_year== Water_Years[i])
     WY_median <- median(flow$flow)
