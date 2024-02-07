@@ -199,10 +199,10 @@ read_csv_files <- function(files) {
 }
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 1 Reference Gage", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 1", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 1 Reference Gage", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 1", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 #Since both character list have the ffc metrics since they have the same pattern
 BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
@@ -238,10 +238,10 @@ read_csv_files <- function(files) {
 }
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 2 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 2", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 2 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 2", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 #Since both character list have the ffc metrics since they have the same pattern
 BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
@@ -278,10 +278,10 @@ read_csv_files <- function(files) {
 }
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 3 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 3", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 3 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 3", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 #Since both character list have the ffc metrics since they have the same pattern
 BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
@@ -316,10 +316,10 @@ read_csv_files <- function(files) {
 }
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 4 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 4", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 4 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 4", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 #Since both character list have the ffc metrics since they have the same pattern
 BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
@@ -349,10 +349,10 @@ Make the figures for Class 5
 #make the figures for class 5
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 5 Reference gage 11377100", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 5 11377100", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 5 Reference gage 11377100", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 5 11377100", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 #Since both character list have the ffc metrics since they have the same pattern
 BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
@@ -381,10 +381,10 @@ Make the figures for Class 6
 ```{r}
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 6 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 6", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 6 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 6", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 #Since both character list have the ffc metrics since they have the same pattern
 BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
@@ -420,10 +420,10 @@ read_csv_files <- function(files) {
 }
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 7  Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 7", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 7  Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 7", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 #Since both character list have the ffc metrics since they have the same pattern
 BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
@@ -452,10 +452,10 @@ Make the figures for Class 8
 ```{r}
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 8 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 8", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 8 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 8", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 #Since both character list have the ffc metrics since they have the same pattern
 BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
@@ -484,10 +484,10 @@ Make the figures for Class 9
 ```{r}
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 9 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 9", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 9 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 9", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 #Since both character list have the ffc metrics since they have the same pattern
 BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
@@ -517,41 +517,41 @@ Make the figures for all reference snow driven
 
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc_class1 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 1 Reference Gage", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc_class1 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 1", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc_class1 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 1 Reference Gage", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc_class1 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 1", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc_class9 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 9 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc_class9 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 9", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc_class9 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 9 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc_class9 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 9", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
-ffc_files <- c(files_original_ffc_class1,  files_original_ffc_class9)
+ffc_files_snow <- c(files_original_ffc_class1,  files_original_ffc_class9)
 
-bffc_files <- c(files_metrics_bffc_class1 ,files_metrics_bffc_class9)
+bffc_files_snow <- c(files_metrics_bffc_class1 ,files_metrics_bffc_class9)
 
 #Since both character list have the ffc metrics since they have the same pattern
-BFFC_metrics_list <- bffc_files[!bffc_files %in% ffc_files]
+BFFC_metrics_list_snow <- bffc_files_snow[!bffc_files_snow %in% ffc_files_snow]
 
 #Now we can read in all of the csv's files
 #first with the BFFC
-BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+BFFC_metrics_snow_dfs <- read_csv_files(BFFC_metrics_list_snow)
 
-BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+BFFC_metrics_snow <- do.call(rbind, BFFC_metrics_snow_dfs)
 
 #Second with ffc metrics
-FFC_metrics_dfs <- read_csv_files(ffc_files)
+FFC_metrics_snow_dfs <- read_csv_files(ffc_files_snow)
 
-FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+FFC_metrics_snow <- do.call(rbind, FFC_metrics_snow_dfs)
 
 #Now cycle through the names in the dataframes and make comaring viollin plots
 cnames <- colnames(FFC_metrics)
 
-comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Snow Driven Classes", data_title = "Snow Driven Classes metric comparison")
+comparison_violin_plot_print(metrics_1 = FFC_metrics_snow, metrics_2 = BFFC_metrics_snow, stream_class = "Snow Driven Classes", data_title = "Snow Driven Classes metric comparison")
 ```
 
 
@@ -561,52 +561,73 @@ Make the figures for all reference rain driven
 
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc_class4 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 4 Reference", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc_class4 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 4", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc_class4 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 4 Reference", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc_class4 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 4", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc_class6 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 6 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc_class6 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 6", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc_class6 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 6 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc_class6 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 6", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc_class7 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 7  Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc_class7 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 7", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc_class7 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 7  Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc_class7 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 7", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc_class8 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 8 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc_class8 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 8", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc_class8 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 8 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc_class8 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 8", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
-ffc_files <- c(files_original_ffc_class4,  files_original_ffc_class6, files_original_ffc_class7,files_original_ffc_class8)
+ffc_files_rain <- c(files_original_ffc_class4,  files_original_ffc_class6, files_original_ffc_class7,files_original_ffc_class8)
 
-bffc_files <- c(files_metrics_bffc_class4,  files_metrics_bffc_class6, files_metrics_bffc_class7,files_metrics_bffc_class8)
+bffc_files_rain <- c(files_metrics_bffc_class4,  files_metrics_bffc_class6, files_metrics_bffc_class7,files_metrics_bffc_class8)
+
+bffc_files_rain_sin_c7 <- c(files_metrics_bffc_class4,  files_metrics_bffc_class6 ,files_metrics_bffc_class8)
+ffc_files_sin_rain_c7 <- c(files_original_ffc_class4,  files_original_ffc_class6,files_original_ffc_class8)
 
 #Since both character list have the ffc metrics since they have the same pattern
-BFFC_metrics_list <- bffc_files[!bffc_files %in% ffc_files]
+BFFC_metrics_rain_list <- bffc_files_rain[!bffc_files_rain %in% ffc_files_rain]
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_rain_sinc7_list <- bffc_files_rain_sin_c7[!bffc_files_rain_sin_c7 %in% ffc_files_sin_rain_c7]
+
+#Now for just the FER gages
+BFFC_metrics_Class_7 <-files_metrics_bffc_class7[!files_metrics_bffc_class7 %in% files_original_ffc_class7]
+BFFC_metrics_FER_dfs <- read_csv_files(BFFC_metrics_Class_7)
+FFC_metrics_FER_dfs <- read_csv_files(files_original_ffc_class7)
 
 #Now we can read in all of the csv's files
 #first with the BFFC
-BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+BFFC_metrics_rain_dfs <- read_csv_files(BFFC_metrics_rain_list)
 
-BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+BFFC_metrics_rain <- do.call(rbind, BFFC_metrics_rain_dfs)
+
+#and without class 7 
+BFFC_metrics_rsc7_dfs <- read_csv_files(BFFC_metrics_rain_sinc7_list)
+
+BFFC_metrics_rsc7 <- do.call(rbind, BFFC_metrics_rsc7_dfs)
 
 #Second with ffc metrics
-FFC_metrics_dfs <- read_csv_files(ffc_files)
+FFC_metrics_rain_dfs <- read_csv_files(ffc_files_rain)
 
-FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+FFC_metrics_rain <- do.call(rbind, FFC_metrics_rain_dfs)
+
+#and without class 7
+FFC_metrics_rsc7_dfs <- read_csv_files(ffc_files_sin_rain_c7)
+
+FFC_metrics_rsc7 <- do.call(rbind, FFC_metrics_rsc7_dfs)
 
 #Now cycle through the names in the dataframes and make comaring viollin plots
 cnames <- colnames(FFC_metrics)
 
-comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Rain Driven Classes", data_title = "Rain Driven Classes metric comparison")
+comparison_violin_plot_print(metrics_1 = FFC_metrics_rsc7, metrics_2 = BFFC_metrics_rsc7, stream_class = "Rain Driven Classes without FER", data_title = "Rain Driven Classes WO FER metric comparison ")
 ```
 
 
@@ -616,45 +637,313 @@ Make the figures for all reference mixed systems
 
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc_class5 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 5 Reference gage 11377100", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc_class5 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 5 11377100", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc_class5 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 5 Reference gage 11377100", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc_class5 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 5 11377100", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc_class2 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 2 Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc_class2 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 2", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc_class2 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 2 Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc_class2 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 2", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc_class3 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 3  Reference Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc_class3 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 3", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc_class3 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 3  Reference Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc_class3 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 3", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
-ffc_files <- c(files_original_ffc_class5,  files_original_ffc_class2, files_original_ffc_class3)
+ffc_files_mixed <- c(files_original_ffc_class5,  files_original_ffc_class2, files_original_ffc_class3)
 
-bffc_files <- c(files_metrics_bffc_class5,  files_metrics_bffc_class2, files_metrics_bffc_class3)
+bffc_files_mixed <- c(files_metrics_bffc_class5,  files_metrics_bffc_class2, files_metrics_bffc_class3)
 
 #Since both character list have the ffc metrics since they have the same pattern
-BFFC_metrics_list <- bffc_files[!bffc_files %in% ffc_files]
+BFFC_metrics_list_mixed <- bffc_files_mixed[!bffc_files_mixed %in% ffc_files_mixed]
 
 #Now we can read in all of the csv's files
 #first with the BFFC
-BFFC_metrics_dfs <- read_csv_files(BFFC_metrics_list)
+BFFC_metrics_mixed_dfs <- read_csv_files(BFFC_metrics_list_mixed)
 
-BFFC_metrics <- do.call(rbind, BFFC_metrics_dfs)
+BFFC_metrics_mixed <- do.call(rbind, BFFC_metrics_mixed_dfs)
 
 #Second with ffc metrics
-FFC_metrics_dfs <- read_csv_files(ffc_files)
+FFC_metrics_mixed_dfs <- read_csv_files(ffc_files_mixed)
 
-FFC_metrics <- do.call(rbind, FFC_metrics_dfs)
+FFC_metrics_mixed <- do.call(rbind, FFC_metrics_mixed_dfs)
 
 #Now cycle through the names in the dataframes and make comaring viollin plots
 cnames <- colnames(FFC_metrics)
 
-comparison_violin_plot_print(metrics_1 = FFC_metrics, metrics_2 = BFFC_metrics, stream_class = "Mixed Classes", data_title = "Mixed Classes metric comparison")
+comparison_violin_plot_print(metrics_1 = FFC_metrics_mixed, metrics_2 = BFFC_metrics_mixed, stream_class = "Mixed Classes", data_title = "Mixed Classes metric comparison")
 ```
 
+
+#Make a figure looking at our highly altered gages
+
+
+```{r}
+
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_original_ffc_HA <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Highly Altered Gages", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Metrics.csv"
+files_metrics_bffc_HA <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Highly Altered Gages", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+
+#Since both character list have the ffc metrics since they have the same pattern
+BFFC_metrics_list_HA <- files_metrics_bffc_HA[!files_metrics_bffc_HA %in% files_original_ffc_HA]
+
+#Now we can read in all of the csv's files
+#first with the BFFC
+BFFC_metrics_dfs_HA <- read_csv_files(BFFC_metrics_list_HA)
+
+BFFC_metrics_HA <- do.call(rbind, BFFC_metrics_dfs_HA)
+
+#Second with ffc metrics
+FFC_metrics_dfs_HA <- read_csv_files(files_original_ffc_HA)
+
+FFC_metrics_HA <- do.call(rbind, FFC_metrics_dfs_HA)
+
+#Now cycle through the names in the dataframes and make comaring viollin plots
+cnames <- colnames(FFC_metrics)
+
+comparison_violin_plot_print(metrics_1 = FFC_metrics_HA, metrics_2 = BFFC_metrics_HA, stream_class = "Highly Altered Gages", data_title = "Highly Altered Gages metric comparison")
+
+#figure out number NA's per row for the FFC DFs
+na_count_ffc_HA <- lapply(FFC_metrics_dfs_HA, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))] 
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+#figure out number NA's per row for the BFFC DFs
+na_count_bffc_HA <- lapply(BFFC_metrics_dfs_HA, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))]
+  
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+#figure out number NA's per row for the BFFC In Snow
+na_count_bffc_Snow <- lapply(BFFC_metrics_snow_dfs, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))]  
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+#and for the FFC In Snow
+na_count_ffc_Snow <- lapply(FFC_metrics_snow_dfs, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))] 
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+#and for the FFC In rain without class 7
+na_count_ffc_rain_WOc7 <- lapply(FFC_metrics_rsc7_dfs, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))] 
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+#figure out number NA's per row for the ain without class 7
+na_count_bffc_rain_WOc7 <- lapply(BFFC_metrics_rsc7_dfs, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))]  
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+#and for the FFC class 7
+na_count_ffc_class_7 <- lapply(FFC_metrics_FER_dfs, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))] 
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+#figure out number NA's per row for class 7
+na_count_bffc_class_7 <- lapply(BFFC_metrics_FER_dfs, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))]  
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+
+#figure out number NA's per row for the BFFC In mixed sytems
+na_count_bffc_mixed <- lapply(BFFC_metrics_mixed_dfs, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))]  
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+#and for the FFC In mixed
+na_count_ffc_mixed <- lapply(FFC_metrics_mixed_dfs, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))]
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+
+# Convert the list to a dataframe for the ffc
+na_count_ffc_df_HA <- data.frame( NA_Count = unlist(na_count_ffc_HA))
+na_count_bffc_df_HA <- data.frame( NA_Count = unlist(na_count_bffc_HA))
+
+na_count_ffc_df_c7 <- data.frame( NA_Count = unlist(na_count_ffc_class_7))
+na_count_bffc_df_c7 <- data.frame( NA_Count = unlist(na_count_bffc_class_7))
+
+na_count_ffc_df_Snow <- data.frame( NA_Count = unlist(na_count_ffc_Snow))
+na_count_bffc_df_Snow <- data.frame( NA_Count = unlist(na_count_bffc_Snow))
+
+na_count_ffc_df_Rain <- data.frame( NA_Count = unlist(na_count_ffc_rain_WOc7))
+na_count_bffc_df_Rain <- data.frame( NA_Count = unlist(na_count_bffc_rain_WOc7))
+
+na_count_ffc_df_mixed <- data.frame( NA_Count = unlist(na_count_ffc_mixed))
+na_count_bffc_df_mixed <- data.frame( NA_Count = unlist(na_count_bffc_mixed))
+
+
+
+    Violinplot_NA_Average <- ggplot() +
+      geom_violin(aes(x = "FFC Highly Altered", y = as.numeric(na_count_ffc_df_HA$NA_Count)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Highly Altered", y = as.numeric(na_count_ffc_df_HA$NA_Count)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Snow", y = as.numeric(na_count_ffc_df_Snow$NA_Count)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Snow", y = as.numeric(na_count_ffc_df_Snow$NA_Count)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Rain", y = as.numeric(na_count_ffc_df_Rain$NA_Count)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Rain", y = as.numeric(na_count_ffc_df_Rain$NA_Count)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Mixed", y = as.numeric(na_count_ffc_df_mixed$NA_Count)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Mixed", y = as.numeric(na_count_ffc_df_mixed$NA_Count)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC FER", y = as.numeric(na_count_ffc_df_c7$NA_Count)), fill = "green") +
+      geom_boxplot(aes(x = "FFC FER", y = as.numeric(na_count_ffc_df_c7$NA_Count)), color = "darkgreen", alpha = 0.6) +
+      
+      geom_violin(aes(x = "BFFC Highly Altered", y = as.numeric(na_count_bffc_df_HA$NA_Count)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Highly Altered", y = as.numeric(na_count_bffc_df_HA$NA_Count)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Snow", y = as.numeric(na_count_bffc_df_Snow$NA_Count)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Snow", y = as.numeric(na_count_bffc_df_Snow$NA_Count)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Rain", y = as.numeric(na_count_bffc_df_Rain$NA_Count)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Rain", y = as.numeric(na_count_bffc_df_Rain$NA_Count)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Mixed", y = as.numeric(na_count_bffc_df_mixed$NA_Count)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Mixed", y = as.numeric(na_count_bffc_df_mixed$NA_Count)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC FER", y = as.numeric(na_count_bffc_df_c7$NA_Count)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC FER", y = as.numeric(na_count_bffc_df_c7$NA_Count)), color = "darkblue", alpha = 0.6)
+      
+      
+      Violinplot_NA_Average <- Violinplot_NA_Average +
+      labs(x = "Flow Regimes", y = "Number of Non-Fall Related NA per Eater Year", title = paste("Number of Non-Fall Related NA per Year in Different Systems"))+
+      scale_y_continuous(limits = c(0, 10), breaks = seq(0, 10, by = 2), minor_breaks = seq(0, 10, by = 1))+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+    
+    plot(Violinplot_NA_Average)
+
+    ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures/","NA Comparison by WY",".png"), plot = Violinplot_NA_Average, device = "png")
+  
+
+#figure out number NA's per row for the FFC DFs
+na_count_ffc_HA <- lapply(FFC_metrics_dfs, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !grepl("^FA", names(df))]
+  df_filtered <- df_filtered[,!grepl("^Peak", names(df))]
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+#figure out number NA's per row for the BFFC DFs
+na_count_bffc_HA <- lapply(BFFC_metrics_dfs, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !grepl("^FA", names(df))]
+  df_filtered <- df_filtered[,!grepl("^Peak", names(df))]
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+    
+    
+```
+
+```{r}
+
+# Initialize a list to store the results
+na_count_bffc <- list()
+
+# Loop through each dataframe in BFFC_metrics_dfs
+for (df in BFFC_metrics_dfs) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !grepl("^FA", names(df))]
+  
+  # Count NA values per row for filtered dataframe
+  na_per_row <- rowSums(is.na(df_filtered))
+  
+  # Count number of rows with at least 4 NA values
+  num_rows_with_4na <- sum(na_per_row >= 4)
+  
+  # Store the result
+  na_count_bffc[[length(na_count_bffc) + 1]] <- num_rows_with_4na
+}
+
+# Convert the results to a dataframe
+na_count_bffc_df <- data.frame(
+  Dataframe = 1:length(BFFC_metrics_dfs),
+  Rows_With_4NA = unlist(na_count_bffc)
+)
+
+# Print the resulting dataframe
+print(na_count_bffc_df)
+
+
+```

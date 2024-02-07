@@ -32,11 +32,6 @@ cat("Make sure a csv with all of the gages that need to be run are located in th
 
 readline("press any 'enter' to continue")
 
-#Old Code - Not working
-#input_gages <-
-#  list.files(path = "./Input_data/", pattern = "*.csv") %>% 
-#  map_df(~read_csv(.))
-
 files <- dir(here("Input_data"), pattern = '\\.csv', full.names = TRUE)
 tables <- lapply(files, read.csv)
 condesed_table <- do.call(rbind, tables)
@@ -76,6 +71,8 @@ for(i in 1:nrow(condesed_table)){
   if (length(year_count) < 8) {
     next
   }
+  #Tell the user which gage we are on incase it breaks
+  cat("Starting calculations for Gage ID: ", condesed_table$Gage_ID[i])
   
   #Since the data frame will take the names of the list we need to rename the columns to match the original Calculator
   Results_df  <- flow_metrics_calculations(flow)
@@ -164,6 +161,10 @@ if(single_calc == "N"){
     #set the ffc token and get the gage id
     ffctoken<- "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJDYW1lcm9uIiwibGFzdE5hbWUiOiJDYXJwZW50ZXIiLCJlbWFpbCI6ImNhbWNhcnBlbnRlckB1Y2RhdmlzLmVkdSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNjY5NzQxMjg2fQ.WoTh0hQX7oluRxjoTg3A0N5PJD6HnMCQs10CsgZqOTo"
     gage <- condesed_table$Gage_ID[i]
+    
+    #Tell the user which gage we are on incase it breaks
+    cat("Starting calculations for Gage ID: ", condesed_table$Gage_ID[i])
+    
     #Since the data frame will take the names of the list we need to rename the columns to match the original Calculator
     Results_df  <- flow_metrics_calculations(flow)
     
