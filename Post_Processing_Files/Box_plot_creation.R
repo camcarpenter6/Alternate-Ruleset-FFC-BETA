@@ -4,6 +4,8 @@ single_box_plots <- function(results_df, data_title,save_loc){
   
   cat("\n Making box plots \n")
   
+  results_df <- results_df %>% mutate_all(~ ifelse(. == -9999,NA, .))
+  
   lable_df <- read.csv("./Post_Processing_Files/Box_plot_lables.csv",header = T)
   
   lable_df <- lable_df[1:24,]
@@ -41,6 +43,14 @@ comparison_box_plot_print<- function(metrics_1,name_1, metrics_2,name_2, metrics
   lable_df <- lable_df[1:24,]
   
   cnames <- colnames(metrics_1)
+  
+  
+  metrics_1 <- metrics_1 %>% mutate_all(~ ifelse(. == -9999,NA, .))
+  metrics_2 <- metrics_2 %>% mutate_all(~ ifelse(. == -9999,NA, .))
+  if(!is.null(metrics_3)){
+    metrics_3 <- metrics_3 %>% mutate_all(~ ifelse(. == -9999,NA, .))
+  }
+  
   
   for (col in cnames[2:length(cnames)-1]) {
     #Check to see if the entire column are NA or NAN values
