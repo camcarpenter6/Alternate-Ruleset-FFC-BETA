@@ -266,8 +266,11 @@ Altered_Spring_Recession <- function(FlowYear) {
     }
     
     #make a new data frame with just the flows after the top of the spring recession
-    flow_post_SP <- flow %>% slice(SP_Tim[i]:length(flow))
-
+    end_of_year <- length(flow$flow)
+    flow_post_SP <- flow %>% slice(SP_Tim[i]:end_of_year)
+    #Check the flow length
+    #cat("\n THe length of the FLow dataframe is: ",length(flow), "\n The length of flow part of the flow dataframe is: ",length(flow$flow),"\n")
+    
     #Calculate the rate of change for the rest of the year after the top of the spring recession
     roc <- rate_of_change(flow_post_SP$flow)
     

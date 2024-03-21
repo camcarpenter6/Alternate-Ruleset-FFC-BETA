@@ -65,7 +65,7 @@ Spring recession start finding figure
 # Figure for showing spring recession start
 
 #load in the flow 
-flow_g_11172945 <- read.csv("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 7  Reference Gages/11172945/11172945_flow.csv", header = T) %>%
+flow_g_11172945 <- read.csv("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 7/11172945/11172945_flow.csv", header = T) %>%
   mutate(date = as.Date(date, "%m/%d/%Y"))
 
  #Format the data for the calculator 
@@ -107,7 +107,7 @@ flow_g_11172945 <- read.csv("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 
   PH1_start <- tail(fig_peaks_90[,2],1)
   PH1_poten <- seq(PH1_start - 2, PH1_start + 2, by = 1)
   max_flow_check <- which(fig_flow$flow[PH1_poten]==max(fig_flow$flow[PH1_poten]))[length(which(fig_flow$flow[PH1_poten]==max(fig_flow$flow[PH1_poten])))]
-  springindex_PH1 <- tail(fig_peaks_90[,2],1)-5+max_flow_check
+  springindex_PH1 <- tail(fig_peaks_90[,2],1)-3+max_flow_check
   
   flow_df <- data_frame(x,fig_flow, thresh)
       
@@ -118,8 +118,8 @@ flow_g_11172945 <- read.csv("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 
     #Assign the last peak of the year as the first potential spring timing
   PH1_start <- tail(fig_peaks_90[,2],1)
   PH1_poten <- seq(PH1_start - 2, PH1_start + 2, by = 1)
-  max_flow_check <- which(flow$flow[PH1_poten]==max(flow$flow[PH1_poten]))[length(which(flow$flow[PH1_poten]==max(flow$flow[PH1_poten])))]
-  springindex_PH1 <- tail(fig_peaks_90[,2],1)-5+max_flow_check
+  max_flow_check <- which(fig_flow$flow[PH1_poten]==max(fig_flow$flow[PH1_poten]))[length(which(fig_flow$flow[PH1_poten]==max(fig_flow$flow[PH1_poten])))]
+  springindex_PH1 <- tail(fig_peaks_90[,2],1)-3+max_flow_check
   
   SP_met <- data.frame(SP_tim = springindex_PH1,SP_Mag = fig_flow$flow[springindex_PH1])
     
@@ -137,7 +137,7 @@ plot1 <- ggplot(data.frame(x, fig_flow$flow), aes(x, fig_flow$flow)) + geom_line
 plot2 <- ggplot(data.frame(x, fig_flow$flow,filter_flow), aes(x)) + geom_line(aes(y = fig_flow$flow, color = "Raw Flow Data"))+geom_line(aes(y = filter_flow, color = "Smoothed FLow Data")) +
   ggtitle("Flow smoothed using narrow Gaussian filter")+
   scale_color_manual(values = c("black", "blue"))+
-  annotate("text", x = 50, y = max(fig_flow$flow)+30,hjust=.2, label = "Gaussian filter with window of 4 days and alpha of 1.3")+
+  #annotate("text", x = 50, y = max(fig_flow$flow)+30,hjust=.2, label = "Gaussian filter with window of 4 days and alpha of 1.3")+
   labs(x = "Day of Water Year", y = "Flow (cfs)")+
   ggtitle("Step 2: Smooth Flow Data ")+
   #theme_minimal() +
@@ -150,7 +150,7 @@ plot3 <- ggplot(data.frame(flow_df), aes(x)) + geom_line(aes(y = fig_flow$flow, 
   ggtitle("Step 3: Finding Peaks and Setting Minimum Thershold")+
   scale_color_manual(values = c("red", "green","black", "blue"))+
   labs(x = "Day of Water Year", y = "Flow (cfs)")+
-  annotate("text", x = 50, y = max(fig_flow$flow)+30,hjust=.2, label = "Peaks found across the water year")+
+  #annotate("text", x = 50, y = max(fig_flow$flow)+30,hjust=.2, label = "Peaks found across the water year")+
   #theme_minimal() +
   theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))  # Adjust height as needed
   
@@ -159,7 +159,7 @@ plot4 <- ggplot(data.frame(flow_df), aes(x)) + geom_line(aes(y = fig_flow$flow, 
   ggtitle("Step 4: Final Spring Recession Start Timing Found")+
   scale_color_manual(values = c("black", "green"))+
   labs(x = "Day of Water Year", y = "Flow (cfs)")+
-  annotate("text", x = 4, y = 0.8, label = "Last qulified peak found and then translated back to original flow data.")+
+  #annotate("text", x = 4, y = 0.8, label = "Last qulified peak found and then translated back to original flow data.")+
   #theme_minimal() +
   theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))  # Adjust height as needed
 
@@ -181,9 +181,303 @@ ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FF
 ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/Spring Recession Start Timing_ step 3.png"), plot = plot3, device = "png")
 ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/Spring Recession Start Timing_ step 4.png"), plot = plot4, device = "png")
 ```
-flow_g_11172945 <- read_csv("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Class 7  Reference Gages/11172945/11172945_flow.csv", header = T)
 
-plot1 + plot2
+
+Dry Season  start finding figure
+```{r}
+# Figure for showing spring recession start
+
+#Define Summer start timing function for the figure
+#Define a function that finds the dry season timing given the flow after the top of the spring recession until the end of the water year
+Altered_Summer_Dry_Season_figures <- function(flow,flow_thresh, day_thresh = 5, roc_thresh = 0.02) {
+  median <- median(flow)
+  #cat(flow)
+  consec_array <- c()
+  roc <- rate_of_change(flow)
+  cat(roc)
+  dif <- c(NA,diff(flow))
+  # Initialize variables
+  n_consec <- 0
+  n_neg <-0
+  idx_consec <- NULL
+  idx_start <- NULL
+  DS_Tim <- NULL
+  #cat("\n",day_thresh, "  ", roc_thresh)
+  # Loop through the time series
+  for (i in seq_along(flow)) {
+    #If the program has not found a qualifying timing in entire vector then assign a NA to the dry season timing
+    #Since there isn't a rate of change value for index 1 set is at the first possible start and continue the loop
+    if(i==1){
+      idx_start <- i
+      next
+    }
+    # Check if this is the first value in a potential consecutive sequence
+    if (is.null(idx_start)) {
+      idx_start <- i
+      
+    }
+    # Check if the current value is within 2% of the previous value
+
+    if ((abs(roc[i]) <= roc_thresh | (flow[i] < 50 & dif[i]<=2)) & flow[i] <= flow_thresh & !is.null(idx_start)) {
+
+      n_consec <- n_consec + 1
+      consec_array[i] <- n_consec
+
+      if (roc[i]<0){
+        n_neg <- n_neg+1
+      }
+      cat("\n numb con",n_consec,"\n num neg",n_neg,"\n roc",roc[i])
+      # Check if this is the fourth consecutive value that meets the criteria
+      if (n_consec == day_thresh) {
+        #cat("\n \n Summer should be done")
+        idx_consec <- seq(idx_start, i)
+
+        cat("\n number in iteration: ", i,"\n consectutive: ", n_consec, "number of days required: ", day_thresh, "\n idx_consec: ", idx_consec, "\n num neg: ", n_neg, "\n flow 5 days before window", "flow[idx_consec-n_consec]","\n that window: ", idx_consec-5)
+
+        break
+      }
+    }
+    # Reset the consecutive counter if the current value is not within the rate of change threshold of the previous value
+    else {
+      n_consec <- 0
+      n_neg <-0
+      consec_array[i] <- n_consec
+      idx_start <- NULL
+    }
+  }
+  #This is just for testing on FNF date but is there is a year where there aren't 5 days of 2% change or less than try less than 5%
+  if (is.null(idx_consec) == TRUE){
+    #cat("\n no summer found \n")
+    #If the change threshold was below 5% then try increasing it by 1%
+    if(roc_thresh < 0.05){
+
+      roc_thresh = roc_thresh+.01
+      #cat(roc_thresh,"\n")
+      #rerun this code to look for a new dry season timing
+      DS_Tim <- Altered_Summer_Dry_Season_Tim_Varied(flow = flow, flow_thresh = flow_thresh, day_thresh = day_thresh, roc_thresh = roc_thresh )
+    }
+    #else if the change threshold is at 5% then try decreasing the number of days
+    else if(roc_thresh > 0.045 & day_thresh >= 3){
+      #if the threshold is more than 3 then try decreasing the day threshold by one
+      day_thresh = day_thresh - 1
+      #cat(day_thresh,"\n")
+      #Rerun the code with the new thresholds
+      DS_Tim <- Altered_Summer_Dry_Season_Tim_Varied(flow = flow, flow_thresh = flow_thresh, day_thresh = day_thresh, roc_thresh = roc_thresh)
+      
+    }
+    
+  }
+  #cat("dry season timing: ", DS_Tim)
+  #Since we call the funcion in itself above this if statement is only needed to find 
+  if(is.null(DS_Tim)){
+    #cat("Dry season timing set")
+    if (n_neg > 3){
+      DS_Tim <- (idx_consec[length(idx_consec)])
+    }
+    else if (n_neg <=3){
+      DS_Tim <- (idx_consec[1])
+    }
+    #cat("dry season timing: ", DS_Tim)
+  }
+  
+  if(is.null(DS_Tim) != TRUE ) {
+    if(DS_Tim<=0 & is.na(DS_Tim) != TRUE ){
+      DS_Tim <- 1
+    }
+  }
+  #cat("\n DS tim: ",DS_Tim, "\n Should go out of the loop \n")
+  #Put the two outputs into a list
+  DS_fig_outputs <- list( "DS_Tim"= DS_Tim, "Consecutive_array" = consec_array)
+  return(DS_fig_outputs)
+}
+
+
+#load in the flow 
+flow_g_11172945 <- read.csv("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 7/11172945/11172945_flow.csv", header = T) %>%
+  mutate(date = as.Date(date, "%m/%d/%Y"))
+
+
+ #Format the data for the calculator 
+  FlowYear <- attach_water_year_data(flow_g_11172945, date_field = "date")
+  
+  fig_flow <- filter(FlowYear, water_year == 2016)
+  
+  
+  x <- seq(1,366,1)
+  
+ 
+  #Get the spring timing from the previous step
+  SP_met <- data.frame(SP_tim = springindex_PH1,SP_Mag = fig_flow$flow[springindex_PH1])
+      
+  #Get the flow after the spring pulse timing
+  flow_post_Spring <- fig_flow %>% slice(SP_met$SP_tim:length(fig_flow$flow))
+  
+  #Set a min flow threshold for the dry season to start based on the spring and min dry season baseflow
+  #This is based on the threshold in the original calculator
+  min_summer_flow_percent <- 0.125
+  WY_max_flow <- max(fig_flow$flow,na.rm = TRUE)
+  post_SP_min_flow <- min(flow_post_PS$flow, na.rm = TRUE) 
+  Min_DS_Threshold <- post_SP_min_flow + (WY_max_flow-post_SP_min_flow)*min_summer_flow_percent
+      
+  DS_met_and_concex_array <- Altered_Summer_Dry_Season_figures(flow= flow_post_PS$flow, flow_thresh = Min_DS_Threshold)
+  #make an array of the threshold for the figures
+  thresh_DS <- rep(Min_DS_Threshold,length(fig_flow$date))
+  
+  DS_Mag <- median(fig_flow$flow[(SP_met$SP_tim+DS_met_and_concex_array$DS_Tim-1):length(fig_flow$flow)])
+  
+  #Put the DS metrics in a data frame
+  DS_met <- data.frame(DS_tim = SP_met$SP_tim+DS_met_and_concex_array$DS_Tim,DS_Mag = DS_Mag)
+    
+    # Determine the number of NA values to pad the longer array
+  num_nas <- length(fig_flow$flow)- (SP_met$SP_tim + length(DS_met_and_concex_array$Consecutive_array))
+  DS_met_and_concex_array$Consecutive_array[1] <- 0
+  
+  # Create a dataframe with the longer array
+  DS_timing_track <- c(rep(NA, SP_met$SP_tim-1),0, DS_met_and_concex_array$Consecutive_array,rep(NA, num_nas))
+  SP_flow <- c(rep(NA, SP_met$SP_tim-1), fig_flow$flow[SP_met$SP_tim:DS_met$DS_tim],rep(NA, length(fig_flow$flow)-DS_met$DS_tim))
+  
+  roc_post <-rate_of_change(flow_post_PS$flow)
+  dif_post <- c(NA,diff(flow_post_PS$flow))
+  roc <- rate_of_change(fig_flow$flow)
+  dif <- c(NA,diff(fig_flow$flow))
+  
+  flow_df_DS <- data_frame(x,fig_flow, thresh_DS, DS_timing_track,dif,roc,SP_flow)
+  post_flow_DF <- data_frame(flow_post_PS,roc_post,dif_post)
+    
+  flow_df_DS  <- flow_df_DS %>% 
+    left_join(dplyr::select(SP_met, SP_Mag, SP_tim), by = c("x" = "SP_tim")) %>%
+    left_join(dplyr::select(DS_met, DS_Mag, DS_tim), by = c("x" = "DS_tim"))
+  
+# Create ggplot objects for each sub-figure
+plot1_DS <- ggplot(data.frame(flow_df_DS), aes(x)) + geom_line(aes(y = fig_flow$flow, color = "Raw Flow Data"))+
+  geom_point(aes( y = SP_Mag, color = "Spring Recession Start"), shape = 8,size = 1.5) +
+  scale_color_manual(values = c("black", "blue"))+
+  #scale_color_manual(values = c("black"))+
+  labs(x = "Day of Water Year", y = "Flow (cfs)")+
+  ggtitle("Step 1: Filter Flow Data to Single Water Year \n and bring in Previously Calculated Dry Season Timing")+
+  #theme_minimal() +
+  theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))  # Adjust height as needed
+
+
+plot2_DS <- ggplot(data.frame(flow_df_DS), aes(x)) +
+  geom_line(aes(y = flow, color = "Raw Flow Data"), color = "black") +
+  geom_point(aes(y = SP_Mag, color = "Spring Recession Start"), shape = 8, size = 1.5, color = "blue") +
+  geom_line(aes(y = thresh_DS, color = "Dry Season Start Threshold"), color = "red")+
+  geom_point(aes(y = SP_flow, color = as.factor(DS_timing_track)), shape = 1, size = 3) + # Convert to factor
+  scale_color_manual(values = c("0" = "red", "1" = "orangered", "2" = "orange", "3" = "yellow", "4" = "yellowgreen", "5" = "green"),
+                      labels = c("0", "1", "2", "3", "4", "5")) + # Manually map colors
+  labs(x = "Day of Water Year", y = "Flow (cfs)", color = "Consecutive Qualifying Days")+ 
+  ggtitle("Step 2: Set The Dry Season Start Threshold and Find \n The Number of Consectutive Qualifing Days") +
+  theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))
+
+print(plot2_DS)
+
+plot3_DS <- ggplot(data.frame(flow_df_DS), aes(x)) +
+  geom_line(aes(y = flow, color = "Raw Flow Data")) +
+  geom_point(aes(y = SP_Mag, color = "Spring Recession Start"), shape = 8, size = 1.5) +
+  geom_point(aes(y = DS_Mag, color = "Dry Season Start Threshold"))+
+  scale_color_manual(values = c("Raw Flow Data" = "black","Spring Recession Start"= "blue","Dry Season Start" = "green")) + # Manually map colors
+  labs(x = "Day of Water Year", y = "Flow (cfs)")+ 
+  ggtitle("Step 3: Set The Dry Season Start Timing") +
+  theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))
+print(plot3_DS)
+
+ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/Dry Season Start Timing_ step 1.png"), plot = plot1_DS, device = "png")
+ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/Dry Season Start Timing Timing_ step 2.png"), plot = plot2_DS, device = "png")
+ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/Dry Season Start Timing Timing_ step 3.png"), plot = plot3_DS, device = "png")
+
+```
+
+
+Fall finding figure
+```{r}
+# Figure for showing spring recession start
+
+#load in the flow 
+flow_g_11172945 <- read.csv("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 7/11172945/11172945_flow.csv", header = T) %>%
+  mutate(date = as.Date(date, "%m/%d/%Y"))
+#Get the metrics from previous calculation
+g_11172945_metrics <- read.csv("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 7/11172945/11172945_Metrics.csv", header = T) 
+
+ #Format the data for the calculator 
+  FlowYear <- attach_water_year_data(flow_g_11172945, date_field = "date")
+  
+  fig_flow_FA <- filter(FlowYear, water_year == 2001 | water_year == 2002)
+  
+  date_data <- as.Date(fig_flow_FA$date, tryFormats = c("%m/%d/%Y"))
+  
+  #Then we need to find the October 1st start date of the water year of interest
+  WY_start <- which(month(date_data ) == 10 & day(date_data) == 1 & year(date_data) == (2001))
+  
+  FA_peaks_figs <- findpeaks(fig_flow_FA$flow[WY_start:(WY_start+75)],peakpat = "[+]{1,}[0]{,40}[-]{1,}", threshold = 10) 
+  FA_peaks_figs <- as.data.frame(FA_peaks_figs)
+  
+  x <- seq(1,length(fig_flow_FA$flow),1)
+  
+  #Index for 2001 and 2022 metrics
+  row_num <- which(g_11172945_metrics$Year == 2001 |g_11172945_metrics$Year == 2002)
+ 
+  #Get the spring timing from the previous step
+  DS_met_FA_fig <- data.frame(DS_tim = g_11172945_metrics$DS_Tim[row_num[1]],DS_Mag = g_11172945_metrics$DS_Mag_50[row_num[1]])
+      
+  #Get the flow after the spring pulse timing
+  Fall_thresh_mag <- 1.5*DS_met_FA_fig$DS_Mag
+   
+  qual_peaks <- dplyr::filter(FA_peaks_figs, FA_peaks_figs$V1 > Fall_thresh_mag)   
+
+  #put the results in variables and then in a datafram
+  FA_tim_fig <- qual_peaks$V2[1]
+  FA_mag_fig <- qual_peaks$V1[1]
+  FA_met <- data.frame(FA_tim = FA_tim_fig,FA_Mag = FA_mag_fig)
+    
+  #make an array of the threshold for the figures
+  thresh_FA <- c(rep(NA,WY_start),rep(Fall_thresh_mag,75),rep(NA,length(fig_flow_FA$flow)-(WY_start+75)))
+  
+  #Combine the data into a dataframe
+  flow_df_FA <- data_frame(x,fig_flow_FA, thresh_FA)
+
+  flow_df_FA  <- flow_df_FA %>% 
+    left_join(dplyr::select(DS_met_FA_fig, DS_Mag, DS_tim), by = c("x" = "DS_tim")) %>%
+    left_join(dplyr::select(FA_met, FA_Mag, FA_tim), by = c("x" = "FA_tim"))
+  
+# Create ggplot objects for each sub-figure
+plot1_FA <- ggplot(data.frame(flow_df_DS), aes(x)) + geom_line(aes(y = fig_flow$flow, color = "Raw Flow Data"))+
+  geom_point(aes( y = SP_Mag, color = "Spring Recession Start"), shape = 8,size = 1.5) +
+  scale_color_manual(values = c("black", "blue"))+
+  #scale_color_manual(values = c("black"))+
+  labs(x = "Day of Water Year", y = "Flow (cfs)")+
+  ggtitle("Step 1: Filter Flow Data to Single Water Year \n and bring in Previously Calculated Dry Season Timing")+
+  #theme_minimal() +
+  theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))  # Adjust height as needed
+
+
+plot2_FA <- ggplot(data.frame(flow_df_DS), aes(x)) +
+  geom_line(aes(y = flow, color = "Raw Flow Data"), color = "black") +
+  geom_point(aes(y = SP_Mag, color = "Spring Recession Start"), shape = 8, size = 1.5, color = "blue") +
+  geom_line(aes(y = thresh_DS, color = "Dry Season Start Threshold"), color = "red")+
+  geom_point(aes(y = SP_flow, color = as.factor(DS_timing_track)), shape = 1, size = 3) + # Convert to factor
+  scale_color_manual(values = c("0" = "red", "1" = "orangered", "2" = "orange", "3" = "yellow", "4" = "yellowgreen", "5" = "green"),
+                      labels = c("0", "1", "2", "3", "4", "5")) + # Manually map colors
+  labs(x = "Day of Water Year", y = "Flow (cfs)", color = "Consecutive Qualifying Days")+ 
+  ggtitle("Step 2: Set The Dry Season Start Threshold and Find \n The Number of Consectutive Qualifing Days") +
+  theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))
+
+plot3_FA <- ggplot(data.frame(flow_df_DS), aes(x)) +
+  geom_line(aes(y = flow, color = "Raw Flow Data")) +
+  geom_point(aes(y = SP_Mag, color = "Spring Recession Start"), shape = 8, size = 1.5) +
+  geom_point(aes(y = DS_Mag, color = "Dry Season Start Threshold"))+
+  scale_color_manual(values = c("Raw Flow Data" = "black","Spring Recession Start"= "blue","Dry Season Start" = "green")) + # Manually map colors
+  labs(x = "Day of Water Year", y = "Flow (cfs)")+ 
+  ggtitle("Step 3: Set The Dry Season Start Timing") +
+  theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))
+print(plot3_DS)
+
+ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/Dry Season Start Timing_ step 1.png"), plot = plot1_DS, device = "png")
+ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/Dry Season Start Timing Timing_ step 2.png"), plot = plot2_DS, device = "png")
+ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures","/Dry Season Start Timing Timing_ step 3.png"), plot = plot3_DS, device = "png")
+
+```
+
 
 
 Make the figures for Class 1
@@ -714,10 +1008,15 @@ comparison_violin_plot_print(metrics_1 = FFC_metrics_HA, metrics_2 = BFFC_metric
 #figure out number NA's per row for the FFC DFs
 na_count_ffc_HA <- lapply(FFC_metrics_dfs_HA, function(df) {
   # Select columns that do not start with "FA"
-  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))] 
-  total_rows <- nrow(df_filtered)
+  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))]
+  
+  # Check if there are rows with 12 NA values
+  na_row_counts <- rowSums(is.na(df_filtered))
+  df_filtered_intrem <- df_filtered[na_row_counts < 12, ]
+  
+  total_rows <- nrow(df_filtered_intrem)
   if (total_rows > 0) {
-    sum(is.na(df_filtered)) / total_rows
+    sum(is.na(df_filtered_intrem)) / total_rows
   } else {
     0  # Avoid division by zero
   }
@@ -751,10 +1050,15 @@ na_count_bffc_Snow <- lapply(BFFC_metrics_snow_dfs, function(df) {
 #and for the FFC In Snow
 na_count_ffc_Snow <- lapply(FFC_metrics_snow_dfs, function(df) {
   # Select columns that do not start with "FA"
-  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))] 
-  total_rows <- nrow(df_filtered)
+  df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))]
+  
+  # Check if there are rows with 12 NA values
+  na_row_counts <- rowSums(is.na(df_filtered))
+  df_filtered_intrem <- df_filtered[na_row_counts < 12, ]
+  
+  total_rows <- nrow(df_filtered_intrem)
   if (total_rows > 0) {
-    sum(is.na(df_filtered)) / total_rows
+    sum(is.na(df_filtered_intrem)) / total_rows
   } else {
     0  # Avoid division by zero
   }
@@ -764,9 +1068,14 @@ na_count_ffc_Snow <- lapply(FFC_metrics_snow_dfs, function(df) {
 na_count_ffc_rain_WOc7 <- lapply(FFC_metrics_rsc7_dfs, function(df) {
   # Select columns that do not start with "FA"
   df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))] 
-  total_rows <- nrow(df_filtered)
+  
+   # Check if there are rows with 12 NA values
+  na_row_counts <- rowSums(is.na(df_filtered))
+  df_filtered_intrem <- df_filtered[na_row_counts < 12, ]
+  
+  total_rows <- nrow(df_filtered_intrem)
   if (total_rows > 0) {
-    sum(is.na(df_filtered)) / total_rows
+    sum(is.na(df_filtered_intrem)) / total_rows
   } else {
     0  # Avoid division by zero
   }
@@ -788,9 +1097,14 @@ na_count_bffc_rain_WOc7 <- lapply(BFFC_metrics_rsc7_dfs, function(df) {
 na_count_ffc_class_7 <- lapply(FFC_metrics_FER_dfs, function(df) {
   # Select columns that do not start with "FA"
   df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))] 
-  total_rows <- nrow(df_filtered)
+  
+  # Check if there are rows with 12 NA values
+  na_row_counts <- rowSums(is.na(df_filtered))
+  df_filtered_intrem <- df_filtered[na_row_counts < 12, ]
+  
+  total_rows <- nrow(df_filtered_intrem)
   if (total_rows > 0) {
-    sum(is.na(df_filtered)) / total_rows
+    sum(is.na(df_filtered_intrem)) / total_rows
   } else {
     0  # Avoid division by zero
   }
@@ -825,13 +1139,19 @@ na_count_bffc_mixed <- lapply(BFFC_metrics_mixed_dfs, function(df) {
 na_count_ffc_mixed <- lapply(FFC_metrics_mixed_dfs, function(df) {
   # Select columns that do not start with "FA"
   df_filtered <- df[, !(grepl("^FA", names(df)) | grepl("^Peak", names(df)))]
-  total_rows <- nrow(df_filtered)
+  
+  # Check if there are rows with 12 NA values
+  na_row_counts <- rowSums(is.na(df_filtered))
+  df_filtered_intrem <- df_filtered[na_row_counts < 12, ]
+  
+  total_rows <- nrow(df_filtered_intrem)
   if (total_rows > 0) {
-    sum(is.na(df_filtered)) / total_rows
+    sum(is.na(df_filtered_intrem)) / total_rows
   } else {
     0  # Avoid division by zero
   }
 })
+
 
 
 # Convert the list to a dataframe for the ffc
@@ -877,8 +1197,8 @@ na_count_bffc_df_mixed <- data.frame( NA_Count = unlist(na_count_bffc_mixed))
       
       
       Violinplot_NA_Average <- Violinplot_NA_Average +
-      labs(x = "Flow Regimes", y = "Number of Non-Fall Related NA per Eater Year", title = paste("Number of Non-Fall Related NA per Year in Different Systems"))+
-      scale_y_continuous(limits = c(0, 10), breaks = seq(0, 10, by = 2), minor_breaks = seq(0, 10, by = 1))+
+      labs(x = "Flow Regimes", y = "Number of Non-Fall Related NA per Water Year", title = paste("Number of Non-Fall Related NA per Year in Different Systems"))+
+      scale_y_continuous(limits = c(0, 6), breaks = seq(0, 6, by = 1), minor_breaks = seq(0, 6, by = 0.5))+
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
     
     plot(Violinplot_NA_Average)
@@ -918,32 +1238,588 @@ na_count_bffc_HA <- lapply(BFFC_metrics_dfs, function(df) {
 
 ```{r}
 
-# Initialize a list to store the results
-na_count_bffc <- list()
+Tim_names <- names(BFFC_metrics[grep("Tim$",names(BFFC_metrics))])
 
-# Loop through each dataframe in BFFC_metrics_dfs
-for (df in BFFC_metrics_dfs) {
-  # Select columns that do not start with "FA"
-  df_filtered <- df[, !grepl("^FA", names(df))]
+#Remove the error values from dataframes
+BFFC_metrics_dfs_HA_clean <- lapply(BFFC_metrics_dfs_HA, function(df) {
+    df[df == -9999] <- NA
+     return(df)
+})
+
+#Remove the error values from dataframes
+BFFC_metrics_snow_dfs_clean <- lapply(BFFC_metrics_snow_dfs, function(df) {
+    df[df == -9999] <- NA
+     return(df)
+})
+
+
+#Remove the error values from dataframes
+BFFC_metrics_rsc7_dfs_clean <- lapply(BFFC_metrics_rsc7_dfs, function(df) {
+    df[df == -9999] <- NA
+     return(df)
+})
+
+#Remove the error values from dataframes
+BFFC_metrics_FER_dfs_clean <- lapply(BFFC_metrics_FER_dfs, function(df) {
+    df[df == -9999] <- NA
+     return(df)
+})
+
+
+#Remove the error values from dataframes
+BFFC_metrics_mixed_dfs_clean <- lapply(BFFC_metrics_mixed_dfs, function(df) {
+    df[df == -9999] <- NA
+     return(df)
+})
+
+
+
+
+# the timing metrics to produce plots for each timing metric
+for (names in Tim_names) {
   
-  # Count NA values per row for filtered dataframe
-  na_per_row <- rowSums(is.na(df_filtered))
+  #Make a string for the current timing metic
+  Metric_name <- paste0("^",names)
   
-  # Count number of rows with at least 4 NA values
-  num_rows_with_4na <- sum(na_per_row >= 4)
+  #Now go through all the clean lists of data frames and extract all the timings
+  FFC_HA_Tim <- lapply(FFC_metrics_dfs_HA, function(df) {
+    df[, grepl(Metric_name, names(df))]
+    })
+
+  #continue with the BFFC clean data frame metrics
+  BFFC_HA_Tim <- lapply(BFFC_metrics_dfs_HA_clean, function(df) {
+    df[, grepl(Metric_name, names(df))]
+    })
+
+  BFFC_Snow_Tim <- lapply(BFFC_metrics_snow_dfs_clean, function(df) {
+    df[, grepl(Metric_name, names(df))]
+    })
+
+  #and for the FFC In Snow
+  FFC_Snow_Tim <- lapply(FFC_metrics_snow_dfs, function(df) {
+    df[, grepl(Metric_name, names(df))]
+  })
+
+#and for the FFC In rain without class 7
+  FFC_rain_WOc7_Tim <- lapply(FFC_metrics_rsc7_dfs, function(df) {
+    df[, grepl(Metric_name, names(df))]
+})
+
+#figure out number NA's per row for the ain without class 7
+  BFFC_rain_WOc7_Tim <- lapply(BFFC_metrics_rsc7_dfs_clean, function(df) {
+    df[, grepl(Metric_name, names(df))]
+})
+
+  #and for the FFC class 7
+  FFC_class_7_Tim <- lapply(FFC_metrics_FER_dfs, function(df) {
+    df[, grepl(Metric_name, names(df))]
+    })
+
+  #figure out number NA's per row for class 7
+  BFFC_class_7_Tim <- lapply(BFFC_metrics_FER_dfs_clean, function(df) {
+    df[, grepl(Metric_name, names(df))]
+    })
+
+
+#figure out number NA's per row for the BFFC In mixed sytems
+  BFFC_mixed_Tim <- lapply(BFFC_metrics_mixed_dfs_clean, function(df) {
+    df[, grepl(Metric_name, names(df))]
+    })
+
+#and for the FFC In mixed
+  FFC_mixed_Tim <- lapply(FFC_metrics_mixed_dfs, function(df) {
+    df[, grepl(Metric_name, names(df))]
+    })
+
+  #Now we can calculate the IQR for each set
+  FFC_HA_IQR <- lapply(FFC_HA_Tim, IQR, na.rm = TRUE)
+  BFFC_HA_IQR <- lapply(BFFC_HA_Tim, IQR, na.rm = TRUE)
+  BFFC_Snow_IQR <- lapply(BFFC_Snow_Tim, IQR, na.rm = TRUE)
+  FFC_Snow_IQR <- lapply(FFC_Snow_Tim, IQR, na.rm = TRUE)
+  FFC_rain_WOc7_IQR <- lapply(FFC_rain_WOc7_Tim, IQR, na.rm = TRUE)
+  BFFC_rain_WOc7_IQR <- lapply(BFFC_rain_WOc7_Tim, IQR, na.rm = TRUE)
+  FFC_class_7_IQR <- lapply(FFC_class_7_Tim, IQR, na.rm = TRUE)
+  BFFC_class_7_IQR <- lapply(BFFC_class_7_Tim, IQR, na.rm = TRUE)
+  BFFC_mixed_IQR <- lapply(BFFC_mixed_Tim, IQR, na.rm = TRUE)
+  FFC_mixed_IQR <- lapply(FFC_mixed_Tim, IQR, na.rm = TRUE)
   
-  # Store the result
-  na_count_bffc[[length(na_count_bffc) + 1]] <- num_rows_with_4na
+  
+    Violinplot_Timing_IQR <- ggplot() +
+      geom_violin(aes(x = "FFC Highly Altered", y = as.numeric(FFC_HA_IQR)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Highly Altered", y = as.numeric(FFC_HA_IQR)), color = "darkgreen", alpha = 0.6) +
+      #geom_violin(aes(x = "FFC Snow", y = as.numeric(FFC_Snow_IQR)), fill = "green") +
+      #geom_boxplot(aes(x = "FFC Snow", y = as.numeric(FFC_Snow_IQR)), color = "darkgreen", alpha = 0.6) +
+      #geom_violin(aes(x = "FFC Rain W/O Class 7", y = as.numeric(FFC_rain_WOc7_IQR)), fill = "green") +
+      #geom_boxplot(aes(x = "FFC Rain W/O Class 7", y = as.numeric(FFC_rain_WOc7_IQR)), color = "darkgreen", alpha = 0.6) +
+      #geom_violin(aes(x = "FFC Mixed", y = as.numeric(FFC_mixed_IQR)), fill = "green") +
+      #geom_boxplot(aes(x = "FFC Mixed", y = as.numeric(FFC_mixed_IQR)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC FER", y = as.numeric(FFC_class_7_IQR)), fill = "green") +
+      geom_boxplot(aes(x = "FFC FER", y = as.numeric(FFC_class_7_IQR)), color = "darkgreen", alpha = 0.6) +
+      
+      geom_violin(aes(x = "BFFC Highly Altered", y = as.numeric(BFFC_HA_IQR)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Highly Altered", y = as.numeric(BFFC_HA_IQR)), color = "darkblue", alpha = 0.6)+
+      #geom_violin(aes(x = "BFFC Snow", y = as.numeric(BFFC_Snow_IQR)), fill = 'blue') +
+      #geom_boxplot(aes(x = "BFFC Snow", y = as.numeric(BFFC_Snow_IQR)), color = "darkblue", alpha = 0.6)+
+      #geom_violin(aes(x = "BFFC Rain W/O Class 7", y = as.numeric(BFFC_rain_WOc7_IQR)), fill = 'blue') +
+      #geom_boxplot(aes(x = "BFFC Rain W/O Class 7", y = as.numeric(BFFC_rain_WOc7_IQR)), color = "darkblue", alpha = 0.6)+
+      #geom_violin(aes(x = "BFFC Mixed", y = as.numeric(BFFC_mixed_IQR)), fill = 'blue') +
+      #geom_boxplot(aes(x = "BFFC Mixed", y = as.numeric(BFFC_mixed_IQR)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC FER", y = as.numeric(BFFC_class_7_IQR)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC FER", y = as.numeric(BFFC_class_7_IQR)), color = "darkblue", alpha = 0.6)
+      
+      
+      Violinplot_Timing_IQR <- Violinplot_Timing_IQR +
+      labs(x = "Flow Regimes", y = paste0("Interquartile Range of ", names), title = paste0("Interquartile Range of ", names, " in Flashy systems"))+
+      #scale_y_continuous(limits = c(0, 10), breaks = seq(0, 10, by = 2), minor_breaks = seq(0, 10, by = 1))+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+    
+    plot(Violinplot_Timing_IQR)
+
+    
+    ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures/","Interquartile Ranges of ",names," in flashy systems.png"), plot = Violinplot_Timing_IQR, device = "png")
+  
 }
 
-# Convert the results to a dataframe
-na_count_bffc_df <- data.frame(
-  Dataframe = 1:length(BFFC_metrics_dfs),
-  Rows_With_4NA = unlist(na_count_bffc)
-)
-
-# Print the resulting dataframe
-print(na_count_bffc_df)
 
 
 ```
+
+Make a histogram of the number zero flow days 
+```{r}
+library(imputeTS) # time-series interpolation
+
+# Read all of the class 4 flow files
+files_class4_flow <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 4", pattern = "_flow.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read all of the class 6 flow files
+files_class6_flow <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 6", pattern = "_flow.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read all of the class 7 flow files
+files_class7_flow <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 7", pattern = "_flow.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read all of the class 8 flow files
+files_class8_flow <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 8", pattern = "_flow.csv$", recursive = TRUE, full.names = TRUE)
+
+# make vectors to store the results
+no_flow_counts_c4 <- c()
+no_flow_counts_c6 <- c()
+no_flow_counts_c7 <- c()
+no_flow_counts_c8 <- c()
+
+# Calculate the average number of zero flow days in each gage
+for (i in seq_along(files_class4_flow)) {
+  # Read the CSV file into a data frame
+  flow_df <- read.csv(files_class4_flow[i])
+  
+  # Convert the date column from character to Date format
+  flow_df$date <- as.Date(flow_df$date, format = "%m/%d/%Y")
+  
+  # Clean the data frame and impute missing values in the flow column
+  clean_df <- flow_df %>%
+    mutate(flow = na_kalman(flow))
+  
+  # Group by year and calculate the number of days with zero flow per year
+  no_flow_per_year <- clean_df %>%
+    group_by(year = year(date)) %>%
+    summarise(no_days_with_zero = sum(flow == 0))
+  
+  # Store the result in the list using index
+  no_flow_counts_c4[[i]] <- mean( no_flow_per_year$no_days_with_zero)
+}
+
+for (i in seq_along(files_class6_flow)) {
+  # Read the CSV file into a data frame
+  flow_df <- read.csv(files_class6_flow[i])
+  
+  # Convert the date column from character to Date format
+  flow_df$date <- as.Date(flow_df$date, format = "%m/%d/%Y")
+  
+  # Clean the data frame and impute missing values in the flow column
+  clean_df <- flow_df %>%
+    mutate(flow = na_kalman(flow))
+  
+  # Group by year and calculate the number of days with zero flow per year
+  no_flow_per_year <- clean_df %>%
+    group_by(year = year(date)) %>%
+    summarise(no_days_with_zero = sum(flow == 0))
+  
+  # Store the result in the list using index
+  no_flow_counts_c6[[i]] <- mean( no_flow_per_year$no_days_with_zero)
+}
+
+for (i in seq_along(files_class7_flow)) {
+  # Read the CSV file into a data frame
+  flow_df <- read.csv(files_class7_flow[i])
+
+  # Convert the date column from character to Date format
+  flow_df$date <- as.Date(flow_df$date, format = "%m/%d/%Y")
+  
+  # Clean the data frame and impute missing values in the flow column
+  clean_df <- flow_df %>%
+    mutate(flow = na_kalman(flow))
+  
+  # Group by year and calculate the number of days with zero flow per year
+  no_flow_per_year <- clean_df %>%
+    group_by(year = year(date)) %>%
+    summarise(no_days_with_zero = sum(flow == 0))
+  
+  # Store the result in the list using index
+  no_flow_counts_c7[[i]] <- mean( no_flow_per_year$no_days_with_zero)
+}
+
+for (i in seq_along(files_class8_flow)) {
+  # Read the CSV file into a data frame
+  flow_df <- read.csv(files_class8_flow[i])
+  # Convert the date column from character to Date format
+  flow_df$date <- as.Date(flow_df$date, format = "%m/%d/%Y")
+  
+  # Clean the data frame and impute missing values in the flow column
+  clean_df <- flow_df %>%
+    mutate(flow = na_kalman(flow))
+  
+  # Group by year and calculate the number of days with zero flow per year
+  no_flow_per_year <- clean_df %>%
+    group_by(year = year(date)) %>%
+    summarise(no_days_with_zero = sum(flow == 0))
+  
+  # Store the result in the list using index
+  no_flow_counts_c8[[i]] <- mean( no_flow_per_year$no_days_with_zero)
+}
+
+no_flow_avg_c4 <- mean(unlist(no_flow_counts_c4))
+no_flow_avg_c6 <- mean(unlist(no_flow_counts_c6))
+no_flow_avg_c7 <- mean(unlist(no_flow_counts_c7))
+no_flow_avg_c8 <- mean(unlist(no_flow_counts_c8))
+
+    Violinplot_rain_0_flow <- ggplot() +
+      geom_violin(aes(x = "Class 4 (WS)", y = as.numeric(unlist(no_flow_counts_c4))), fill = "grey") +
+      geom_boxplot(aes(x = "Class 4 (WS)", y = as.numeric(unlist(no_flow_counts_c4))), color = "darkgrey", alpha = 0.6) +
+      geom_violin(aes(x = "Class 6 (PGR)", y = as.numeric(unlist(no_flow_counts_c6))), fill = "grey") +
+      geom_boxplot(aes(x = "Class 6 (PGR)", y = as.numeric(unlist(no_flow_counts_c6))), color = "darkgrey", alpha = 0.6) +
+      geom_violin(aes(x = "Class 7 (FER)", y = as.numeric(unlist(no_flow_counts_c7))), fill = "grey") +
+      geom_boxplot(aes(x = "Class 7 (FER)", y = as.numeric(unlist(no_flow_counts_c7))), color = "darkgrey", alpha = 0.6) +
+      geom_violin(aes(x = "Class 8 (RGW)", y = as.numeric(unlist(no_flow_counts_c8))), fill = "grey") +
+      geom_boxplot(aes(x = "Class 8 (RGW)", y = as.numeric(unlist(no_flow_counts_c8))), color = "darkgrey", alpha = 0.6) 
+
+      
+      Violinplot_rain_0_flow <- Violinplot_rain_0_flow +
+      labs(x = "Stream Classes", y = "Number of Zero Flow Days per Year", title = paste("Number of Zero Flow Days by Stream Class in Rain-Driven Systems"))+
+      #scale_y_continuous(limits = c(0, 10), breaks = seq(0, 10, by = 2), minor_breaks = seq(0, 10, by = 1))+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+    
+    plot(Violinplot_rain_0_flow)
+
+    ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures/","Rain driven no flow day comparison",".png"), plot = Violinplot_rain_0_flow, device = "png")
+  
+
+#figure out number NA's per row for the FFC DFs
+na_count_ffc_HA <- lapply(FFC_metrics_dfs, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !grepl("^FA", names(df))]
+  df_filtered <- df_filtered[,!grepl("^Peak", names(df))]
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+#figure out number NA's per row for the BFFC DFs
+na_count_bffc_HA <- lapply(BFFC_metrics_dfs, function(df) {
+  # Select columns that do not start with "FA"
+  df_filtered <- df[, !grepl("^FA", names(df))]
+  df_filtered <- df_filtered[,!grepl("^Peak", names(df))]
+  total_rows <- nrow(df_filtered)
+  if (total_rows > 0) {
+    sum(is.na(df_filtered)) / total_rows
+  } else {
+    0  # Avoid division by zero
+  }
+})
+
+    
+    
+```
+
+Check the difference in each timing for each type of system
+```{r}
+# Initialize a list to store the differences
+differences_SP <- list()
+differences_FA <- list()
+differences_DS <- list()
+differences_WS <- list()
+unique_na_counts <- list()
+# Iterate over the data frames in both lists
+for (i in seq_along(BFFC_metrics_snow_dfs)) {
+  # Get the current data frames from both lists
+  bffc_df <- BFFC_metrics_snow_dfs[[i]]
+  ffc_df <- FFC_metrics_snow_dfs[[i]]
+  
+  # Find matching years
+  matching_years <- intersect(bffc_df$Year, ffc_df$Year)
+  
+  # Filter data frames to include only matching years
+  bffc_matching <- bffc_df[bffc_df$Year %in% matching_years, ]
+  ffc_matching <- ffc_df[ffc_df$Year %in% matching_years, ]
+  
+  
+  # Calculate differences in SP_Tim
+  differences_SP[[i]] <- bffc_matching$SP_Tim - ffc_matching$SP_Tim
+  differences_FA[[i]] <- bffc_matching$FA_Tim - ffc_matching$FA_Tim
+  differences_DS[[i]] <- bffc_matching$DS_Tim - ffc_matching$DS_Tim
+  differences_WS[[i]] <- bffc_matching$Wet_Tim - ffc_matching$Wet_Tim
+  # Find unique NA values in each data frame
+  unique_na_bffc <- setdiff(which(is.na(bffc_df$FA_Tim)), which(is.na(ffc_df$FA_Tim)))
+  unique_na_ffc <- setdiff(which(is.na(ffc_df$FA_Tim)), which(is.na(bffc_df$FA_Tim)))
+   # Store the counts in the list
+  unique_na_counts[[i]] <- list(bffc_df = length(unique_na_bffc), ffc_df = length(unique_na_ffc))
+  
+}
+
+# Convert the list of differences to a vector
+differences_SP_df <- unlist(differences_SP)
+differences_FA_df <- unlist(differences_FA)
+differences_DS_df <- unlist(differences_DS)
+differences_WS_df <- unlist(differences_WS)
+
+
+
+
+```
+
+```{r}
+
+#Make a plot of the IQRs for each timing
+
+    Violinplot_wet_sseason_timiing <- ggplot() +
+      geom_violin(aes(x = "FFC Highly Altered", y = as.numeric(quan)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Highly Altered", y = as.numeric(FFC_metrics_HA$Wet_Tim)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Snow", y = as.numeric(FFC_metrics_snow$Wet_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Snow", y = as.numeric(FFC_metrics_snow$Wet_Tim)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Rain", y = as.numeric(FFC_metrics_rain$Wet_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Rain", y = as.numeric(FFC_metrics_rain$Wet_Tim)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Mixed", y = as.numeric(FFC_metrics_mixed$Wet_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Mixed", y = as.numeric(FFC_metrics_mixed$Wet_Tim)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC FER", y = as.numeric(FFC_metrics_rsc7$Wet_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC FER", y = as.numeric(FFC_metrics_rsc7$Wet_Tim)), color = "darkgreen", alpha = 0.6) +
+      
+      geom_violin(aes(x = "BFFC Highly Altered", y = as.numeric(BFFC_metrics_HA$Wet_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Highly Altered", y = as.numeric(BFFC_metrics_HA$Wet_Tim)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Snow", y = as.numeric(BFFC_metrics_snow$Wet_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Snow", y = as.numeric(BFFC_metrics_snow$Wet_Tim)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Rain", y = as.numeric(BFFC_metrics_rain$Wet_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Rain", y = as.numeric(BFFC_metrics_rain$Wet_Tim)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Mixed", y = as.numeric(BFFC_metrics_mixed$Wet_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Mixed", y = as.numeric(BFFC_metrics_mixed$Wet_Tim)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC FER", y = as.numeric(BFFC_metrics_rsc7$Wet_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC FER", y = as.numeric(BFFC_metrics_rsc7$Wet_Tim)), color = "darkblue", alpha = 0.6)
+      
+      
+      Violinplot_wet_sseason_timiing <- Violinplot_wet_sseason_timiing +
+      labs(x = "Flow Regimes", y = "Wet Season Timing in Day of Water", title = paste("Wet Season Timing in Day of Water in Different Systems"))+
+      #scale_y_continuous(limits = c(0, 10), breaks = seq(0, 10, by = 2), minor_breaks = seq(0, 10, by = 1))+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+    
+    plot(Violinplot_wet_sseason_timiing)
+
+    ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures/","Wet Season Comparison by Stream type",".png"), plot = Violinplot_wet_sseason_timiing, device = "png")
+  
+
+
+```
+
+
+
+```{r}
+
+#Make a plot of the IQRs for each timing
+
+    BFFC_metrics_HA_plot <- BFFC_metrics_HA %>% mutate_all(~ ifelse(. == -9999,NA, .))
+  BFFC_metrics_snow_plot <- BFFC_metrics_snow %>% mutate_all(~ ifelse(. == -9999,NA, .))
+  BFFC_metrics_rain_plot <- BFFC_metrics_rain %>% mutate_all(~ ifelse(. == -9999,NA, .))
+  BFFC_metrics_mixed_plot <- BFFC_metrics_mixed %>% mutate_all(~ ifelse(. == -9999,NA, .))
+
+    Violinplot_dry_sseason_timiing <- ggplot() +
+      geom_violin(aes(x = "FFC Highly Altered", y = as.numeric(FFC_metrics_HA$DS_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Highly Altered", y = as.numeric(FFC_metrics_HA$DS_Tim)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Snow", y = as.numeric(FFC_metrics_snow$DS_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Snow", y = as.numeric(FFC_metrics_snow$DS_Tim)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Rain", y = as.numeric(FFC_metrics_rain$DS_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Rain", y = as.numeric(FFC_metrics_rain$DS_Tim)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Mixed", y = as.numeric(FFC_metrics_mixed$DS_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Mixed", y = as.numeric(FFC_metrics_mixed$DS_Tim)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC FER", y = as.numeric(FFC_metrics_rsc7$DS_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC FER", y = as.numeric(FFC_metrics_rsc7$DS_Tim)), color = "darkgreen", alpha = 0.6) +
+      
+      geom_violin(aes(x = "BFFC Highly Altered", y = as.numeric(BFFC_metrics_HA_plot$DS_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Highly Altered", y = as.numeric(BFFC_metrics_HA_plot$DS_Tim)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Snow", y = as.numeric(BFFC_metrics_snow_plot$DS_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Snow", y = as.numeric(BFFC_metrics_snow_plot$DS_Tim)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Rain", y = as.numeric(BFFC_metrics_rain_plot$DS_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Rain", y = as.numeric(BFFC_metrics_rain_plot$DS_Tim)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Mixed", y = as.numeric(BFFC_metrics_mixed_plot$DS_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Mixed", y = as.numeric(BFFC_metrics_mixed_plot$DS_Tim)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC FER", y = as.numeric(BFFC_metrics_rsc7$DS_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC FER", y = as.numeric(BFFC_metrics_rsc7$DS_Tim)), color = "darkblue", alpha = 0.6)
+      
+      
+      Violinplot_dry_sseason_timiing <- Violinplot_dry_sseason_timiing +
+      labs(x = "Flow Regimes", y = "Dry Season Timing in Day of Water", title = paste("Dry Season Timing in Day of Water in Different Systems"))+
+      #scale_y_continuous(limits = c(0, 10), breaks = seq(0, 10, by = 2), minor_breaks = seq(0, 10, by = 1))+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+    
+    plot(Violinplot_dry_sseason_timiing)
+
+    ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures/","Dry Season Comparison by Stream type",".png"), plot = Violinplot_dry_sseason_timiing, device = "png")
+  
+
+
+```
+
+
+```{r}
+
+
+#Make a plot of the IQRs for each timing
+
+    Violinplot_Spring_season_timiing <- ggplot() +
+      geom_violin(aes(x = "FFC Highly Altered", y = as.numeric(FFC_metrics_HA$SP_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Highly Altered", y = as.numeric(FFC_metrics_HA$SP_Tim)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Snow", y = as.numeric(FFC_metrics_snow$SP_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Snow", y = as.numeric(FFC_metrics_snow$SP_Tim)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Rain", y = as.numeric(FFC_metrics_rain$SP_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Rain", y = as.numeric(FFC_metrics_rain$SP_Tim)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Mixed", y = as.numeric(FFC_metrics_mixed$SP_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Mixed", y = as.numeric(FFC_metrics_mixed$SP_Tim)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC FER", y = as.numeric(FFC_metrics_rsc7$SP_Tim)), fill = "green") +
+      geom_boxplot(aes(x = "FFC FER", y = as.numeric(FFC_metrics_rsc7$SP_Tim)), color = "darkgreen", alpha = 0.6) +
+      
+      geom_violin(aes(x = "BFFC Highly Altered", y = as.numeric(BFFC_metrics_HA$SP_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Highly Altered", y = as.numeric(BFFC_metrics_HA$SP_Tim)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Snow", y = as.numeric(BFFC_metrics_snow$SP_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Snow", y = as.numeric(BFFC_metrics_snow$SP_Tim)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Rain", y = as.numeric(BFFC_metrics_rain$SP_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Rain", y = as.numeric(BFFC_metrics_rain$SP_Tim)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Mixed", y = as.numeric(BFFC_metrics_mixed$SP_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Mixed", y = as.numeric(BFFC_metrics_mixed$SP_Tim)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC FER", y = as.numeric(BFFC_metrics_rsc7$SP_Tim)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC FER", y = as.numeric(BFFC_metrics_rsc7$SP_Tim)), color = "darkblue", alpha = 0.6)
+      
+      
+      Violinplot_Spring_season_timiing <- Violinplot_Spring_season_timiing +
+      labs(x = "Flow Regimes", y = "Spring Recession Start Timing  in Day of Water", title = paste("Spring Recession Start Timingin Day of Water in Different Systems"))+
+      #scale_y_continuous(limits = c(0, 10), breaks = seq(0, 10, by = 2), minor_breaks = seq(0, 10, by = 1))+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+    
+    plot(Violinplot_Spring_season_timiing)
+
+    ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures/","Spring Timing Comparison by Stream type",".png"), plot = Violinplot_Spring_season_timiing, device = "png")
+  
+
+
+```
+
+
+```{r}
+
+
+#Make a plot of the IQRs for each timing
+
+    BFFC_metrics_HA_plot <- BFFC_metrics_HA %>% mutate_all(~ ifelse(. == -9999,NA, .))
+  BFFC_metrics_snow_plot <- BFFC_metrics_snow %>% mutate_all(~ ifelse(. == -9999,NA, .))
+  BFFC_metrics_rain_plot <- BFFC_metrics_rain %>% mutate_all(~ ifelse(. == -9999,NA, .))
+  BFFC_metrics_mixed_plot <- BFFC_metrics_mixed %>% mutate_all(~ ifelse(. == -9999,NA, .))
+
+
+    Violinplot_Spring_season_duration <- ggplot() +
+      geom_violin(aes(x = "FFC Highly Altered", y = as.numeric(FFC_metrics_HA$SP_Dur)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Highly Altered", y = as.numeric(FFC_metrics_HA$SP_Dur)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Snow", y = as.numeric(FFC_metrics_snow$SP_Dur)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Snow", y = as.numeric(FFC_metrics_snow$SP_Dur)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Rain", y = as.numeric(FFC_metrics_rain$SP_Dur)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Rain", y = as.numeric(FFC_metrics_rain$SP_Dur)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Mixed", y = as.numeric(FFC_metrics_mixed$SP_Dur)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Mixed", y = as.numeric(FFC_metrics_mixed$SP_Dur)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC FER", y = as.numeric(FFC_metrics_rsc7$SP_Dur)), fill = "green") +
+      geom_boxplot(aes(x = "FFC FER", y = as.numeric(FFC_metrics_rsc7$SP_Dur)), color = "darkgreen", alpha = 0.6) +
+      
+      geom_violin(aes(x = "BFFC Highly Altered", y = as.numeric(BFFC_metrics_HA_plot$SP_Dur)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Highly Altered", y = as.numeric(BFFC_metrics_HA_plot$SP_Dur)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Snow", y = as.numeric(BFFC_metrics_snow_plot$SP_Dur)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Snow", y = as.numeric(BFFC_metrics_snow_plot$SP_Dur)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Rain", y = as.numeric(BFFC_metrics_rain_plot$SP_Dur)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Rain", y = as.numeric(BFFC_metrics_rain_plot$SP_Dur)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Mixed", y = as.numeric(BFFC_metrics_mixed_plot$SP_Dur)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Mixed", y = as.numeric(BFFC_metrics_mixed_plot$SP_Dur)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC FER", y = as.numeric(BFFC_metrics_rsc7$SP_Dur)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC FER", y = as.numeric(BFFC_metrics_rsc7$SP_Dur)), color = "darkblue", alpha = 0.6)
+      
+      
+      Violinplot_Spring_season_duration <- Violinplot_Spring_season_duration +
+      labs(x = "Flow Regimes", y = "Spring Recession Duration  in Day of Water", title = paste("Spring Recession Duration in Days in Different Systems"))+
+      #scale_y_continuous(limits = c(0, 10), breaks = seq(0, 10, by = 2), minor_breaks = seq(0, 10, by = 1))+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+    
+    plot(Violinplot_Spring_season_duration)
+
+    ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures/","Spring Duration Comparison by Stream type",".png"), plot = Violinplot_Spring_season_duration, device = "png")
+  
+
+
+```
+
+```{r}
+
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+files_class1_flow <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 1", pattern = "_flow.csv$", recursive = TRUE, full.names = TRUE)
+
+# Read files ending with "_Original Calculator_Metrics.csv"
+HA_flow <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Highly Altered Gages", pattern = "_flow.csv$", recursive = TRUE, full.names = TRUE)
+
+#Make a plot of the IQRs for each timing
+
+    BFFC_metrics_HA_plot <- BFFC_metrics_HA %>% mutate_all(~ ifelse(. == -9999,NA, .))
+  BFFC_metrics_snow_plot <- BFFC_metrics_snow %>% mutate_all(~ ifelse(. == -9999,NA, .))
+  BFFC_metrics_rain_plot <- BFFC_metrics_rain %>% mutate_all(~ ifelse(. == -9999,NA, .))
+  BFFC_metrics_mixed_plot <- BFFC_metrics_mixed %>% mutate_all(~ ifelse(. == -9999,NA, .))
+
+
+    Violinplot_Spring_season_duration <- ggplot() +
+      geom_violin(aes(x = "FFC Highly Altered", y = as.numeric(FFC_metrics_HA$SP_Dur)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Highly Altered", y = as.numeric(FFC_metrics_HA$SP_Dur)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Snow", y = as.numeric(FFC_metrics_snow$SP_Dur)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Snow", y = as.numeric(FFC_metrics_snow$SP_Dur)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Rain", y = as.numeric(FFC_metrics_rain$SP_Dur)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Rain", y = as.numeric(FFC_metrics_rain$SP_Dur)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC Mixed", y = as.numeric(FFC_metrics_mixed$SP_Dur)), fill = "green") +
+      geom_boxplot(aes(x = "FFC Mixed", y = as.numeric(FFC_metrics_mixed$SP_Dur)), color = "darkgreen", alpha = 0.6) +
+      geom_violin(aes(x = "FFC FER", y = as.numeric(FFC_metrics_rsc7$SP_Dur)), fill = "green") +
+      geom_boxplot(aes(x = "FFC FER", y = as.numeric(FFC_metrics_rsc7$SP_Dur)), color = "darkgreen", alpha = 0.6) +
+      
+      geom_violin(aes(x = "BFFC Highly Altered", y = as.numeric(BFFC_metrics_HA_plot$SP_Dur)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Highly Altered", y = as.numeric(BFFC_metrics_HA_plot$SP_Dur)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Snow", y = as.numeric(BFFC_metrics_snow_plot$SP_Dur)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Snow", y = as.numeric(BFFC_metrics_snow_plot$SP_Dur)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Rain", y = as.numeric(BFFC_metrics_rain_plot$SP_Dur)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Rain", y = as.numeric(BFFC_metrics_rain_plot$SP_Dur)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC Mixed", y = as.numeric(BFFC_metrics_mixed_plot$SP_Dur)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC Mixed", y = as.numeric(BFFC_metrics_mixed_plot$SP_Dur)), color = "darkblue", alpha = 0.6)+
+      geom_violin(aes(x = "BFFC FER", y = as.numeric(BFFC_metrics_rsc7$SP_Dur)), fill = 'blue') +
+      geom_boxplot(aes(x = "BFFC FER", y = as.numeric(BFFC_metrics_rsc7$SP_Dur)), color = "darkblue", alpha = 0.6)
+      
+      
+      Violinplot_Spring_season_duration <- Violinplot_Spring_season_duration +
+      labs(x = "Flow Regimes", y = "Spring Recession Duration  in Day of Water", title = paste("Spring Recession Duration in Days in Different Systems"))+
+      #scale_y_continuous(limits = c(0, 10), breaks = seq(0, 10, by = 2), minor_breaks = seq(0, 10, by = 1))+
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+    
+    plot(Violinplot_Spring_season_duration)
+
+    ggsave(paste0("~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Alternate-Ruleset-FFC-BETA/Report Figures/","Spring Duration Comparison by Stream type",".png"), plot = Violinplot_Spring_season_duration, device = "png")
+  
+
+
+```
+

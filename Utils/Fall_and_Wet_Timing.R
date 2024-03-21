@@ -94,9 +94,11 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
     
     median_flow <- median(flow$flow)
     
+    #Fall Threshold
+    Fall_thresh <- min((0.15*WY_median),1)
 
     #Start by finding peaks that occur from October 1st to December 15th, anything that is less than 7 days counts
-    FA_peaks <- findpeaks(flow$flow[WY_start:(WY_start+75)],peakpat = "[+]{1,}[0]{,40}[-]{1,}", threshold = 10) 
+    FA_peaks <- findpeaks(flow$flow[WY_start:(WY_start+75)],peakpat = "[+]{1,}[0]{,40}[-]{1,}", threshold = Fall_thresh) 
     
     #cat("\n WY start +75 = ", as.character( flow$date[(WY_start+75)]),"\n")
     #cat(FA_peaks)

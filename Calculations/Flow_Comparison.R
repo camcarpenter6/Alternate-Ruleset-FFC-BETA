@@ -168,7 +168,7 @@ compare_gages <- function(){
       gage_id_2 <- gage_id_1
       comid_2 <- comid_1
       class_2 <- class_1
-      site_name_2 <- paste0(site_name_2," Original Calculator")
+      site_name_2 <- paste0(site_name_1," Original Calculator")
       #ffc$gage_start_date = "1979-10-01" # use this to pull only recent years
       
       ffc$set_up(gage_id=gage_id_2, token = ffctoken) 
@@ -191,6 +191,8 @@ compare_gages <- function(){
     Results_df_1  <- flow_metrics_calculations(flow_1)
     if (gage_check_2 == "Org"){
       Results_df_2<-ffc$ffc_results
+      Results_df_2$Year <- as.numeric(Results_df_2$Year)
+      Results_df_2$WY_Cat <- Results_df_1$WY_Cat
     }
     else{
       Results_df_2  <- flow_metrics_calculations(flow_2)
@@ -227,20 +229,24 @@ compare_gages <- function(){
     write_csv(Results_df_2, file = file_path_2)
     
     #Get the metrics percentiles following the same method as the original calculator
-    metrics_percentiles_1 <- get_percentiles(Results_df_1,comid_1)
-    metrics_percentiles_2 <- get_percentiles(Results_df_2,comid_2)
     # then pull metrics and percentiles out as dataframes (which you can then store)
-    metrics_percentiles_2_check<-ffc$ffc_percentiles
+    metrics_percentiles_1 <- get_percentiles(Results_df_1,comid_1)
+    if (gage_check_2 == "Org"){
+      metrics_percentiles_2<-ffc$ffc_percentiles
+    }
+    else{
+      metrics_percentiles_2 <- get_percentiles(Results_df_2,comid_2)
+    }
+    
     
     # Construct the file path for the percentiles
     file_path_percentiles_1 <- file.path(here(), "Outputs", output_file_name, paste0(gage_name_cleaned_1, "_Metric_Percentiles.csv"))
     file_path_percentiles_2 <- file.path(here(), "Outputs", output_file_name, paste0(gage_name_cleaned_2, "_Metric_Percentiles.csv"))
-    file_path_percentiles_2_check <- file.path(here(), "Outputs", output_file_name, paste0(gage_name_cleaned_2, "_Metric_Percentiles_check.csv"))
     
     # Write the CSV file
     write_csv(metrics_percentiles_1, file = file_path_percentiles_1)
     write_csv(metrics_percentiles_2, file = file_path_percentiles_2)
-    write_csv(metrics_percentiles_2_check, file = file_path_percentiles_2_check)
+    
     
     #Make the html figure for the
     HTML_comparison(flow_1 =  flow_1,flow_2 = flow_2,metrics_1 = Results_df_1,metrics_2  =Results_df_2, output_file_name = output_file_name)

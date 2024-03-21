@@ -2,7 +2,7 @@
 
 #Please make sure you open up the files from the Rproject
 
-#Firstcheck to see if all the required packages are installed
+#First check to see if all the required packages are installed
 source("./required_packages.R")
 
 #Now the packages are referenced
