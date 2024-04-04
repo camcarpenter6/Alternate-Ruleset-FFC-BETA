@@ -41,10 +41,10 @@ Peak_Flow_Analysis <- function(peaks,Average_Return_Interval){
   log_average_peak <- mean(log_ranked_peaks)
   
   #Now calculate the squared mean difference of the log flows
-  log_sqr_mean_dif <- (log_agerage_peak-log_average_peak)^2
+  log_sqr_mean_dif <- (log_average_peak-log_average_peak)^2
   
   #And the cubed average difference of the log flows
-  log_cbd_mean_dif <- (log_agerage_peak-log_average_peak)^3
+  log_cbd_mean_dif <- (log_average_peak-log_average_peak)^3
   
   #Now calculate the return period for ranked peak
   Return_Int <- (length(ranks)+1)/ranks

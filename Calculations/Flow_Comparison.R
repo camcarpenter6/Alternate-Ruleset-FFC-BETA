@@ -190,9 +190,10 @@ compare_gages <- function(){
     #Get the results for each of the results
     Results_df_1  <- flow_metrics_calculations(flow_1)
     if (gage_check_2 == "Org"){
+      
       Results_df_2<-ffc$ffc_results
       Results_df_2$Year <- as.numeric(Results_df_2$Year)
-      Results_df_2$WY_Cat <- Results_df_1$WY_Cat
+      Results_df_2$WY_Cat <- Results_df_1$WY_Cat[1:85]
     }
     else{
       Results_df_2  <- flow_metrics_calculations(flow_2)
@@ -214,6 +215,10 @@ compare_gages <- function(){
     # Clean up the gage name to remove leading/trailing spaces
     gage_name_cleaned_1 <- trimws(gage_id_1)
     gage_name_cleaned_2 <- trimws(gage_id_2)
+    if (gage_check_2 == "Org"){
+      gage_name_cleaned_1 <- paste0(trimws(gage_id_1),"_FFC-F")
+      gage_name_cleaned_2 <- paste0(trimws(gage_id_2),"_FFC-R")
+    }
     
     # Construct the file path
     file_path_1 <- file.path(here(), "Outputs", output_file_name, paste0(gage_name_cleaned_1, "_Metrics.csv"))

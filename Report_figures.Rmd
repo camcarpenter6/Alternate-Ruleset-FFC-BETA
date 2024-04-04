@@ -493,10 +493,10 @@ read_csv_files <- function(files) {
 }
 
 # Read files ending with "_Original Calculator_Metrics.csv"
-files_original_ffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 1", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_original_ffc_class1 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 1", pattern = "_Original Calculator_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 # Read files ending with "_Metrics.csv"
-files_metrics_bffc <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 1", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
+files_metrics_bffc_class1 <- list.files(path = "~/Desktop/School Stuff/UC Davis/Work/Alt_FFC/Updated Reference Gages Class 1", pattern = "_Metrics.csv$", recursive = TRUE, full.names = TRUE)
 
 #Since both character list have the ffc metrics since they have the same pattern
 BFFC_metrics_list <- files_metrics_bffc[!files_metrics_bffc %in% files_original_ffc]
@@ -1587,6 +1587,9 @@ differences_WS_df <- unlist(differences_WS)
 
 
 ```
+
+#
+
 
 ```{r}
 
