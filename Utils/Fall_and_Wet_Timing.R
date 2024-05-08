@@ -78,7 +78,10 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
     
     #Then we need to find the October 1st start date of the water year of interest
     WY_start <- which(month(date_data ) == 10 & day(date_data) == 1 & year(date_data) == (Water_Years[i]-1))
-    
+    if(!(0<length(WY_start))){
+      WY_start <- which(date_data == min(date_data[date_data > as.Date(paste("10-01-",Water_Years[i]-1,sep = ''))], na.rm = TRUE))
+    }
+    EndFall_window <- which(month(date_data ) == 12 & day(date_data) == 15 & year(date_data) == (Water_Years[i]-1))
 
     #cat("\n Length of all flow: ", length(flow$flow), "\n Date of 365 timestep:", as.Date(flow$date[WY_start]) )
 
@@ -98,7 +101,7 @@ Altered_Fall_Wet_Timing <- function(FlowYear, DS_Tim) {
     Fall_thresh <- min((0.15*WY_median),1)
 
     #Start by finding peaks that occur from October 1st to December 15th, anything that is less than 7 days counts
-    FA_peaks <- findpeaks(flow$flow[WY_start:(WY_start+75)],peakpat = "[+]{1,}[0]{,40}[-]{1,}", threshold = Fall_thresh) 
+    FA_peaks <- findpeaks(flow$flow[WY_start:EndFall_window],peakpat = "[+]{1,}[0]{,40}[-]{1,}", threshold = Fall_thresh) 
     
     #cat("\n WY start +75 = ", as.character( flow$date[(WY_start+75)]),"\n")
     #cat(FA_peaks)
